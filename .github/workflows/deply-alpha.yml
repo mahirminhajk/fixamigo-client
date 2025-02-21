@@ -19,7 +19,7 @@ jobs:
           chmod 600 private_key.pem
 
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.LIGHTSAIL_IP }} << 'EOF'
-            cd /home/ubuntu/fixamigo-server
+            cd /home/ubuntu/fixamigo-client
 
             echo "Stopping the server..."
             pm2 stop ecosystem.config.js
