@@ -21,6 +21,9 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.LIGHTSAIL_IP }} << 'EOF'
             cd /home/ubuntu/fixamigo-server
 
+            echo "Stopping the server..."
+            pm2 stop ecosystem.config.js
+
             echo "Pulling latest changes..."
             git fetch origin alpha
             git reset --hard origin/alpha
