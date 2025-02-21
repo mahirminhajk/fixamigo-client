@@ -1,0 +1,41 @@
+name: Deploy Fixamigo Client (Alpha)
+
+on:
+  push:
+    branches:
+      - alpha # Trigger on alpha branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH & Deploy
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@${{ secrets.LIGHTSAIL_IP }} << 'EOF'
+            cd /home/ubuntu/fixamigo-server
+
+            echo "Pulling latest changes..."
+            git fetch origin alpha
+            git reset --hard origin/alpha
+
+            echo "Installing dependencies with pnpm..."
+            pnpm install --frozen-lockfile
+
+            echo "Building the project..."
+            pnpm run build
+
+            echo "Restarting the server..."
+            pm2 restart ecosystem.config.js
+
+            echo "Deployment completed!"
+          EOF
+
+      - name: Cleanup
+        run: rm private_key.pem

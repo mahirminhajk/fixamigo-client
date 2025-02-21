@@ -12,32 +12,32 @@ const repairCategory = [
   {
     name: "Display",
     icon: <Smartphone size={30} className="text-white" />,
-    link: "/display-repair",
+    slug: "display",
   },
   {
     name: "Ports",
     icon: <PlugZap size={30} className="text-white" />,
-    link: "/ports-repair",
+    slug: "ports",
   },
   {
     name: "Battery",
     icon: <BatteryFull size={30} className="text-white" />,
-    link: "/battery-repair",
+    slug: "battery",
   },
   {
     name: "Camera",
     icon: <Camera size={30} className="text-white" />,
-    link: "/camera-repair",
+    slug: "camera",
   },
   {
     name: "Speaker",
     icon: <Volume2 size={30} className="text-white" />,
-    link: "/speaker-repair",
+    slug: "speaker",
   },
   {
     name: "Others",
     icon: <MoreHorizontal size={30} className="text-white" />,
-    link: "/repair",
+    slug: "others",
   },
 ];
 
@@ -56,7 +56,7 @@ const ListRepairCategory = () => {
         <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 place-items-center">
           {repairCategory.map((category, index) => (
             <Link
-              href={category.link}
+              href={`/repair/${category.slug}`}
               key={index}
               className="bg-black w-24 h-24 md:w-28 md:h-28 flex flex-col items-center justify-center rounded-full text-white transition-transform transform hover:scale-110"
             >

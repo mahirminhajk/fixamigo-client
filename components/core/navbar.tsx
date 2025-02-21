@@ -11,7 +11,7 @@ export default function Navbar() {
       <nav className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <div className="text-xl font-bold">
-          Fix<span className="text-xl font-bold text-green-500">amigo</span>
+          Fix<span className="text-xl font-bold text-[#114FEE]">Amigo</span>
         </div>
 
         {/* Icons */}
