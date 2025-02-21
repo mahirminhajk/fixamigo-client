@@ -6,9 +6,9 @@ import Image from "next/image";
 import "keen-slider/keen-slider.min.css";
 
 const images = [
-  "https://placehold.co/600x400/orange/white?text=FIXAMIGO",
-  "https://placehold.co/600x400/red/grey?text=FIXAMIGO",
-  "https://placehold.co/600x400/yello/000?text=FIXAMIGO",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner1.png",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner2.png",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner3.png",
 ];
 
 export default function Carousel() {
@@ -38,9 +38,8 @@ export default function Carousel() {
             src={src}
             alt={`Slide ${index}`}
             fill
-            className="object-cover"
+            className="object-contain"
             sizes="100vw"
-            unoptimized
           />
         </div>
       ))}

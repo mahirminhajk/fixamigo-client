@@ -5,7 +5,7 @@ function Layout({ children }: Readonly<{ children?: ReactNode }>) {
   return (
     <>
       <Navbar />
-      <main className="pt-[62px]">{children}</main>
+      <main className="pt-[53px]">{children}</main>
     </>
   );
 }
