@@ -1,3 +1,4 @@
+import { repairCategory } from "@/constants";
 import {
   Smartphone,
   PlugZap,
@@ -7,39 +8,16 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import Link from "next/link";
+import { JSX } from "react";
 
-const repairCategory = [
-  {
-    name: "Display",
-    icon: <Smartphone size={30} className="text-white" />,
-    slug: "display",
-  },
-  {
-    name: "Ports",
-    icon: <PlugZap size={30} className="text-white" />,
-    slug: "ports",
-  },
-  {
-    name: "Battery",
-    icon: <BatteryFull size={30} className="text-white" />,
-    slug: "battery",
-  },
-  {
-    name: "Camera",
-    icon: <Camera size={30} className="text-white" />,
-    slug: "camera",
-  },
-  {
-    name: "Speaker",
-    icon: <Volume2 size={30} className="text-white" />,
-    slug: "speaker",
-  },
-  {
-    name: "Others",
-    icon: <MoreHorizontal size={30} className="text-white" />,
-    slug: "others",
-  },
-];
+const iconMap: Record<string, JSX.Element> = {
+  display: <Smartphone size={30} className="text-white" />,
+  ports: <PlugZap size={30} className="text-white" />,
+  battery: <BatteryFull size={30} className="text-white" />,
+  camera: <Camera size={30} className="text-white" />,
+  speaker: <Volume2 size={30} className="text-white" />,
+  "mobile-phone": <MoreHorizontal size={30} className="text-white" />,
+};
 
 const ListRepairCategory = () => {
   return (
@@ -60,7 +38,9 @@ const ListRepairCategory = () => {
               key={index}
               className="bg-black w-24 h-24 md:w-28 md:h-28 flex flex-col items-center justify-center rounded-full text-white transition-transform transform hover:scale-110"
             >
-              {category.icon}
+              {iconMap[category.slug] || (
+                <MoreHorizontal size={30} className="text-white" />
+              )}
               <span className="mt-1 text-sm md:text-base">{category.name}</span>
             </Link>
           ))}
