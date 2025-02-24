@@ -1,5 +1,5 @@
 function VersionInfo() {
-  const version = process.env.VERSION || "No version info";
+  const version = "1.0.2-alpha";
   const isPreRelease = /alpha|beta|rc/i.test(version);
 
   return (
