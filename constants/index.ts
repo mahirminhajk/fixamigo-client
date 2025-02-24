@@ -1,0 +1,41 @@
+export const brands = [
+  { name: "Samsung", slug: "samsung", image: "/brands/samsung.png" },
+  { name: "Apple", slug: "apple", image: "/brands/apple.png" },
+  { name: "Vivo", slug: "vivo", image: "/brands/vivo.png" },
+  { name: "Honor", slug: "honor", image: "/brands/honor.png" },
+  { name: "IQOO", slug: "iqoo", image: "/brands/iqoo.png" },
+  { name: "MI", slug: "mi", image: "/brands/mi.png" },
+  { name: "Oneplus", slug: "oneplus", image: "/brands/oneplus.png" },
+  { name: "Motorola", slug: "motorola", image: "/brands/motorola.png" },
+  { name: "OPPO", slug: "oppo", image: "/brands/oppo.png" },
+  { name: "Pixel", slug: "google", image: "/brands/pixel.png" },
+  { name: "Poco", slug: "poco", image: "/brands/poco.png" },
+  { name: "Realme", slug: "realme", image: "/brands/realme.png" },
+];
+
+export const repairCategory = [
+  {
+    name: "Display",
+    slug: "display",
+  },
+  {
+    name: "Ports",
+    slug: "ports",
+  },
+  {
+    name: "Battery",
+    slug: "battery",
+  },
+  {
+    name: "Camera",
+    slug: "camera",
+  },
+  {
+    name: "Speaker",
+    slug: "speaker",
+  },
+  {
+    name: "Others",
+    slug: "mobile-phone",
+  },
+];

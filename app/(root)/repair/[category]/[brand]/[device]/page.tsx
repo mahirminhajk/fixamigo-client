@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 
 // Interface
@@ -42,30 +40,24 @@ export default async function Page({
   }
 
   return (
-    <section className="flex flex-col items-center p-6">
-      <Card className="w-full max-w-md text-center shadow-lg rounded-2xl">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">
-            {deviceData.name}
-          </CardTitle>
-          <p className="text-gray-500">By {deviceData.company}</p>
-        </CardHeader>
-        <CardContent>
-          {deviceData.images.length > 0 ? (
-            <div className="relative w-full h-64">
-              <Image
-                src={deviceData.images[0]}
-                alt={deviceData.name}
-                layout="fill"
-                className="rounded-lg"
-              />
-            </div>
-          ) : (
-            <Skeleton className="w-full h-64 rounded-lg" />
-          )}
-          <p className="mt-4 text-gray-600">Slug: {deviceData.slug}</p>
-        </CardContent>
-      </Card>
+    <section>
+      <div className="flex justify-center">
+        <div className="flex flex-col items-center p-4">
+          <div className="rounded-xl  flex flex-col items-center">
+            <Image
+              src={deviceData.images[0]}
+              alt={deviceData.name}
+              width={320}
+              height={320}
+              className="object-contain mb-2"
+            />
+            <p className="text-lg font-bold">{deviceData.name}</p>
+            <span className="mt-2 px-3 py-1 border border-black rounded-[6px] text-xs font-semibold">
+              {deviceData.company}
+            </span>
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

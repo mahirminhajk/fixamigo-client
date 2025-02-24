@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
+import { brands, repairCategory } from "@/constants";
 
 export const revalidate = 3600;
 export const dynamicParams = false;
@@ -17,37 +18,14 @@ interface Devices {
 
 // Static Generation
 export async function generateStaticParams() {
-  const categories = [
-    "display",
-    "ports",
-    "battery",
-    "camera",
-    "speaker",
-    "others",
-  ];
-  const brands = [
-    "samsung",
-    "apple",
-    "vivo",
-    "honor",
-    "iqoo",
-    "mi",
-    "oneplus",
-    "motorola",
-    "oppo",
-    "google",
-    "poco",
-    "realme",
-  ];
-
   const paths: {
     category: string;
     brand: string;
   }[] = [];
 
-  categories.forEach((category) => {
+  repairCategory.forEach((category) => {
     brands.forEach((brand) => {
-      paths.push({ category, brand });
+      paths.push({ category: category.slug, brand: brand.slug });
     });
   });
 
