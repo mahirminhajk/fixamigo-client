@@ -1,5 +1,5 @@
 function VersionInfo() {
-  const version = "1.0.2-alpha";
+  const version = "1.0.3-alpha";
   const isPreRelease = /alpha|beta|rc/i.test(version);
 
   return (
