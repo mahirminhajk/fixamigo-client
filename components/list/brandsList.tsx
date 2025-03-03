@@ -4,9 +4,10 @@ import Link from "next/link";
 
 interface BrandsListProps {
   variant: "all" | "min";
+  category?: string;
 }
 
-const BrandsList = ({ variant }: BrandsListProps) => {
+const BrandsList = ({ variant, category }: BrandsListProps) => {
   let displayedBrands = brands;
   if (variant === "min") {
     displayedBrands = brands.slice(0, 12);
@@ -14,20 +15,24 @@ const BrandsList = ({ variant }: BrandsListProps) => {
     displayedBrands = [...brands.slice(12), ...brands.slice(0, 12)];
   }
 
+  if (!category) {
+    category = "mobile-phone";
+  }
+
   return (
     <div className="flex flex-col items-center p-6">
-      <div className="w-full max-w-2xl">
-        <div className="w-full flex justify-center">
-          <h2 className="text-2xl font-bold mb-6 text-center">
-            Select your brand
-          </h2>
-        </div>
+      <div className="max-w-2xl">
+        <h2 className="text-2xl font-bold mb-6 text-left">
+          {category === "mobile-phone"
+            ? "Select your brand"
+            : `Select Your Brand for ${category} Repair`}
+        </h2>
 
         <div className="grid grid-cols-3 md:grid-cols-4 gap-4 items-center justify-center">
           {displayedBrands.map((brand, index) => (
             <Link
               key={index}
-              href={`/repair/mobile-phone/${brand.slug}`}
+              href={`/repair/${category}/${brand.slug}`}
               className="flex items-center justify-center w-24 h-24 bg-gray-100 rounded-[4px] shadow-md hover:shadow-lg transition duration-300 cursor-pointer"
             >
               <Image
@@ -42,7 +47,7 @@ const BrandsList = ({ variant }: BrandsListProps) => {
 
         {variant === "min" && (
           <Link href="/brands">
-            <p className="text-gray-500 mt-4 text-center underline">
+            <p className="text-gray-500 mt-4 text-center cursor-pointer hover:underline">
               More brands....
             </p>
           </Link>
