@@ -26,3 +26,4 @@ export default function Page() {
     </section>
   );
 }
+//TODO: show order summary in is page.
