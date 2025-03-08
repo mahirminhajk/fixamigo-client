@@ -1,10 +1,9 @@
-import Navbar from "@/components/core/navbar";
+"use client";
 import { ReactNode } from "react";
 
 function Layout({ children }: Readonly<{ children?: ReactNode }>) {
   return (
     <>
-      <Navbar />
       <main>{children}</main>
     </>
   );

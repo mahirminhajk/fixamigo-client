@@ -23,7 +23,7 @@ export default function Carousel() {
     if (!slider) return;
     const interval = setInterval(() => {
       slider.current?.next(); // Move to the next slide
-    }, 3000);
+    }, 6000);
     return () => clearInterval(interval);
   }, [slider]);
 
@@ -38,7 +38,7 @@ export default function Carousel() {
             src={src}
             alt={`Slide ${index}`}
             fill
-            className="object-contain"
+            className="object-cover"
             sizes="100vw"
           />
         </div>
