@@ -13,12 +13,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+interface AddressFormData {
+  name: string;
+  phone: string;
+  pincode: string;
+  street: string;
+  city: string;
+  landMark: string;
+  alternateNumber: string;
+}
+
+interface FormattedAddress {
+  name: string;
+  details: string;
+  phone: string;
+}
+
 const CheckoutAddressCard = () => {
-  const [address, setAddress] = useState<{
-    name: string;
-    details: string;
-    phone: string;
-  } | null>(null);
+  const [address, setAddress] = useState<FormattedAddress | null>(null);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -32,7 +44,7 @@ const CheckoutAddressCard = () => {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: AddressFormData): void => {
     setAddress({
       name: data.name,
       details: `${data.street}, ${data.city}, ${data.landMark}, ${data.pincode}`,
