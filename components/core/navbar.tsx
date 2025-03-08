@@ -1,17 +1,48 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Menu, X, ShoppingCart, Search, User } from "lucide-react";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent): void {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    }
+    if (menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [menuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
-      <nav className="flex items-center justify-between px-6 py-4">
+    <header className="bg-white shadow-md z-50">
+      <nav className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <div className="text-xl font-bold">
-          Fix<span className="text-xl font-bold text-[#114FEE]">Amigo</span>
+        <div className="text-2xl font-bold">
+          Fix<span className="text-2xl font-bold text-[#114FEE]">Amigo</span>
+        </div>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex space-x-6 text-lg font-medium">
+          <Link href="/" className="hover:text-blue-500 transition">
+            Home
+          </Link>
+          <Link href="/about" className="hover:text-blue-500 transition">
+            About
+          </Link>
+          <Link href="/services" className="hover:text-blue-500 transition">
+            Services
+          </Link>
+          <Link href="/contact" className="hover:text-blue-500 transition">
+            Contact
+          </Link>
         </div>
 
         {/* Icons */}
@@ -26,22 +57,23 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Full-screen Menu with Navigation Links */}
+      {/* Mobile Menu */}
       <div
-        className={`fixed inset-0 bg-white z-50 transition-opacity duration-300 ${
+        className={`fixed inset-0 backdrop-blur-lg bg-black/30 z-50 flex justify-end transition-opacity duration-300 ease-in-out ${
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       >
         <div
-          className={`fixed inset-0 bg-white transform transition-transform duration-300 ${
+          ref={menuRef}
+          className={`w-64 bg-white h-full shadow-lg p-6 transform transition-transform duration-300 ease-in-out ${
             menuOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <X
-            className="absolute top-5 right-5 w-8 h-8 text-black cursor-pointer"
+            className="w-8 h-8 text-black cursor-pointer mb-6"
             onClick={() => setMenuOpen(false)}
           />
-          <nav className="flex flex-col items-center justify-center h-full space-y-6 text-lg font-bold">
+          <nav className="flex flex-col space-y-6 text-lg font-medium">
             <Link
               href="/"
               className="hover:text-blue-500"
