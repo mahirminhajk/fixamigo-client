@@ -21,6 +21,7 @@ export default function AddToCartBtn({ sparePart }: AddToCartBtnProps) {
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const isInCart = useCartStore((state) => state.isInCart);
 
+  //TODO: this working or not ?
   if (!cart) return null; // 🚀 Avoids hydration issues
 
   const itemInCart = isInCart(sparePart._id);
