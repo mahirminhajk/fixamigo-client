@@ -10,14 +10,18 @@ import {
 } from "@/components/ui/sheet";
 
 const CheckoutPaymentMethodCard = () => {
+  const [open, setOpen] = useState(false);
+  const toggleSheet = () => setOpen(!open);
+
   const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
 
   const handleMethodChange = (method: string) => {
     setSelectedMethod(method);
+    toggleSheet();
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={toggleSheet}>
       <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
         <div>
           <p className="text-gray-500 text-sm text-left">Payment Method</p>
