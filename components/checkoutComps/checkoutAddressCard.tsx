@@ -30,6 +30,9 @@ interface FormattedAddress {
 }
 
 const CheckoutAddressCard = () => {
+  const [open, setOpen] = useState(false);
+  const toggleSheet = () => setOpen(!open);
+
   const [address, setAddress] = useState<FormattedAddress | null>(null);
 
   const { register, handleSubmit } = useForm({
@@ -50,10 +53,11 @@ const CheckoutAddressCard = () => {
       details: `${data.street}, ${data.city}, ${data.landMark}, ${data.pincode}`,
       phone: `${data.phone}, ${data.alternateNumber}`,
     });
+    toggleSheet();
   };
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={toggleSheet}>
       <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
         <div>
           <p className="text-gray-500 text-sm text-left">Shipping Address</p>

@@ -10,6 +10,9 @@ import {
 import { useEffect, useState } from "react";
 
 const CheckoutPickupDateCard = () => {
+  const [open, setOpen] = useState(false);
+  const toggleSheet = () => setOpen(!open);
+
   const [selectedDate, setSelectedDate] = useState<{
     day: number;
     month: string;
@@ -34,8 +37,13 @@ const CheckoutPickupDateCard = () => {
     setDates(newDates);
   }, []);
 
+  const setDate = (date: { day: number; month: string; weekday: string }) => {
+    setSelectedDate(date);
+    toggleSheet();
+  };
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={toggleSheet}>
       <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
         <div>
           <p className="text-gray-500 text-sm text-left">Pickup date</p>
@@ -74,7 +82,7 @@ const CheckoutPickupDateCard = () => {
                     ? "border-blue-500 text-blue-500 border-dashed"
                     : "text-black border-gray-300"
                 }`}
-                onClick={() => setSelectedDate(date)}
+                onClick={() => setDate(date)}
               >
                 {/* Keep Today and Tomorrow headings in original color */}
                 {index === 0 && (

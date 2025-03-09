@@ -6,9 +6,9 @@ const PlaceServiceBtn = () => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
 
-  const handleCouponChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase();
-    setCouponCode(value);
+  const handleCouponFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleApplyCoupon();
   };
 
   const handleApplyCoupon = () => {
@@ -28,24 +28,27 @@ const PlaceServiceBtn = () => {
       <div className="w-full max-w-md">
         <div className="w-full max-w-md p-4 bg-white rounded-[6px] space-y-4">
           {/* Coupon Section */}
-          <div className="flex items-center justify-between p-3 bg-gray-100 rounded-[6px]">
+          <form
+            onSubmit={handleCouponFormSubmit}
+            className="flex items-center justify-between p-3 bg-gray-100 rounded-[6px]"
+          >
             <div className="flex items-center space-x-2">
               <CiDiscount1 className="w-7 h-7" />
               <input
                 type="text"
                 placeholder="Enter Coupon Code"
-                value={couponCode}
-                onChange={handleCouponChange}
                 className="bg-transparent outline-none text-sm flex-grow"
+                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
+                value={couponCode}
               />
             </div>
-            <div
+            <button
               className="bg-black text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer"
-              onClick={handleApplyCoupon}
+              type="submit"
             >
               <FaChevronRight />
-            </div>
-          </div>
+            </button>
+          </form>
 
           {/* Pricing Summary */}
           <div className="text-sm space-y-2">

@@ -17,6 +17,7 @@ interface CartState {
   addToCart: (sparePart: SparePart) => void;
   removeFromCart: (id: string) => void;
   isInCart: (id: string) => boolean;
+  isCartEmpty: () => boolean;
 }
 
 export const useCartStore = create<CartState>()(
@@ -30,6 +31,7 @@ export const useCartStore = create<CartState>()(
           cart: state.cart.filter((item) => item._id !== id),
         })),
       isInCart: (id) => get().cart.some((item) => item._id === id),
+      isCartEmpty: () => (get().cart.length === 0 ? true : false),
     }),
     {
       name: "cart-storage", // ✅ LocalStorage Key
