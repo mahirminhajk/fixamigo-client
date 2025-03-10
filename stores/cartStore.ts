@@ -1,16 +1,8 @@
 "use client"; // ✅ Zustand should be used only in client components
 
+import { SparePart } from "@/types/spareParts";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-interface SparePart {
-  _id: string;
-  label: string;
-  category: string;
-  totalCost: number;
-  discountAmount: number;
-  finalPrice: number;
-}
 
 interface CartState {
   cart: SparePart[];
@@ -18,6 +10,8 @@ interface CartState {
   removeFromCart: (id: string) => void;
   isInCart: (id: string) => boolean;
   isCartEmpty: () => boolean;
+  getTotalPrice: () => number;
+  clearCart: () => void;
 }
 
 export const useCartStore = create<CartState>()(
@@ -32,6 +26,9 @@ export const useCartStore = create<CartState>()(
         })),
       isInCart: (id) => get().cart.some((item) => item._id === id),
       isCartEmpty: () => (get().cart.length === 0 ? true : false),
+      getTotalPrice: () =>
+        get().cart.reduce((acc, item) => acc + item.price.final, 0),
+      clearCart: () => set({ cart: [] }),
     }),
     {
       name: "cart-storage", // ✅ LocalStorage Key

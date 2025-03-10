@@ -3,16 +3,10 @@
 import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { FaCartPlus, FaTrash } from "react-icons/fa";
+import { SparePart } from "@/types/spareParts";
 
 interface AddToCartBtnProps {
-  sparePart: {
-    _id: string;
-    label: string;
-    category: string;
-    totalCost: number;
-    discountAmount: number;
-    finalPrice: number;
-  };
+  sparePart: SparePart;
 }
 
 export default function AddToCartBtn({ sparePart }: AddToCartBtnProps) {
