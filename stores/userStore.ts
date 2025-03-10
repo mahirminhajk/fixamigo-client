@@ -13,17 +13,21 @@ interface UserState {
   user: User | null;
   setUser: (user: User) => void;
   clearUser: () => void;
+  isLogged: () => boolean;
 }
 
 export const useUserStore = create<UserState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       setUser(user) {
         set({ user });
       },
       clearUser() {
         set({ user: null });
+      },
+      isLogged() {
+        return get().user !== null;
       },
     }),
     {

@@ -1,18 +1,11 @@
 import Image from "next/image";
 import AddToCartBtn from "../buttons/addToCartBtn";
+import { SparePart } from "@/types/spareParts";
+import { getSparePartsIcon } from "@/lib/utils";
 
 interface ListSparePartsProps {
-  spareParts: {
-    _id: string;
-    label: string;
-    category: string;
-    totalCost: number;
-    discountAmount: number;
-    finalPrice: number;
-  }[];
+  spareParts: SparePart[];
 }
-
-const getImage = (category: string) => `/icons/${category.toLowerCase()}.png`;
 
 function ListSpareParts({ spareParts }: ListSparePartsProps) {
   return (
@@ -28,7 +21,7 @@ function ListSpareParts({ spareParts }: ListSparePartsProps) {
           <div className="flex items-center justify-between px-4">
             <div className="flex items-center">
               <Image
-                src={getImage(item.category)}
+                src={getSparePartsIcon(item.category)}
                 alt={item.label}
                 width={48}
                 height={48}
@@ -38,13 +31,13 @@ function ListSpareParts({ spareParts }: ListSparePartsProps) {
                 <p className="font-medium text-black">{item.label}</p>
                 <div className="flex items-center space-x-2 text-sm">
                   <span className="text-blue-600 font-semibold">
-                    {item.discountAmount}
+                    {item.price.discountPercentage}%
                   </span>
                   <span className="line-through text-gray-500">
-                    ₹{item.totalCost}
+                    ₹{item.price.total}
                   </span>
                   <span className="text-black font-bold">
-                    ₹{item.finalPrice}
+                    ₹{item.price.final}
                   </span>
                 </div>
               </div>

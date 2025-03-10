@@ -2,6 +2,7 @@ import ListSpareParts from "@/components/list/listSpareParts";
 import ModelCart from "@/components/others/modelCart";
 import ShowModel from "@/components/others/showModel";
 import WhyChooseUs from "@/components/others/whyChooseUs";
+import { SparePart } from "@/types/spareParts";
 
 // Interface
 interface Device {
@@ -10,14 +11,7 @@ interface Device {
   slug: string;
   company: string;
   images: string[];
-  spareParts: {
-    _id: string;
-    label: string;
-    category: string;
-    totalCost: number;
-    discountAmount: number;
-    finalPrice: number;
-  }[];
+  spareParts: SparePart[];
 }
 
 // Fetch function
