@@ -1,9 +1,9 @@
 "use client";
-
 import Topbar from "@/components/core/topbar";
 import EmptyAndNotLogined from "@/components/others/emptyAndNotLogined";
 import { GiAutoRepair } from "react-icons/gi";
 import { FaArrowRight } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const services = [
   {
@@ -67,6 +67,8 @@ const SolidCircle = ({ color }: { color?: string }) => (
 );
 
 export default function Page() {
+  const router = useRouter();
+
   return (
     <section>
       <div className="flex flex-col items-center">
@@ -88,7 +90,8 @@ export default function Page() {
                 {services.map((service, index) => (
                   <div
                     key={index}
-                    className="bg-gray-100 shadow-sm rounded-[6px] p-5 w-full max-w-md"
+                    className="bg-gray-100 shadow-sm rounded-[6px] p-5 w-full max-w-md cursor-pointer"
+                    onClick={() => router.push("/my-services/dummy")}
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center space-x-2">
