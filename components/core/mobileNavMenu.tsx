@@ -56,11 +56,11 @@ const MobileNavMenu = ({ menuOpen, setMenuOpen }: MobileNavMenuProps) => {
             About
           </Link>
           <Link
-            href="/services"
+            href="/my-services"
             className="hover:text-blue-500"
             onClick={() => setMenuOpen(false)}
           >
-            Services
+            Orders
           </Link>
           <Link
             href="/contact"
