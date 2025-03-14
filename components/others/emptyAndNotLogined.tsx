@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import UserRegSheet from "../sheets/userRegSheet";
 import { Sheet, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 interface EmptyAndNotLoginedProps {
   icon: React.ReactNode;
@@ -25,6 +26,13 @@ const EmptyAndNotLogined = ({
   actionText = "Continue shopping",
   actionLink = "/",
 }: EmptyAndNotLoginedProps) => {
+  const [open, setOpen] = useState(false);
+  const onOpenChange = () => setOpen(!open);
+
+  const onCompleted = () => {
+    setOpen(false);
+  };
+
   const isLogged = useUserStore((state) => state.isLogged);
 
   const router = useRouter();
@@ -37,13 +45,13 @@ const EmptyAndNotLogined = ({
         <p className="text-gray-500 text-sm px-6">{description}</p>
         <div className="space-y-2 w-full max-w-xs">
           {showAuth && !isLogged() && (
-            <Sheet>
+            <Sheet open={open} onOpenChange={onOpenChange}>
               <SheetTrigger asChild>
                 <Button className="w-full bg-black text-white rounded-[6px]">
                   Sign in
                 </Button>
               </SheetTrigger>
-              <UserRegSheet />
+              <UserRegSheet onCompleted={onCompleted} />
             </Sheet>
           )}
           {showAction && (
