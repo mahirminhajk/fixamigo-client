@@ -71,15 +71,16 @@ const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
       const res = await api.post("/auth/verify", { otp });
       // setStep(3);
       const user = res.data?.data?.user;
-      // if (user.name == null) {
-      //   setStep(3);
-      // }
-      setUser({
-        _id: user._id,
-        name: user.name || "no-name",
-        phoneNo: user.phone,
-      });
-      onCompleted();
+      if (user.name == null) {
+        setStep(3);
+      } else {
+        setUser({
+          _id: user._id,
+          name: user.name,
+          phoneNo: user.phone,
+        });
+        onCompleted();
+      }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         setOtpError(error.response?.data?.message || "Something went wrong");
@@ -101,7 +102,13 @@ const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
         setNameError("Name is required");
         return;
       }
-      await api.patch("/user/name", { name });
+      const res = await api.patch("/user/name", { name });
+      const user = res.data?.data?.user;
+      setUser({
+        _id: user._id,
+        name: user.name,
+        phoneNo: user.phone,
+      });
       onCompleted();
     } catch (error) {
       if (error instanceof AxiosError) {
