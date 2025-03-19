@@ -1,4 +1,4 @@
-export interface SparePart {
+export interface ISparePart {
   _id: string;
   label: string;
   name: string;

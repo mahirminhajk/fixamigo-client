@@ -2,7 +2,7 @@ import ListSpareParts from "@/components/list/listSpareParts";
 import ModelCart from "@/components/others/modelCart";
 import ShowModel from "@/components/others/showModel";
 import WhyChooseUs from "@/components/others/whyChooseUs";
-import { SparePart } from "@/types/spareParts";
+import { ISparePart } from "@/types/spareParts";
 
 // Interface
 interface Device {
@@ -11,7 +11,7 @@ interface Device {
   slug: string;
   company: string;
   images: string[];
-  spareParts: SparePart[];
+  spareParts: ISparePart[];
 }
 
 // Fetch function
@@ -52,7 +52,16 @@ export default async function Page({
           images: deviceData.images,
         }}
       />
-      <ListSpareParts spareParts={deviceData.spareParts} />
+      <ListSpareParts
+        spareParts={deviceData.spareParts}
+        cartDevice={{
+          _id: deviceData._id,
+          name: deviceData.name,
+          slug: deviceData.slug,
+          company: deviceData.company,
+          images: deviceData.images,
+        }}
+      />
       <ModelCart />
       <WhyChooseUs />
     </section>
