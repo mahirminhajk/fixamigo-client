@@ -3,13 +3,17 @@
 import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { FaCartPlus, FaTrash } from "react-icons/fa";
-import { SparePart } from "@/types/spareParts";
+import { ISparePart, ICartDevice } from "@/types";
 
 interface AddToCartBtnProps {
-  sparePart: SparePart;
+  sparePart: ISparePart;
+  cartDevice: ICartDevice;
 }
 
-export default function AddToCartBtn({ sparePart }: AddToCartBtnProps) {
+export default function AddToCartBtn({
+  sparePart,
+  cartDevice,
+}: AddToCartBtnProps) {
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
   const addToCart = useCartStore((state) => state.addToCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
@@ -24,7 +28,7 @@ export default function AddToCartBtn({ sparePart }: AddToCartBtnProps) {
     if (itemInCart) {
       removeFromCart(sparePart._id);
     } else {
-      addToCart(sparePart);
+      addToCart(cartDevice, sparePart);
     }
   };
 

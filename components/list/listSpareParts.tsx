@@ -1,13 +1,14 @@
 import Image from "next/image";
 import AddToCartBtn from "../buttons/addToCartBtn";
-import { SparePart } from "@/types/spareParts";
 import { getSparePartsIcon } from "@/lib/utils";
+import { ICartDevice, ISparePart } from "@/types";
 
 interface ListSparePartsProps {
-  spareParts: SparePart[];
+  spareParts: ISparePart[];
+  cartDevice: ICartDevice;
 }
 
-function ListSpareParts({ spareParts }: ListSparePartsProps) {
+function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
   return (
     <div className="w-full max-w-md mx-auto p-4">
       <h2 className="text-lg font-bold mb-2">SPARE PARTS</h2>
@@ -42,7 +43,7 @@ function ListSpareParts({ spareParts }: ListSparePartsProps) {
                 </div>
               </div>
             </div>
-            <AddToCartBtn sparePart={item} />
+            <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
           </div>
         </div>
       ))}

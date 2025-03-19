@@ -15,17 +15,19 @@ const CartList = () => {
   return (
     <main className="w-full flex flex-col items-center pb-28">
       <div className="w-full max-w-md p-4">
-        {cart &&
-          cart.map((item) => (
-            <div key={item._id} className="pb-4 mb-2">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="font-semibold">{item.name}</h3>
-                <Button variant="ghost" size="sm" onClick={() => clearCart()}>
-                  Remove All
-                </Button>
-              </div>
-
-              <div className="flex items-center space-x-3 p-2 border rounded-[6px] bg-gray-100">
+        {cart && (
+          <div className="pb-4 mb-2">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="font-semibold">{cart.device?.name}</h3>
+              <Button variant="ghost" size="sm" onClick={() => clearCart()}>
+                Remove All
+              </Button>
+            </div>
+            {cart.spareParts.map((item) => (
+              <div
+                key={item._id}
+                className="flex items-center space-x-3 p-2 border rounded-[6px] bg-gray-100 mb-3"
+              >
                 {/* Product Image */}
                 <Image
                   src={getSparePartsIcon(item.category)}
@@ -60,8 +62,9 @@ const CartList = () => {
                   </button>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="fixed bottom-0 w-full max-w-md bg-white shadow-lg p-4 rounded-t-[6px]">
@@ -69,7 +72,7 @@ const CartList = () => {
 
         <div className="bg-gray-50 p-3 rounded-[6px] border border-gray-200">
           {cart &&
-            cart.map((item) => (
+            cart.spareParts.map((item) => (
               <div
                 key={item._id}
                 className="flex justify-between text-gray-600 text-sm mb-1"

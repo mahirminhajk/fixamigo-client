@@ -1,12 +1,15 @@
-"use client"; // ✅ Zustand should be used only in client components
+"use client";
 
-import { SparePart } from "@/types/spareParts";
+import { ISparePart, ICartDevice } from "@/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface CartState {
-  cart: SparePart[];
-  addToCart: (sparePart: SparePart) => void;
+  cart: {
+    device: ICartDevice | null;
+    spareParts: ISparePart[] | [];
+  };
+  addToCart: (device: ICartDevice, sparePart: ISparePart) => void;
   removeFromCart: (id: string) => void;
   isInCart: (id: string) => boolean;
   isCartEmpty: () => boolean;
@@ -17,18 +20,57 @@ interface CartState {
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
-      cart: [],
-      addToCart: (sparePart) =>
-        set((state) => ({ cart: [...state.cart, sparePart] })),
+      cart: {
+        device: null,
+        spareParts: [],
+      },
+
+      addToCart: (device, sparePart) =>
+        set((state) => {
+          if (!state.cart) {
+            return { cart: { device, spareParts: [sparePart] } };
+          }
+
+          if (state.cart.device && state.cart.device._id === device._id) {
+            return {
+              cart: {
+                device: state.cart.device,
+                spareParts: [...state.cart.spareParts, sparePart],
+              },
+            };
+          }
+
+          return { cart: { device, spareParts: [sparePart] } };
+        }),
+
       removeFromCart: (id) =>
-        set((state) => ({
-          cart: state.cart.filter((item) => item._id !== id),
-        })),
-      isInCart: (id) => get().cart.some((item) => item._id === id),
-      isCartEmpty: () => (get().cart.length === 0 ? true : false),
+        set((state) => {
+          if (!state.cart) return state;
+
+          const updatedSpareParts = state.cart.spareParts.filter(
+            (item) => item._id !== id
+          );
+
+          return {
+            cart: {
+              device: updatedSpareParts.length > 0 ? state.cart.device : null,
+              spareParts: updatedSpareParts,
+            },
+          };
+        }),
+
+      isInCart: (id) =>
+        get().cart?.spareParts.some((item) => item._id === id) || false,
+
+      isCartEmpty: () => !get().cart || get().cart?.spareParts.length === 0,
+
       getTotalPrice: () =>
-        get().cart.reduce((acc, item) => acc + item.price.final, 0),
-      clearCart: () => set({ cart: [] }),
+        get().cart?.spareParts.reduce(
+          (acc, item) => acc + item.price.final,
+          0
+        ) || 0,
+
+      clearCart: () => set({ cart: { device: null, spareParts: [] } }),
     }),
     {
       name: "cart-storage", // ✅ LocalStorage Key

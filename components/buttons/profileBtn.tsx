@@ -11,13 +11,22 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import api from "@/lib/axiosInstance";
 
 const ProfileBtn = () => {
+  //* user-store
+  const clearUser = useUserStore((state) => state.clearUser);
+
   const [open, setOpen] = useState(false);
   const onOpenChange = () => setOpen(!open);
 
   const onCompleted = () => {
     setOpen(false);
+  };
+
+  const onSignOut = async () => {
+    await api.post("/auth/logout", {});
+    clearUser();
   };
 
   const user = useHydratedStore(useUserStore, (state) => state.user);
@@ -42,7 +51,10 @@ const ProfileBtn = () => {
                 <button className="text-sm text-left hover:bg-accent hover:text-accent-foreground rounded-md p-2">
                   My Orders
                 </button>
-                <button className="text-sm text-left text-red-500 hover:bg-red-50 rounded-md p-2">
+                <button
+                  className="text-sm text-left text-red-500 hover:bg-red-50 rounded-md p-2"
+                  onClick={onSignOut}
+                >
                   Sign Out
                 </button>
               </div>
