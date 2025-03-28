@@ -32,7 +32,7 @@ const ProfileBtn = () => {
   const user = useHydratedStore(useUserStore, (state) => state.user);
   return (
     <div>
-      {user ? (
+      {user?._id ? (
         <Popover>
           <PopoverTrigger asChild>
             <UserRoundCheckIcon className="w-6 h-6 cursor-pointer" />

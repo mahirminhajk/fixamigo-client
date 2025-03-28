@@ -1,3 +1,4 @@
+"use client";
 import { FaChevronRight } from "react-icons/fa";
 import {
   Sheet,
@@ -12,6 +13,8 @@ import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useUserStore } from "@/stores/userStore";
+import { IAddress } from "@/types/address";
 
 interface AddressFormData {
   name: string;
@@ -23,22 +26,27 @@ interface AddressFormData {
   alternateNumber: string;
 }
 
-interface FormattedAddress {
-  name: string;
-  details: string;
-  phone: string;
+interface CheckoutAddressCardProps {
+  address?: IAddress;
+  onAddressSubmit: (address: IAddress | string) => Promise<void>;
+  loading: boolean;
 }
 
-const CheckoutAddressCard = () => {
+const CheckoutAddressCard = ({
+  address,
+  onAddressSubmit,
+  loading,
+}: CheckoutAddressCardProps) => {
   const [open, setOpen] = useState(false);
   const toggleSheet = () => setOpen(!open);
 
-  const [address, setAddress] = useState<FormattedAddress | null>(null);
+  //* user
+  const user = useUserStore((state) => state.user);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      name: "",
-      phone: "",
+      name: user.name || "",
+      phone: user.phoneNo || "",
       pincode: "",
       street: "",
       city: "",
@@ -47,14 +55,22 @@ const CheckoutAddressCard = () => {
     },
   });
 
-  const onSubmit = (data: AddressFormData): void => {
-    setAddress({
+  const onSubmit = async (data: AddressFormData): Promise<void> => {
+    const address: IAddress = {
       name: data.name,
-      details: `${data.street}, ${data.city}, ${data.landMark}, ${data.pincode}`,
-      phone: `${data.phone}, ${data.alternateNumber}`,
-    });
+      phone: data.phone,
+      altPhone: data.alternateNumber,
+      address: data.street,
+      city: data.city,
+      landmark: data.landMark,
+      state: "Kerala",
+      pincode: data.pincode,
+    };
+    await onAddressSubmit(address);
     toggleSheet();
   };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <Sheet open={open} onOpenChange={toggleSheet}>
@@ -65,8 +81,11 @@ const CheckoutAddressCard = () => {
             {address ? (
               <div className="text-left">
                 <p className="text-lg font-medium">{address?.name}</p>
-                <p className="text-sm text-gray-600">{address?.details}</p>
-                <p className="text-sm text-gray-600">{address?.phone}</p>
+                <p className="text-sm text-gray-600">{`${address.address}, ${address.city}, ${address.landmark}, ${address.pincode}`}</p>
+                <p className="text-sm text-gray-600">
+                  {address?.phone}{" "}
+                  {address.altPhone ? " - " + address.altPhone : null}
+                </p>
               </div>
             ) : (
               <p className="text-gray-500">Add Shipping Address</p>
@@ -92,6 +111,7 @@ const CheckoutAddressCard = () => {
               {...register("name")}
               id="name"
               placeholder="Enter Your Name"
+              autoFocus={!user?.name}
             />
           </div>
           <div>
@@ -101,16 +121,14 @@ const CheckoutAddressCard = () => {
               id="phone"
               placeholder="Enter Phone number"
               type="tel"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="pincode">PIN Code</Label>
-            <Input
-              {...register("pincode")}
-              id="pincode"
-              placeholder="Enter PIN code"
-              type="number"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={12}
+              onInput={(e) =>
+                ((e.target as HTMLInputElement).value = (
+                  e.target as HTMLInputElement
+                ).value.replace(/\D/g, ""))
+              }
             />
           </div>
 
@@ -120,6 +138,7 @@ const CheckoutAddressCard = () => {
               {...register("street")}
               id="street"
               placeholder="Enter street address"
+              autoFocus={!!user?.name}
             />
           </div>
 
@@ -138,12 +157,38 @@ const CheckoutAddressCard = () => {
           </div>
 
           <div>
+            <Label htmlFor="pincode">PIN Code</Label>
+            <Input
+              {...register("pincode")}
+              id="pincode"
+              placeholder="Enter PIN code"
+              type="tel"
+              inputMode="numeric"
+              pattern="[0-9]{6}"
+              maxLength={6}
+              onInput={(e) =>
+                ((e.target as HTMLInputElement).value = (
+                  e.target as HTMLInputElement
+                ).value.replace(/\D/g, ""))
+              }
+            />
+          </div>
+
+          <div>
             <Label htmlFor="alternateNumber">Alternate Phone Number</Label>
             <Input
               {...register("alternateNumber")}
               id="alternateNumber"
               placeholder="Enter alternate phone number"
               type="tel"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              maxLength={12}
+              onInput={(e) =>
+                ((e.target as HTMLInputElement).value = (
+                  e.target as HTMLInputElement
+                ).value.replace(/\D/g, ""))
+              }
             />
           </div>
 

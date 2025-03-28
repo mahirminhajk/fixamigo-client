@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { CiDiscount1 } from "react-icons/ci";
+import { IOrder } from "@/types/order";
 
-const PlaceServiceBtn = () => {
+interface PlaceServiceBtnProps {
+  price: IOrder["price"] | undefined;
+}
+
+const PlaceServiceBtn = ({ price }: PlaceServiceBtnProps) => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
 
@@ -18,10 +23,6 @@ const PlaceServiceBtn = () => {
       setDiscount(0);
     }
   };
-
-  const subtotal = 16000;
-  const deliveryCost = 40;
-  const total = subtotal + deliveryCost - discount;
 
   return (
     <div className="w-full fixed bottom-0 px-2 bg-white flex justify-center">
@@ -54,13 +55,11 @@ const PlaceServiceBtn = () => {
           <div className="text-sm space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold">
-                ₹{subtotal.toLocaleString()}
-              </span>
+              <span className="font-semibold">₹{price?.total}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery Cost</span>
-              <span className="font-semibold">₹{deliveryCost}</span>
+              <span className="font-semibold">₹{price?.delivery}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-green-500">
@@ -73,7 +72,7 @@ const PlaceServiceBtn = () => {
             <hr />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>₹{total.toLocaleString()}</span>
+              <span>₹{price?.final}</span>
             </div>
           </div>
 
