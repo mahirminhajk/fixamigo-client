@@ -9,7 +9,13 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-const CheckoutPaymentMethodCard = () => {
+interface CheckoutPaymentMethodCardProps {
+  onPaymentMethodChange: () => void;
+}
+
+const CheckoutPaymentMethodCard = ({
+  onPaymentMethodChange,
+}: CheckoutPaymentMethodCardProps) => {
   const [open, setOpen] = useState(false);
   const toggleSheet = () => setOpen(!open);
 
@@ -17,6 +23,7 @@ const CheckoutPaymentMethodCard = () => {
 
   const handleMethodChange = (method: string) => {
     setSelectedMethod(method);
+    onPaymentMethodChange(); //! For now, there is no other payment method, that is the reason not passing any argument.
     toggleSheet();
   };
 

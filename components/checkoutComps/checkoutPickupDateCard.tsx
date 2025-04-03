@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import {
   Sheet,
@@ -7,7 +8,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useEffect, useState } from "react";
 import { convertDate } from "@/lib/utils";
 
 interface CheckoutPickupDateCardProps {
@@ -24,7 +24,18 @@ const CheckoutPickupDateCard = ({
   loading,
 }: CheckoutPickupDateCardProps) => {
   const [open, setOpen] = useState(false);
-  const toggleSheet = () => setOpen(!open);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const toggleSheet = () => {
+    if (pickupAvailableDates.length === 0) {
+      setErrorMessage(
+        "Please enter your address to get available pickup dates."
+      );
+    } else {
+      setErrorMessage(null);
+      setOpen(!open);
+    }
+  };
 
   const [selectedDate, setSelectedDate] = useState<{
     day: number;
@@ -71,73 +82,81 @@ const CheckoutPickupDateCard = ({
     fullDate: string;
   }) => {
     setSelectedDate(date);
-    await onPickupDateChange(date.fullDate); // Send formatted date to the parent component
-    toggleSheet();
+    await onPickupDateChange(date.fullDate);
+    setOpen(false);
   };
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <Sheet open={open} onOpenChange={toggleSheet}>
-      <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
-        <div>
-          <p className="text-gray-500 text-sm text-left">Pickup date</p>
-          <div className="flex justify-between items-center">
-            {selectedDate ? (
-              <p className="text-lg font-semibold">
-                {selectedDate.weekday}, {selectedDate.day} {selectedDate.month}
-              </p>
-            ) : (
-              <p className="text-gray-500">Select a pickup date</p>
-            )}
-            <span>
-              <FaChevronRight />
-            </span>
-          </div>
-        </div>
-      </SheetTrigger>
-
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Pickup Date</SheetTitle>
-          <SheetDescription>
-            Please select your preferred pickup date.
-          </SheetDescription>
-        </SheetHeader>
-
-        <div className="flex flex-col items-center w-full mt-4">
-          <div className="grid grid-cols-3 gap-3 mb-6" id="date-section">
-            {dates.map((date, index) => (
-              <div
-                key={index}
-                className={`bg-gray-100 border rounded-[8px] cursor-pointer w-20 h-20 lg:w-24 lg:h-24 flex flex-col justify-center items-center ${
-                  selectedDate?.fullDate === date.fullDate
-                    ? "border-blue-500 text-blue-500 border-dashed"
-                    : "text-black border-gray-300"
-                }`}
-                onClick={() => setDate(date)}
-              >
-                {index === 0 && (
-                  <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
-                    Today
-                  </p>
-                )}
-                {index === 1 && (
-                  <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
-                    Tomorrow
-                  </p>
-                )}
-
-                <div className="flex flex-col items-center justify-center text-center flex-1">
-                  <p className="text-2xl font-bold">{date.day}</p>
-                  <p className="text-sm">{date.weekday}</p>
-                </div>
+    <>
+      <Sheet open={open} onOpenChange={toggleSheet}>
+        <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
+          <div>
+            <p className="text-gray-500 text-sm text-left">Pickup date</p>
+            <div className="flex justify-between items-center">
+              {selectedDate ? (
+                <p className="text-lg font-semibold">
+                  {selectedDate.weekday}, {selectedDate.day}{" "}
+                  {selectedDate.month}
+                </p>
+              ) : (
+                <p className="text-gray-500">Select a pickup date</p>
+              )}
+              <span>
+                <FaChevronRight />
+              </span>
+            </div>
+            {errorMessage && (
+              <div className="mt-4 text-red-500 text-sm text-left">
+                {errorMessage}
               </div>
-            ))}
+            )}
           </div>
-        </div>
-      </SheetContent>
-    </Sheet>
+        </SheetTrigger>
+
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Pickup Date</SheetTitle>
+            <SheetDescription>
+              Please select your preferred pickup date.
+            </SheetDescription>
+          </SheetHeader>
+
+          <div className="flex flex-col items-center w-full mt-4">
+            <div className="grid grid-cols-3 gap-3 mb-6" id="date-section">
+              {dates.map((date, index) => (
+                <div
+                  key={index}
+                  className={`bg-gray-100 border rounded-[8px] cursor-pointer w-20 h-20 lg:w-24 lg:h-24 flex flex-col justify-center items-center ${
+                    selectedDate?.fullDate === date.fullDate
+                      ? "border-blue-500 text-blue-500 border-dashed"
+                      : "text-black border-gray-300"
+                  }`}
+                  onClick={() => setDate(date)}
+                >
+                  {index === 0 && (
+                    <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
+                      Today
+                    </p>
+                  )}
+                  {index === 1 && (
+                    <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
+                      Tomorrow
+                    </p>
+                  )}
+
+                  <div className="flex flex-col items-center justify-center text-center flex-1">
+                    <p className="text-2xl font-bold">{date.day}</p>
+                    <p className="text-sm">{date.weekday}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 

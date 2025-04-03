@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
+import { CONTACT_INFO } from "@/constants";
 
 interface AddressFormData {
   name: string;
@@ -30,12 +31,14 @@ interface CheckoutAddressCardProps {
   address?: IAddress;
   onAddressSubmit: (address: IAddress | string) => Promise<void>;
   loading: boolean;
+  error: "BAD_REQUEST" | "NO_ZONES" | null;
 }
 
 const CheckoutAddressCard = ({
   address,
   onAddressSubmit,
   loading,
+  error,
 }: CheckoutAddressCardProps) => {
   const [open, setOpen] = useState(false);
   const toggleSheet = () => setOpen(!open);
@@ -43,15 +46,15 @@ const CheckoutAddressCard = ({
   //* user
   const user = useUserStore((state) => state.user);
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
-      name: user.name || "",
-      phone: user.phoneNo || "",
-      pincode: "",
-      street: "",
-      city: "",
-      landMark: "",
-      alternateNumber: "",
+      name: address?.name ?? user?.name ?? "",
+      phone: address?.phone ?? user?.phoneNo ?? "",
+      pincode: address?.pincode ?? "",
+      street: address?.address ?? "",
+      city: address?.city ?? "",
+      landMark: address?.landmark ?? "",
+      alternateNumber: address?.altPhone ?? "",
     },
   });
 
@@ -93,6 +96,41 @@ const CheckoutAddressCard = ({
             <span>
               <FaChevronRight />
             </span>
+          </div>
+          <div className="text-sm text-red-500 mt-2 text-left">
+            {error &&
+              (error === "NO_ZONES" ? (
+                <p className="">
+                  <span className="text-red-500 font-semibold">
+                    Delivery not available in your area. Please Contact us for
+                    more details.
+                  </span>{" "}
+                  <span className="text-green-500 font-semibold">
+                    <a
+                      href={`https://wa.me/${
+                        CONTACT_INFO.waPhone
+                      }?text=Hi%2C%20I%20am%20trying%20to%20book%20a%20service%20for%20the%20pin%20code%20${watch(
+                        "pincode"
+                      )}%20Could%20you%20please%20assist%20me%3F`}
+                    >
+                      {CONTACT_INFO.phoneLabel}
+                    </a>
+                  </span>
+                </p>
+              ) : (
+                <p className="">
+                  <span className="text-red-500 font-semibold">
+                    Something went wrong!. Please Contact us for more details.
+                  </span>{" "}
+                  <span className="text-green-500 font-semibold">
+                    <a
+                      href={`https://wa.me/${CONTACT_INFO.waPhone}?text=Hi%2C%20I%20am%20unable%20to%20place%20an%20order%2E%20Please%20help%20me%2E`}
+                    >
+                      {CONTACT_INFO.phoneLabel}
+                    </a>
+                  </span>
+                </p>
+              ))}
           </div>
         </div>
       </SheetTrigger>

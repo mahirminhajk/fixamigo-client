@@ -4,12 +4,14 @@ import { CiDiscount1 } from "react-icons/ci";
 import { IOrder } from "@/types/order";
 
 interface PlaceServiceBtnProps {
-  price: IOrder["price"] | undefined;
+  order: IOrder | null;
+  bookOrder: () => Promise<void>;
 }
 
-const PlaceServiceBtn = ({ price }: PlaceServiceBtnProps) => {
+const PlaceServiceBtn = ({ order, bookOrder }: PlaceServiceBtnProps) => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCouponFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,6 +24,22 @@ const PlaceServiceBtn = ({ price }: PlaceServiceBtnProps) => {
     } else {
       setDiscount(0);
     }
+  };
+
+  const handleBookOrder = async () => {
+    setError(null);
+    //? Validate everything before booking
+    if (!order?.address) {
+      setError("Please select an address");
+      return;
+    } else if (!order?.schedules?.pickupDate) {
+      setError("Please select a pickup date");
+      return;
+    } else if (!order?.payment) {
+      setError("Please select a payment method");
+      return;
+    }
+    await bookOrder();
   };
 
   return (
@@ -55,11 +73,11 @@ const PlaceServiceBtn = ({ price }: PlaceServiceBtnProps) => {
           <div className="text-sm space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold">₹{price?.total}</span>
+              <span className="font-semibold">₹{order?.price?.total}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery Cost</span>
-              <span className="font-semibold">₹{price?.delivery}</span>
+              <span className="font-semibold">₹{order?.price?.delivery}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-green-500">
@@ -72,14 +90,20 @@ const PlaceServiceBtn = ({ price }: PlaceServiceBtnProps) => {
             <hr />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>₹{price?.final}</span>
+              <span>₹{order?.price?.final}</span>
             </div>
           </div>
 
           {/* Place Service Button */}
-          <button className="w-full bg-black text-white text-center py-3 rounded-[6px] font-medium">
-            Place service
-          </button>
+          <div>
+            {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+            <button
+              className="w-full bg-black text-white text-center py-3 rounded-[6px] font-medium"
+              onClick={handleBookOrder}
+            >
+              Place service
+            </button>
+          </div>
         </div>
       </div>
     </div>
