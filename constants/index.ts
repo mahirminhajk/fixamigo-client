@@ -39,3 +39,10 @@ export const repairCategory = [
     slug: "mobile-phone",
   },
 ];
+
+export const CONTACT_INFO = {
+  phone: "+918086009808",
+  phoneLabel: "+91 80860 09808",
+  waPhone: "918086009808",
+  email: "fixamigo.offical@gmail.com", //TODO: make sure this correct
+};

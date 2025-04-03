@@ -5,6 +5,7 @@ import { useCartStore } from "@/stores/cartStore";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { MdDelete } from "react-icons/md";
+import BookNowCartBtn from "../buttons/bookNowCartBtn";
 
 const CartList = () => {
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
@@ -92,9 +93,7 @@ const CartList = () => {
           </div>
         </div>
 
-        <Button className="w-full bg-black text-white hover:bg-gray-800 font-semibold p-4 mt-3 rounded-[6px] text-lg">
-          Book now
-        </Button>
+        <BookNowCartBtn />
       </div>
     </main>
   );

@@ -1,10 +1,17 @@
 import { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { CiDiscount1 } from "react-icons/ci";
+import { IOrder } from "@/types/order";
 
-const PlaceServiceBtn = () => {
+interface PlaceServiceBtnProps {
+  order: IOrder | null;
+  bookOrder: () => Promise<void>;
+}
+
+const PlaceServiceBtn = ({ order, bookOrder }: PlaceServiceBtnProps) => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCouponFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,9 +26,21 @@ const PlaceServiceBtn = () => {
     }
   };
 
-  const subtotal = 16000;
-  const deliveryCost = 40;
-  const total = subtotal + deliveryCost - discount;
+  const handleBookOrder = async () => {
+    setError(null);
+    //? Validate everything before booking
+    if (!order?.address) {
+      setError("Please select an address");
+      return;
+    } else if (!order?.schedules?.pickupDate) {
+      setError("Please select a pickup date");
+      return;
+    } else if (!order?.payment) {
+      setError("Please select a payment method");
+      return;
+    }
+    await bookOrder();
+  };
 
   return (
     <div className="w-full fixed bottom-0 px-2 bg-white flex justify-center">
@@ -54,13 +73,11 @@ const PlaceServiceBtn = () => {
           <div className="text-sm space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold">
-                ₹{subtotal.toLocaleString()}
-              </span>
+              <span className="font-semibold">₹{order?.price?.total}</span>
             </div>
             <div className="flex justify-between">
               <span>Delivery Cost</span>
-              <span className="font-semibold">₹{deliveryCost}</span>
+              <span className="font-semibold">₹{order?.price?.delivery}</span>
             </div>
             {discount > 0 && (
               <div className="flex justify-between text-green-500">
@@ -73,14 +90,20 @@ const PlaceServiceBtn = () => {
             <hr />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>₹{total.toLocaleString()}</span>
+              <span>₹{order?.price?.final}</span>
             </div>
           </div>
 
           {/* Place Service Button */}
-          <button className="w-full bg-black text-white text-center py-3 rounded-[6px] font-medium">
-            Place service
-          </button>
+          <div>
+            {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+            <button
+              className="w-full bg-black text-white text-center py-3 rounded-[6px] font-medium"
+              onClick={handleBookOrder}
+            >
+              Place service
+            </button>
+          </div>
         </div>
       </div>
     </div>

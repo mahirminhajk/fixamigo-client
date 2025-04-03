@@ -14,7 +14,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Fixamigo",
-  description: "Need to repair your mobile phone or laptop? FixAmigo has you covered! We offer hassle-free pickup, expert repair, and secure delivery—bringing your device back to life with full protection guaranteed!",
+  description:
+    "Need to repair your mobile phone or laptop? FixAmigo has you covered! We offer hassle-free pickup, expert repair, and secure delivery—bringing your device back to life with full protection guaranteed!",
 };
 
 export default function RootLayout({
