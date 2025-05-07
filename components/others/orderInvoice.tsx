@@ -1,20 +1,53 @@
-const OrderInvoice = () => {
+import { formatAddress, formatDate, getSparePartsIcon } from "@/lib/utils";
+import { IOrder } from "@/types/order";
+
+interface OrderInvoiceProps {
+  order: IOrder;
+}
+
+const OrderInvoice = ({ order }: OrderInvoiceProps) => {
   return (
     <div className="max-w-md mx-auto p-4 space-y-4">
-      {/* Spare Section */}
-      <h2 className="font-semibold">Spare</h2>
+      {/* Device Section */}
+      <h2 className="font-semibold">Device</h2>
       <div className="bg-gray-100 p-4 rounded-[6px]">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-16 bg-black rounded"></div>
+          <div className="w-12 h-16 rounded">
+            <img
+              src={order.device.image}
+              alt={order.device.name}
+              className="w-full h-full object-cover rounded"
+            />
+          </div>
           <div className="flex-1">
-            <p className="font-medium">Iphone 15 plus display qty2</p>
+            <p className="font-medium">{order.device.name.toUpperCase()}</p>
             <p className="text-gray-500 text-sm">
-              Brand - <span className="font-semibold">Apple</span> Model -{" "}
-              <span className="font-semibold">Iphone 15 plus</span>
+              Brand -{" "}
+              <span className="font-semibold">
+                {order.device.company!.toUpperCase()}
+              </span>
             </p>
           </div>
-          <p className="font-semibold">₹8000</p>
         </div>
+      </div>
+
+      {/* Spare Section */}
+      <h2 className="font-semibold">Spares</h2>
+      <div className="bg-gray-100 p-4 rounded-[6px]">
+        {order.sparePartsDetails?.map((spare, i) => (
+          <div className="flex items-center gap-4" key={i}>
+            <div className="w-12 h-16 rounded">
+              <img src={getSparePartsIcon(spare.category)} alt={spare.name} />
+            </div>
+            <div className="flex-1">
+              <p className="font-medium">{spare.name.toUpperCase()}</p>
+              <p className="text-gray-500 text-sm">
+                <span className="font-semibold">{spare.category}</span>
+              </p>
+            </div>
+            <p className="font-semibold">₹{spare.price.final}</p>
+          </div>
+        ))}
       </div>
 
       {/* Service Details Section */}
@@ -23,11 +56,7 @@ const OrderInvoice = () => {
         <div className="text-sm space-y-1">
           <p>
             <span className="text-gray-500">Ordered date</span>{" "}
-            <span className="float-right">January 02, 2025</span>
-          </p>
-          <p>
-            <span className="text-gray-500">Spare name</span>{" "}
-            <span className="float-right">Iphone 15 plus display qty2</span>
+            <span className="float-right">{formatDate(order.createdAt)}</span>
           </p>
           <p>
             <span className="text-gray-500">Serviced by</span>{" "}
@@ -36,7 +65,7 @@ const OrderInvoice = () => {
           <p>
             <span className="text-gray-500">Address</span>
             <span className="block font-medium">
-              2727 New Owerri, Owerri, Imo State 78410
+              {formatAddress(order.address!)}
             </span>
           </p>
         </div>
@@ -48,16 +77,16 @@ const OrderInvoice = () => {
         <div className="text-sm space-y-1">
           <p>
             <span className="text-gray-500">Items (1)</span>
-            <span className="float-right">₹16,000</span>
+            <span className="float-right">₹{order.price.final}</span>
           </p>
           <p>
             <span className="text-gray-500">Delivery cost</span>
-            <span className="float-right">₹40</span>
+            <span className="float-right">₹{order.price.delivery}</span>
           </p>
           <hr className="my-2" />
           <p className="font-semibold">
             <span>Total Price</span>
-            <span className="float-right">₹16,040</span>
+            <span className="float-right">₹{order.price.final}</span>
           </p>
         </div>
         <button className="w-full mt-4 py-2 border rounded-[6px] font-semibold hover:bg-gray-200">

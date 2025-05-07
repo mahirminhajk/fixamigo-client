@@ -110,7 +110,7 @@ export default function Page() {
             <Topbar title="Service Details" />
             <PopupLoading show={loading} />
             <OrderProgressBar currentStep={2} />
-            <OrderInvoice />
+            <OrderInvoice order={order} />
           </div>
         </div>
       </div>
