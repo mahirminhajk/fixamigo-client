@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { FaCheck } from "react-icons/fa";
 import { ITimeline, OrderStatus } from "@/types/order"; // Assuming your types are in './types'
+import { formatDate } from "@/lib/utils";
 
 // Define the order of progression for statuses (important for logic)
 const ORDER_PROGRESSION: OrderStatus[] = [
@@ -29,12 +30,6 @@ interface MappedStep {
 }
 
 const MAPPED_STEPS: MappedStep[] = [
-  {
-    id: "confirmed",
-    label: "Order Confirmed",
-    statusMarker: OrderStatus.ACCEPTED,
-    activeWhenStatusIs: [OrderStatus.PENDING, OrderStatus.ACCEPTED],
-  },
   {
     id: "pickupScheduled",
     label: "Pickup Scheduled",
@@ -89,26 +84,6 @@ interface OrderProgressBarProps {
   // orderId?: string;
 }
 
-const formatDate = (dateInput: Date | string | undefined): string => {
-  if (!dateInput) return "";
-  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-};
-
-const formatTime = (dateInput: Date | string | undefined): string => {
-  if (!dateInput) return "";
-  const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
-  return date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-};
-
 // Helper to determine if a step should get a checkmark
 const stepGetsCheck = (
   stepConfig: MappedStep,
@@ -132,10 +107,7 @@ const stepGetsCheck = (
       (stepConfig.statusMarker === OrderStatus.REPAIRING &&
         currentGlobalStatus === OrderStatus.REPAIRING) ||
       (stepConfig.statusMarker === OrderStatus.OUT_FOR_DELIVERY &&
-        currentGlobalStatus === OrderStatus.OUT_FOR_DELIVERY) ||
-      (stepConfig.statusMarker === OrderStatus.ACCEPTED &&
-        currentGlobalStatus === OrderStatus.PENDING &&
-        MAPPED_STEPS[0].statusMarker === OrderStatus.ACCEPTED) // If first step is "Confirmed" (marker: ACCEPTED) but current status is PENDING
+        currentGlobalStatus === OrderStatus.OUT_FOR_DELIVERY)
     ) {
       return false;
     }
@@ -215,9 +187,6 @@ const OrderProgressBar = ({
           const displayDate = eventForThisStepMarker
             ? formatDate(eventForThisStepMarker.createdAt)
             : "";
-          const displayTime = eventForThisStepMarker
-            ? formatTime(eventForThisStepMarker.createdAt)
-            : "";
 
           const showCheck = stepGetsCheck(
             stepConfig,
@@ -266,7 +235,7 @@ const OrderProgressBar = ({
                     <p className="text-xs text-gray-500">
                       {displayMessage} <br />{" "}
                       {/* Show message from timeline if available */}
-                      {displayDate} • {displayTime}
+                      {displayDate}
                     </p>
                   )}
                   {!eventForThisStepMarker && isStepLabelActive && (

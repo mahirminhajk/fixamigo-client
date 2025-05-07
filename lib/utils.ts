@@ -21,6 +21,13 @@ export const formatDate = (utcDate: string | Date): string => {
     .format("MMMM DD, YYYY");
 };
 
+export const formatDateTime = (utcDate: string | Date): string => {
+  return moment
+    .utc(utcDate) // interpret as UTC
+    .tz("Asia/Kolkata") // convert to IST
+    .format("MMMM DD, YYYY, h:mm A");
+};
+
 export const formatAddress = (address: IAddress): string => {
   const {
     name,
