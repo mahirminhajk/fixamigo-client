@@ -242,28 +242,6 @@ const OrderProgressBar = ({
                     <p className="text-xs text-gray-500 italic">Pending...</p>
                   )}
                 </div>
-
-                {/* Conditional Reschedule Link */}
-                {stepConfig.statusMarker === OrderStatus.SCHEDULED_PICKUP &&
-                  currentGlobalStatus === OrderStatus.SCHEDULED_PICKUP && (
-                    <a
-                      href="#"
-                      className="text-blue-600 text-xs underline ml-4 flex-shrink-0"
-                    >
-                      Reschedule Pickup
-                    </a>
-                  )}
-                {stepConfig.statusMarker ===
-                  OrderStatus.DELIVERED /* Or OUT_FOR_DELIVERY step */ &&
-                  (currentGlobalStatus === OrderStatus.OUT_FOR_DELIVERY ||
-                    currentGlobalStatus === OrderStatus.SCHEDULED_DELIVERY) && (
-                    <a
-                      href="#"
-                      className="text-blue-600 text-xs underline ml-4 flex-shrink-0"
-                    >
-                      Reschedule Delivery
-                    </a>
-                  )}
               </div>
             </div>
           );
