@@ -6,19 +6,23 @@ import { FaArrowRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import api from "@/lib/axiosInstance";
 import { useEffect, useState } from "react";
-import { IOrder } from "@/types/order";
+import { IOrder, OrderStatus } from "@/types/order";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useUserStore } from "@/stores/userStore";
+import { formatDate } from "@/lib/utils";
 
-const OutForDeliveryCircle = () => (
-  <div className="w-5 h-5 rounded-full border-4 border-green-500"></div>
+const GreenCircle = () => (
+  <div className="w-5 h-5 rounded-full  bg-green-500"></div>
 );
-const RepairingCircle = () => (
-  <div className="w-5 h-5 rounded-full border-4 border-blue-500"></div>
+const BlueCircle = () => (
+  <div className="w-5 h-5 rounded-full border-3 bg-blue-500"></div>
 );
-const SolidCircle = ({ color }: { color?: string }) => (
-  <div className={`w-5 h-5 rounded-full ${color}`}></div>
+const RedCircle = () => (
+  <div className="w-5 h-5 rounded-full border-4 border-red-500"></div>
 );
+// const SolidCircle = ({ color }: { color?: string }) => (
+//   <div className={`w-5 h-5 rounded-full ${color}`}></div>
+// );
 
 export default function Page() {
   //* state
@@ -152,12 +156,16 @@ export default function Page() {
                   >
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center space-x-2">
-                        {service.status === "ACCEPTED" ? (
-                          <RepairingCircle />
-                        ) : service.status === "PENDING" ? (
-                          <OutForDeliveryCircle />
+                        {service.status === OrderStatus.COMPLETED ||
+                        service.status === OrderStatus.DELIVERED ? (
+                          <GreenCircle />
+                        ) : service.status === OrderStatus.PENDING ||
+                          service.status === OrderStatus.CANCELLED ||
+                          service.status === OrderStatus.OTHERS ||
+                          service.status === OrderStatus.REJECTED ? (
+                          <RedCircle />
                         ) : (
-                          <SolidCircle color="bg-green-500" />
+                          <BlueCircle />
                         )}
                         <h2 className="text-gray-900 font-bold">
                           {service.status}
@@ -166,10 +174,7 @@ export default function Page() {
                       <FaArrowRight className="text-gray-500" />
                     </div>
                     <p className="text-gray-600 text-sm mb-2">
-                      {service.device.name} - {service.device.type}
-                      {service.spareParts.length > 0
-                        ? `, ${service.spareParts.join(", ")}`
-                        : ""}
+                      {formatDate(service.createdAt)}
                     </p>
                     <div className="grid grid-cols-2 gap-y-3 text-gray-600 text-sm">
                       <p className="font-medium">Service Status</p>
