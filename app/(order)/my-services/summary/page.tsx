@@ -109,7 +109,10 @@ export default function Page() {
           <div className="w-full max-w-md">
             <Topbar title="Service Details" />
             <PopupLoading show={loading} />
-            <OrderProgressBar currentStep={2} />
+            <OrderProgressBar
+              timeline={order.timeline}
+              estimatedDeliveryDate="Sep 30, 2024"
+            />
             <OrderInvoice order={order} />
           </div>
         </div>
