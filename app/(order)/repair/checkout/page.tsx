@@ -145,14 +145,11 @@ export default function Page() {
     await api
       .patch(`/order/${order?._id}/book`, {})
       .then((res) => {
-        //? remove the '/repair/checkout' page and replace with '/repair/summary?id=orderId'
         router.replace(`/my-services/summary?id=${res.data.data.order._id}`);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
@@ -213,7 +210,11 @@ export default function Page() {
           </div>
         </div>
 
-        <PlaceServiceBtn order={order} bookOrder={handleBookOrder} />
+        <PlaceServiceBtn
+          order={order}
+          bookOrder={handleBookOrder}
+          loading={loading}
+        />
       </div>
     </section>
   );

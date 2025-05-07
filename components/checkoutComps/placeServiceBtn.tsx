@@ -6,9 +6,14 @@ import { IOrder } from "@/types/order";
 interface PlaceServiceBtnProps {
   order: IOrder | null;
   bookOrder: () => Promise<void>;
+  loading: boolean;
 }
 
-const PlaceServiceBtn = ({ order, bookOrder }: PlaceServiceBtnProps) => {
+const PlaceServiceBtn = ({
+  order,
+  bookOrder,
+  loading,
+}: PlaceServiceBtnProps) => {
   const [couponCode, setCouponCode] = useState<string>("");
   const [discount, setDiscount] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
@@ -100,6 +105,7 @@ const PlaceServiceBtn = ({ order, bookOrder }: PlaceServiceBtnProps) => {
             <button
               className="w-full bg-black text-white text-center py-3 rounded-[6px] font-medium"
               onClick={handleBookOrder}
+              disabled={loading}
             >
               Place service
             </button>
