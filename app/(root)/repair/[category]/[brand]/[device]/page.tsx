@@ -1,7 +1,4 @@
-import ListSpareParts from "@/components/list/listSpareParts";
-import ModelCart from "@/components/others/modelCart";
-import ShowModel from "@/components/others/showModel";
-import WhyChooseUs from "@/components/others/whyChooseUs";
+import DeviceDetailsContent from "@/components/contents/DeviceDetailsContent";
 import { brands, repairCategory } from "@/constants";
 import { IDevice } from "@/types/device";
 
@@ -79,25 +76,7 @@ export default async function Page({
 
   return (
     <section>
-      <ShowModel
-        deviceData={{
-          name: deviceData.name,
-          company: deviceData.company,
-          images: deviceData.images,
-        }}
-      />
-      <ListSpareParts
-        spareParts={deviceData.spareParts}
-        cartDevice={{
-          _id: deviceData._id,
-          name: deviceData.name,
-          slug: deviceData.slug,
-          company: deviceData.company,
-          images: deviceData.images,
-        }}
-      />
-      <ModelCart />
-      <WhyChooseUs />
+      <DeviceDetailsContent deviceData={deviceData} />
     </section>
   );
 }
