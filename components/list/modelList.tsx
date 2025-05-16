@@ -10,18 +10,19 @@ interface ModelListProps {
   }[];
   category: string;
   brand: string;
+  heading: string;
 }
 
-export default function ModelList({ models, category, brand }: ModelListProps) {
+export default function ModelList({
+  models,
+  category,
+  brand,
+  heading,
+}: ModelListProps) {
   return (
     <div className="w-full p-6">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-xl font-semibold text-center">
-          Select your model from
-        </h2>
-        <h2 className="text-xl font-semibold text-center mb-4">
-          {brand.toUpperCase()}
-        </h2>
+        <h2 className="text-xl font-semibold text-center mb-4">{heading}</h2>
 
         {models.length === 0 ? (
           <div className="flex items-center justify-center h-96">

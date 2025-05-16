@@ -1,6 +1,8 @@
 import { brands, repairCategory } from "@/constants";
 import ModelList from "@/components/list/modelList";
 import { IDevice } from "@/types";
+import { generateBrandPageMeta } from "@/lib/seoUtils";
+import { Metadata } from "next";
 
 // Static Generation
 export const revalidate = 3600;
@@ -19,6 +21,29 @@ export async function generateStaticParams() {
   });
 
   return paths;
+}
+
+// Metadata (SEO)
+export async function generateMetadata({
+  params,
+}: {
+  params: { category: string; brand: string };
+}): Promise<Metadata> {
+  const { category, brand } = params;
+  const meta = generateBrandPageMeta(category, brand);
+
+  return {
+    title: meta.metaTitle,
+    description: meta.metaDescription,
+    openGraph: {
+      title: meta.metaTitle,
+      description: meta.metaDescription,
+    },
+    twitter: {
+      title: meta.metaTitle,
+      description: meta.metaDescription,
+    },
+  };
 }
 
 // Fetch function
@@ -45,10 +70,16 @@ export default async function Page({
 }) {
   const { brand, category } = await params;
   const models: IDevice[] = await getData(brand); // Fetch models
+  const { heading } = generateBrandPageMeta(category, brand); // Generate heading
 
   return (
     <section>
-      <ModelList models={models} category={category} brand={brand} />
+      <ModelList
+        models={models}
+        category={category}
+        brand={brand}
+        heading={heading}
+      />
     </section>
   );
 }
