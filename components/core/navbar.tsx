@@ -1,12 +1,16 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, MapPin } from "lucide-react"; // Added MapPin
 import CartBtn from "../buttons/cartBtn";
 import ProfileBtn from "../buttons/profileBtn";
 import MobileNavMenu from "./mobileNavMenu";
 
-export default function Navbar() {
+interface NavbarProps {
+  city?: string;
+}
+
+export default function Navbar({ city }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -35,6 +39,14 @@ export default function Navbar() {
 
         {/* Icons */}
         <div className="flex items-center space-x-4">
+          {city && (
+            <div className="flex flex-col items-center text-xs text-gray-700 mr-2">
+              <MapPin className="w-4 h-4 mb-0.5 text-gray-500" />
+              <span className="truncate max-w-[60px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]">
+                {city}
+              </span>
+            </div>
+          )}
           <Search className="w-6 h-6 cursor-pointer" />
           <CartBtn />
           <ProfileBtn />

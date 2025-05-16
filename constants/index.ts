@@ -46,3 +46,12 @@ export const CONTACT_INFO = {
   waPhone: "918086009808",
   email: "fixamigo.offical@gmail.com", //TODO: make sure this correct
 };
+
+export const supportCities = [
+  { name: "Malappuram", slug: "malappuram" },
+  { name: "Kottakkal", slug: "kottakkal" },
+  { name: "Kondotty", slug: "kondotty" },
+  { name: "Tirur", slug: "tirur" },
+  { name: "Ponnani", slug: "ponnani" },
+  { name: "Perinthalmanna", slug: "perinthalmanna" },
+];
