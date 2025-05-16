@@ -1,6 +1,6 @@
 import Image from "next/image";
 import AddToCartBtn from "../buttons/addToCartBtn";
-import { getSparePartsIcon } from "@/lib/utils";
+import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { ICartDevice, ISparePart } from "@/types";
 
 interface ListSparePartsProps {
@@ -32,7 +32,8 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                 <p className="font-medium text-black">{item.label}</p>
                 <div className="flex items-center space-x-2 text-sm">
                   <span className="text-blue-600 font-semibold">
-                    {item.price.discountPercentage}%
+                    -{getDiscountPercentage(item.price.total, item.price.final)}
+                    %
                   </span>
                   <span className="line-through text-gray-500">
                     ₹{item.price.total}

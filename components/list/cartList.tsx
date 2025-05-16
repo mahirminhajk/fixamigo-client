@@ -1,6 +1,6 @@
 "use client";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
-import { getSparePartsIcon } from "@/lib/utils";
+import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { useCartStore } from "@/stores/cartStore";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -45,7 +45,12 @@ const CartList = () => {
                   {/* Price Details - Matches the Reference Image */}
                   <div className="flex items-center space-x-2">
                     <span className="text-blue-600 font-semibold">
-                      -{item.price.discountPercentage}%
+                      -
+                      {getDiscountPercentage(
+                        item.price.total,
+                        item.price.final
+                      )}
+                      %
                     </span>
                     <span className="text-gray-500 line-through">
                       ₹{item.price.total}

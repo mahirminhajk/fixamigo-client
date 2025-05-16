@@ -52,3 +52,30 @@ export const formatAddress = (address: IAddress): string => {
 
   return parts.filter(Boolean).join(", ");
 };
+
+/**
+ * Calculates the total discount percentage.
+ *
+ * @param originalPrice - The original total price before discount
+ * @param discountedPrice - The price after discount
+ * @returns The discount percentage (0-100) or null if inputs are invalid
+ */
+export function getDiscountPercentage(
+  originalPrice: number,
+  discountedPrice: number
+): number | null {
+  if (
+    typeof originalPrice !== "number" ||
+    typeof discountedPrice !== "number" ||
+    originalPrice <= 0 ||
+    discountedPrice < 0 ||
+    discountedPrice > originalPrice
+  ) {
+    return null;
+  }
+
+  const discount = originalPrice - discountedPrice;
+  const percentage = (discount / originalPrice) * 100;
+
+  return Math.round(percentage * 100) / 100; // Round to 2 decimal places
+}

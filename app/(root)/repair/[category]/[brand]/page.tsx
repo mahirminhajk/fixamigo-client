@@ -1,20 +1,11 @@
 import { brands, repairCategory } from "@/constants";
 import ModelList from "@/components/list/modelList";
+import { IDevice } from "@/types";
 
+// Static Generation
 export const revalidate = 3600;
 export const dynamicParams = false;
 
-// interface
-interface Devices {
-  data: {
-    _id: string;
-    name: string;
-    slug: string;
-    images: string[];
-  }[];
-}
-
-// Static Generation
 export async function generateStaticParams() {
   const paths: {
     category: string;
@@ -33,11 +24,13 @@ export async function generateStaticParams() {
 // Fetch function
 const getData = async (brand: string) => {
   try {
-    const res = await fetch(`${process.env.API_URL}/device?brand=${brand}`);
+    const res = await fetch(
+      `${process.env.API_URL}/device/brand?value=${brand}`
+    );
 
     if (!res.ok) throw new Error("Failed to fetch data");
 
-    return await res.json(); // Parse JSON response
+    return (await res.json()).data;
   } catch (error) {
     console.error("Error fetching models:", error);
     return [];
@@ -51,11 +44,11 @@ export default async function Page({
   params: Promise<{ category: string; brand: string }>;
 }) {
   const { brand, category } = await params;
-  const models: Devices = await getData(brand); // Fetch models
+  const models: IDevice[] = await getData(brand); // Fetch models
 
   return (
     <section>
-      <ModelList models={models.data} category={category} brand={brand} />
+      <ModelList models={models} category={category} brand={brand} />
     </section>
   );
 }
