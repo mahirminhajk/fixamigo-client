@@ -1,7 +1,7 @@
 import { brands, repairCategory } from "@/constants";
 import ModelList from "@/components/list/modelList";
 import { IDevice } from "@/types";
-import { generateBrandPageMeta } from "@/lib/seoUtils";
+import { listBrandPageMetadata } from "@/lib/seo/listBrandMetadata";
 import { Metadata } from "next";
 
 // Static Generation
@@ -30,7 +30,7 @@ export async function generateMetadata({
   params: Promise<{ category: string; brand: string }>;
 }): Promise<Metadata> {
   const { category, brand } = await params;
-  const meta = generateBrandPageMeta(category, brand);
+  const meta = listBrandPageMetadata(category, brand);
 
   return {
     title: meta.metaTitle,
@@ -70,7 +70,7 @@ export default async function Page({
 }) {
   const { brand, category } = await params;
   const models: IDevice[] = await getData(brand); // Fetch models
-  const { heading } = generateBrandPageMeta(category, brand); // Generate heading
+  const { heading } = listBrandPageMetadata(category, brand); // Generate heading
 
   return (
     <section>

@@ -1,6 +1,6 @@
 import { brands, repairCategory } from "@/constants";
 
-export function generateBrandPageMeta(
+export function listBrandPageMetadata(
   categorySlug: string,
   brandSlug: string
 ): {
