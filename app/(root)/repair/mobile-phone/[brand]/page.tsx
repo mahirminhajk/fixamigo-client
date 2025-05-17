@@ -24,10 +24,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ category: string; brand: string }>;
+  params: Promise<{ brand: string }>;
 }): Promise<Metadata> {
-  const { category, brand } = await params;
-  const meta = listBrandPageMetadata(category, brand);
+  const { brand } = await params;
+  const meta = listBrandPageMetadata(brand);
 
   return {
     title: meta.metaTitle,
@@ -63,25 +63,19 @@ const getData = async (brand: string) => {
 export default async function Page({
   params,
 }: {
-  params: Promise<{ category: string; brand: string }>;
+  params: Promise<{ brand: string }>;
 }) {
-  const { brand, category } = await params;
+  const { brand } = await params;
   const models: IDevice[] = await getData(brand); // Fetch models
-  const { heading } = listBrandPageMetadata(category, brand); // Generate heading
+  const { heading } = listBrandPageMetadata(brand); // Generate heading
 
   return (
     <section>
-      <ModelList
-        models={models}
-        category={category}
-        brand={brand}
-        heading={heading}
-      />
+      <ModelList models={models} brand={brand} heading={heading} />
     </section>
   );
 }
 
 /**
- * /repair/[category]/[brand]
- * ex: /repair/display/apple
+ * /repair/mobile-phone/[brand]
  */

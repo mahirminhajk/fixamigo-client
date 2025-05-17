@@ -1,9 +1,7 @@
-import { brands, repairCategory } from "@/constants";
+//TODO: add category allso using ?category=display
+import { brands } from "@/constants";
 
-export function listBrandPageMetadata(
-  categorySlug: string,
-  brandSlug: string
-): {
+export function listBrandPageMetadata(brandSlug: string): {
   heading: string;
   metaTitle: string;
   metaDescription: string;
@@ -11,11 +9,8 @@ export function listBrandPageMetadata(
   const brand = brands.find(
     (b) => b.slug.toLowerCase() === brandSlug.toLowerCase()
   );
-  const category = repairCategory.find(
-    (c) => c.slug.toLowerCase() === categorySlug.toLowerCase()
-  );
 
-  if (!brand || !category) {
+  if (!brand) {
     return {
       heading: "Phone Repair Services – Select Your Model",
       metaTitle: "Affordable Phone Repair Services | Fast & Reliable",
@@ -25,7 +20,6 @@ export function listBrandPageMetadata(
   }
 
   const brandName = brand.name;
-  const categoryName = category.name;
 
   const categoryToSEO: Record<string, string> = {
     Display: "Screen Repair & Replacement",
@@ -37,7 +31,7 @@ export function listBrandPageMetadata(
     "mobile-phone": "Phone Repair Services",
   };
 
-  const service = categoryToSEO[categoryName] || `${categoryName} Repair`;
+  const service = categoryToSEO["Others"];
 
   const heading = `${brandName} Phone ${service} – Fast & Reliable Service`;
   const metaTitle = `${brandName} ${service} | Affordable & Trusted Repairs`;

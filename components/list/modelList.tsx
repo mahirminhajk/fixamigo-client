@@ -8,17 +8,11 @@ interface ModelListProps {
     _id: string;
     slug: string;
   }[];
-  category: string;
   brand: string;
   heading: string;
 }
 
-export default function ModelList({
-  models,
-  category,
-  brand,
-  heading,
-}: ModelListProps) {
+export default function ModelList({ models, brand, heading }: ModelListProps) {
   return (
     <div className="w-full p-6">
       <div className="max-w-6xl mx-auto">
@@ -33,7 +27,7 @@ export default function ModelList({
             {models.map((model, index) => (
               <Link
                 key={index}
-                href={`/repair/${category}/${brand}/${model.slug}`}
+                href={`/repair/mobile-phone/${brand}/${model.slug}`}
                 className="bg-gray-100 p-4 rounded-xl shadow-md flex flex-col items-center cursor-pointer
                             transition duration-300 ease-in-out hover:shadow-lg hover:scale-105"
               >
