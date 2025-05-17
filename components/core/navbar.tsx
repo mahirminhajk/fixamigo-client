@@ -5,6 +5,7 @@ import { Menu, Search, MapPin } from "lucide-react"; // Added MapPin
 import CartBtn from "../buttons/cartBtn";
 import ProfileBtn from "../buttons/profileBtn";
 import MobileNavMenu from "./mobileNavMenu";
+import Image from "next/image";
 
 interface NavbarProps {
   city?: string;
@@ -17,8 +18,15 @@ export default function Navbar({ city }: NavbarProps) {
     <header className="bg-white shadow-md z-50">
       <nav className="container mx-auto flex items-center justify-between px-6 py-4">
         {/* Logo */}
-        <div className="text-2xl font-bold">
-          Fix<span className="text-2xl font-bold text-[#114FEE]">Amigo</span>
+        <div>
+          <Image
+            src="/logos/text.png"
+            alt="Logo"
+            width={100} // Adjust width as needed
+            height={40} // Adjust height as needed
+            className="h-10 w-auto"
+            priority
+          />
         </div>
 
         {/* Desktop Navigation */}
