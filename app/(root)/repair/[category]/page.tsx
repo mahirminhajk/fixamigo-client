@@ -5,9 +5,11 @@ export const dynamicParams = false;
 
 // Static Generation
 export async function generateStaticParams() {
-  return repairCategory.map((category) => ({
-    category: category.slug,
-  }));
+  return repairCategory
+    .filter((category) => category.slug !== "mobile-phone")
+    .map((category) => ({
+      category: category.slug,
+    }));
 }
 
 export default async function Page({

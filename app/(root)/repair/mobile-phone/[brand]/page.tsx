@@ -1,4 +1,4 @@
-import { brands, repairCategory } from "@/constants";
+import { brands } from "@/constants";
 import ModelList from "@/components/list/modelList";
 import { IDevice } from "@/types";
 import { listBrandPageMetadata } from "@/lib/seo/listBrandMetadata";
@@ -10,14 +10,11 @@ export const dynamicParams = false;
 
 export async function generateStaticParams() {
   const paths: {
-    category: string;
     brand: string;
   }[] = [];
 
-  repairCategory.forEach((category) => {
-    brands.forEach((brand) => {
-      paths.push({ category: category.slug, brand: brand.slug });
-    });
+  brands.forEach((brand) => {
+    paths.push({ brand: brand.slug });
   });
 
   return paths;
