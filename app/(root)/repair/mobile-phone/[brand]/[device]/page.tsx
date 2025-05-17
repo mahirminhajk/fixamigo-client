@@ -1,5 +1,6 @@
 import DeviceDetailsContent from "@/components/contents/DeviceDetailsContent";
 import { brands } from "@/constants";
+import { getDeviceMetadata } from "@/lib/seo/deviceMetadata";
 import { IDevice } from "@/types/device";
 import { Metadata } from "next";
 
@@ -49,7 +50,11 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ device: string; brand: string }>;
-}): Promise<Metadata> {}
+}): Promise<Metadata> {
+  const { device, brand } = await params;
+  const metadata = await getDeviceMetadata(brand, device);
+  return metadata;
+}
 
 // Fetch function
 const getData = async (deviceSlug: string) => {
