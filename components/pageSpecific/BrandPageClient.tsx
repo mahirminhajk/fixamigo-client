@@ -16,7 +16,7 @@ const INITIAL_DISPLAY_COUNT = 10; // Initial number of items to display
 export default function BrandPageClient({
   initialModels,
   brand,
-  heading,
+  heading, // This is the main page heading
 }: BrandPageClientProps) {
   const [allModels, setAllModels] = useState<IDevice[]>(initialModels);
   const [searchTerm, setSearchTerm] = useState<string>("");
@@ -75,6 +75,12 @@ export default function BrandPageClient({
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Main Page Heading */}
+      <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-6 sm:mb-10 tracking-tight">
+        {heading}
+      </h1>
+
+      {/* Search Input Section - Moved below the heading */}
       <div className="mb-8 max-w-xl mx-auto">
         <input
           type="text"
@@ -82,17 +88,16 @@ export default function BrandPageClient({
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            // Reset display count when search term changes to show results from top
             setDisplayedModelsCount(INITIAL_DISPLAY_COUNT);
           }}
           className="w-full px-4 py-3 text-gray-700 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-150 ease-in-out"
         />
       </div>
 
-      {/* Heading is now part of ModelList, but if you want a separate heading above the list: */}
-      {/* <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">{heading}</h1> */}
-
-      <ModelList models={modelsToDisplay} brand={brand} heading={heading} />
+      {/* ModelList will now receive an empty string for its heading prop 
+          or a more contextual one if ModelList is adapted further. 
+          For now, we'll aim to have ModelList not render its own h1 if its heading prop is empty. */}
+      <ModelList models={modelsToDisplay} brand={brand} heading="" />
 
       {filteredModels.length > displayedModelsCount && (
         <div className="text-center py-6 text-gray-600">

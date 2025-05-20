@@ -16,9 +16,12 @@ export default function ModelList({ models, brand, heading }: ModelListProps) {
   return (
     <div className="w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-6 sm:mb-10 tracking-tight">
-          {heading}
-        </h1>
+        {/* Conditionally render the heading only if it's provided */}
+        {heading && (
+          <h2 className="text-2xl font-bold text-gray-800 text-center mb-6 sm:mb-8 tracking-tight">
+            {heading}
+          </h2>
+        )}
 
         {models.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-96 text-center">
