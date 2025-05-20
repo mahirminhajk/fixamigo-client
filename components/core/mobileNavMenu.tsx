@@ -1,13 +1,19 @@
-import { useEffect, useRef } from "react";
+"use client";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 
 interface MobileNavMenuProps {
   menuOpen: boolean;
-  setMenuOpen: (open: boolean) => void;
+  setMenuOpen: Dispatch<SetStateAction<boolean>>;
+  isRepairSection?: boolean; // Added optional prop
 }
 
-const MobileNavMenu = ({ menuOpen, setMenuOpen }: MobileNavMenuProps) => {
+const MobileNavMenu = ({
+  menuOpen,
+  setMenuOpen,
+  isRepairSection, // Destructure the new prop
+}: MobileNavMenuProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -24,52 +30,88 @@ const MobileNavMenu = ({ menuOpen, setMenuOpen }: MobileNavMenuProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [menuOpen, setMenuOpen]);
 
+  let mobileNavLinks;
+  if (isRepairSection) {
+    mobileNavLinks = (
+      <>
+        <Link
+          href="/"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link
+          href="/repair"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          All Repairs
+        </Link>
+        <Link
+          href="/my-services"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          Orders
+        </Link>
+      </>
+    );
+  } else {
+    mobileNavLinks = (
+      <>
+        <Link
+          href="/"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link
+          href="/about"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          About
+        </Link>
+        <Link
+          href="/my-services"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          Orders
+        </Link>
+        <Link
+          href="/contact"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          onClick={() => setMenuOpen(false)}
+        >
+          Contact
+        </Link>
+      </>
+    );
+  }
+
   return (
     <div
-      className={`fixed inset-0 backdrop-blur-lg bg-black/30 z-50 flex justify-end transition-opacity duration-300 ease-in-out ${
-        menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+      className={`fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out md:hidden ${
+        menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
+      onClick={() => setMenuOpen(false)}
     >
       <div
-        ref={menuRef}
-        className={`w-64 bg-white h-full shadow-lg p-6 transform transition-transform duration-300 ease-in-out ${
+        className={`fixed top-0 right-0 h-full w-64 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${
           menuOpen ? "translate-x-0" : "translate-x-full"
         }`}
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside menu
       >
-        <X
-          className="w-8 h-8 text-black cursor-pointer mb-6"
-          onClick={() => setMenuOpen(false)}
-        />
-        <nav className="flex flex-col space-y-6 text-lg font-medium">
-          <Link
-            href="/"
-            className="hover:text-blue-500"
+        <div className="flex justify-end p-4">
+          <X
+            className="w-6 h-6 cursor-pointer"
             onClick={() => setMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            href="/about"
-            className="hover:text-blue-500"
-            onClick={() => setMenuOpen(false)}
-          >
-            About
-          </Link>
-          <Link
-            href="/my-services"
-            className="hover:text-blue-500"
-            onClick={() => setMenuOpen(false)}
-          >
-            Orders
-          </Link>
-          <Link
-            href="/contact"
-            className="hover:text-blue-500"
-            onClick={() => setMenuOpen(false)}
-          >
-            Contact
-          </Link>
-        </nav>
+          />
+        </div>
+        <nav className="flex flex-col p-4 space-y-2">{mobileNavLinks}</nav>
       </div>
     </div>
   );

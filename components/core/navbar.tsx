@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, Search, MapPin } from "lucide-react"; // Added MapPin
+import { Menu, Search, MapPin } from "lucide-react";
 import CartBtn from "../buttons/cartBtn";
 import ProfileBtn from "../buttons/profileBtn";
 import MobileNavMenu from "./mobileNavMenu";
 import Image from "next/image";
+import { usePathname } from "next/navigation"; // Import usePathname
 
 interface NavbarProps {
   city?: string;
@@ -13,6 +14,45 @@ interface NavbarProps {
 
 export default function Navbar({ city }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  // Determine if the current page is in the repair section
+  // Assuming URLs for repair section start with /repair/
+  const isRepairSection = pathname.startsWith("/repair");
+
+  let desktopNavLinks;
+  if (isRepairSection) {
+    desktopNavLinks = (
+      <>
+        <Link href="/" className="hover:text-blue-500 transition">
+          Home
+        </Link>
+        <Link href="/repair" className="hover:text-blue-500 transition">
+          All Repairs
+        </Link>
+        <Link href="/my-services" className="hover:text-blue-500 transition">
+          Orders
+        </Link>
+      </>
+    );
+  } else {
+    desktopNavLinks = (
+      <>
+        <Link href="/" className="hover:text-blue-500 transition">
+          Home
+        </Link>
+        <Link href="/about" className="hover:text-blue-500 transition">
+          About
+        </Link>
+        <Link href="/my-services" className="hover:text-blue-500 transition">
+          Orders
+        </Link>
+        <Link href="/contact" className="hover:text-blue-500 transition">
+          Contact
+        </Link>
+      </>
+    );
+  }
 
   return (
     <header className="bg-white shadow-md z-50">
@@ -22,8 +62,8 @@ export default function Navbar({ city }: NavbarProps) {
           <Image
             src="/logos/text.png"
             alt="Logo"
-            width={100} // Adjust width as needed
-            height={40} // Adjust height as needed
+            width={100}
+            height={40}
             className="h-10 w-auto"
             priority
           />
@@ -31,18 +71,7 @@ export default function Navbar({ city }: NavbarProps) {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex space-x-6 text-lg font-medium">
-          <Link href="/" className="hover:text-blue-500 transition">
-            Home
-          </Link>
-          <Link href="/about" className="hover:text-blue-500 transition">
-            About
-          </Link>
-          <Link href="/my-services" className="hover:text-blue-500 transition">
-            Orders
-          </Link>
-          <Link href="/contact" className="hover:text-blue-500 transition">
-            Contact
-          </Link>
+          {desktopNavLinks}
         </div>
 
         {/* Icons */}
@@ -69,6 +98,7 @@ export default function Navbar({ city }: NavbarProps) {
       <MobileNavMenu
         menuOpen={mobileMenuOpen}
         setMenuOpen={setMobileMenuOpen}
+        isRepairSection={isRepairSection} // Pass the flag here
       />
     </header>
   );
