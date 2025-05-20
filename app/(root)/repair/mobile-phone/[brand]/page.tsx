@@ -1,12 +1,12 @@
 import { brands } from "@/constants";
-import ModelList from "@/components/list/modelList";
-import { IDevice } from "@/types";
 import { listBrandPageMetadata } from "@/lib/seo/listBrandMetadata";
 import { Metadata } from "next";
+import BrandPageClient from "@/components/pageSpecific/BrandPageClient"; // Import the new client component
+import { IDevice } from "@/types"; // Import IDevice for type safety
 
 // Static Generation
 export const revalidate = 3600;
-export const dynamicParams = false;
+export const dynamicParams = false; // Keep this if you want to restrict to generated paths
 
 export async function generateStaticParams() {
   const paths: {
@@ -20,13 +20,13 @@ export async function generateStaticParams() {
   return paths;
 }
 
-// Metadata (SEO)
+// Metadata (SEO) - This remains a server-side function
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ brand: string }>;
+  params: { brand: string }; // params is an object with brand string
 }): Promise<Metadata> {
-  const { brand } = await params;
+  const { brand } = params;
   const meta = listBrandPageMetadata(brand);
 
   return {
@@ -43,36 +43,45 @@ export async function generateMetadata({
   };
 }
 
-// Fetch function
-const getData = async (brand: string) => {
+// Fetch function (remains on the server)
+const getData = async (brand: string): Promise<IDevice[]> => {
   try {
     const res = await fetch(
       `${process.env.API_URL}/device/brand?value=${brand}`
     );
 
-    if (!res.ok) throw new Error("Failed to fetch data");
+    if (!res.ok) {
+      console.error(
+        `Failed to fetch data for brand ${brand}: ${res.status} ${res.statusText}`
+      );
+      return []; // Return empty array on failure
+    }
 
-    return (await res.json()).data;
+    const jsonData = await res.json();
+    return (jsonData.data as IDevice[]) || []; // Type assertion and ensure data property exists
   } catch (error) {
     console.error("Error fetching models:", error);
-    return [];
+    return []; // Return empty array on error
   }
 };
 
-// Page Component
+// Page Component (Server Component that fetches data and passes to Client Component)
 export default async function Page({
   params,
 }: {
-  params: Promise<{ brand: string }>;
+  params: { brand: string }; // params is an object with brand string
 }) {
-  const { brand } = await params;
-  const models: IDevice[] = await getData(brand); // Fetch models
-  const { heading } = listBrandPageMetadata(brand); // Generate heading
+  const { brand } = params; // Directly access brand
+  const initialModels: IDevice[] = await getData(brand); // Fetch models on the server
+  const { heading } = listBrandPageMetadata(brand); // Generate heading on the server
 
+  // Pass server-fetched data to the client component
   return (
-    <section>
-      <ModelList models={models} brand={brand} heading={heading} />
-    </section>
+    <BrandPageClient
+      initialModels={initialModels}
+      brand={brand}
+      heading={heading}
+    />
   );
 }
 
