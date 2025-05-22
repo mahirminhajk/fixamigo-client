@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { CiDiscount1 } from "react-icons/ci";
 import { IOrder } from "@/types/order";
+import { Button } from "@/components/ui/button";
 
 interface PlaceServiceBtnProps {
   order: IOrder | null;
@@ -52,17 +53,15 @@ const PlaceServiceBtn = ({
       <div className="w-full max-w-md">
         <div className="w-full max-w-md p-4 bg-white rounded-[6px] space-y-4">
           {/* Coupon Section */}
-import { Button } from "@/components/ui/button"; // Import Button
-
-// ... (rest of the imports and component code above)
-
-// In the return statement:
           <form
             onSubmit={handleCouponFormSubmit}
             className="flex items-center justify-between p-3 bg-gray-100 rounded-[6px]"
           >
-            <div className="flex items-center space-x-2 flex-grow"> {/* Added flex-grow here */}
-              <CiDiscount1 className="size-7 shrink-0" /> {/* Use size-* and shrink-0 */}
+            <div className="flex items-center space-x-2 flex-grow">
+              {" "}
+              {/* Added flex-grow here */}
+              <CiDiscount1 className="size-7 shrink-0" />{" "}
+              {/* Use size-* and shrink-0 */}
               <input
                 type="text"
                 placeholder="Enter Coupon Code"

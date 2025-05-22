@@ -1,5 +1,6 @@
 import { formatAddress, formatDate, getSparePartsIcon } from "@/lib/utils";
 import { IOrder } from "@/types/order";
+import Image from "next/image";
 
 interface OrderInvoiceProps {
   order: IOrder;
@@ -13,7 +14,7 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
       <div className="bg-gray-100 p-4 rounded-[6px]">
         <div className="flex items-center gap-4">
           <div className="w-12 h-16 rounded">
-            <img
+            <Image
               src={order.device.image}
               alt={order.device.name}
               className="w-full h-full object-cover rounded"
@@ -37,7 +38,7 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
         {order.sparePartsDetails?.map((spare, i) => (
           <div className="flex items-center gap-4" key={i}>
             <div className="w-12 h-16 rounded">
-              <img src={getSparePartsIcon(spare.category)} alt={spare.name} />
+              <Image src={getSparePartsIcon(spare.category)} alt={spare.name} />
             </div>
             <div className="flex-1">
               <p className="font-medium">{spare.name.toUpperCase()}</p>

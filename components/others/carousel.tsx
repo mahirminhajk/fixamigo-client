@@ -1,7 +1,7 @@
 "use client";
 
 import { useKeenSlider, KeenSliderPlugin } from "keen-slider/react";
-import { useState, useEffect, MutableRefObject } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import "keen-slider/keen-slider.min.css";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -42,26 +42,33 @@ const AutoplayPlugin: KeenSliderPlugin = (slider) => {
   slider.on("updated", nextTimeout);
 };
 
-
 export default function Carousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    initial: 0,
-    slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      initial: 0,
+      slideChanged(slider) {
+        setCurrentSlide(slider.track.details.rel);
+      },
+      created() {
+        setLoaded(true);
+      },
+      loop: true,
+      mode: "snap",
+      slides: { perView: 1 },
     },
-    created() {
-      setLoaded(true);
-    },
-    loop: true,
-    mode: "snap",
-    slides: { perView: 1 },
-  }, [AutoplayPlugin]); // Added AutoplayPlugin
+    [AutoplayPlugin]
+  ); // Added AutoplayPlugin
 
   return (
-    <div className="relative group"> {/* Added group for arrow visibility on hover */}
-      <div ref={sliderRef} className="keen-slider w-full h-[300px] md:h-[500px]">
+    <div className="relative group">
+      {" "}
+      {/* Added group for arrow visibility on hover */}
+      <div
+        ref={sliderRef}
+        className="keen-slider w-full h-[300px] md:h-[500px]"
+      >
         {images.map((src, index) => (
           <div
             key={index}
@@ -81,14 +88,21 @@ export default function Carousel() {
       {loaded && instanceRef.current && (
         <>
           <ArrowLeft
-            onClick={(e: any) => e.stopPropagation() || instanceRef.current?.prev()}
+            onClick={(e) => {
+              e.stopPropagation();
+              instanceRef.current?.prev();
+            }}
             disabled={!instanceRef.current.options.loop && currentSlide === 0}
           />
           <ArrowRight
-            onClick={(e: any) => e.stopPropagation() || instanceRef.current?.next()}
+            onClick={(e) => {
+              e.stopPropagation();
+              instanceRef.current?.next();
+            }}
             disabled={
               !instanceRef.current.options.loop &&
-              currentSlide === instanceRef.current.track.details.slides.length - 1
+              currentSlide ===
+                instanceRef.current.track.details.slides.length - 1
             }
           />
         </>
@@ -97,7 +111,10 @@ export default function Carousel() {
   );
 }
 
-function ArrowLeft(props: { disabled: boolean; onClick: (e: any) => void }) {
+function ArrowLeft(props: {
+  disabled: boolean;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) {
   return (
     <button
       onClick={props.onClick}
@@ -110,7 +127,10 @@ function ArrowLeft(props: { disabled: boolean; onClick: (e: any) => void }) {
   );
 }
 
-function ArrowRight(props: { disabled: boolean; onClick: (e: any) => void }) {
+function ArrowRight(props: {
+  disabled: boolean;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}) {
   return (
     <button
       onClick={props.onClick}
