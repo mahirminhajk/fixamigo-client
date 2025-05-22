@@ -24,9 +24,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { brand: string }; // params is an object with brand string
+  params: Promise<{ brand: string }>;
 }): Promise<Metadata> {
-  const { brand } = params;
+  const { brand } = await params;
   const meta = listBrandPageMetadata(brand);
 
   return {
@@ -69,9 +69,9 @@ const getData = async (brand: string): Promise<IDevice[]> => {
 export default async function Page({
   params,
 }: {
-  params: { brand: string }; // params is an object with brand string
+  params: Promise<{ brand: string }>; // params is an object with brand string
 }) {
-  const { brand } = params; // Directly access brand
+  const { brand } = await params; // Directly access brand
   const initialModels: IDevice[] = await getData(brand); // Fetch models on the server
   const { heading } = listBrandPageMetadata(brand); // Generate heading on the server
 
