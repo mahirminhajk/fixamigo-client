@@ -7,6 +7,8 @@ import Link from "next/link";
 import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 
+import { Button } from "@/components/ui/button"; // Import Button
+
 function CartBtn() {
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
   const isCartEmpty = useCartStore((state) => state.isCartEmpty);
@@ -14,15 +16,15 @@ function CartBtn() {
   if (!cart) return null; // Save us from hydration mismatch
 
   return (
-    <div>
+    <Button asChild variant="ghost" size="icon" aria-label="View cart">
       <Link href="/cart">
         {isCartEmpty() ? (
-          <BsCart2 className="w-6 h-6 cursor-pointer" />
+          <BsCart2 className="size-6" /> 
         ) : (
-          <FaCartPlus className="w-6 h-6 cursor-pointer" />
+          <FaCartPlus className="size-6" />
         )}
       </Link>
-    </div>
+    </Button>
   );
 }
 

@@ -42,7 +42,13 @@ const BookNowCartBtn = () => {
       </Sheet>
       <Button
         onClick={onClick}
-        className="w-full bg-black text-white hover:bg-gray-800 font-semibold p-4 mt-3 rounded-[6px] text-lg"
+        size="lg" // Use the large size for better hit area and prominence
+        className="w-full bg-black text-white hover:bg-gray-800 font-semibold text-lg mt-3" // Kept custom styling for appearance as it's a primary CTA
+        // Note: `p-4` and `rounded-[6px]` from original are slightly different from `size="lg"` defaults (h-10 px-6, rounded-md)
+        // Retaining most of the specific styling like bg-black, text-lg, font-semibold, and w-full.
+        // The default padding for size="lg" is px-6, py approximately (h-10 -> 40px height). Original p-4 is 16px all around.
+        // For consistency with Button's defined sizes, one might create a new variant if this exact padding/rounding is reused.
+        // For now, this approach keeps the established prominent look.
       >
         Book now
       </Button>

@@ -1,6 +1,7 @@
 "use client";
 import Topbar from "@/components/core/topbar";
 import EmptyAndNotLogined from "@/components/others/emptyAndNotLogined";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton
 import { GiAutoRepair } from "react-icons/gi";
 import { FaArrowRight } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -12,7 +13,7 @@ import { useUserStore } from "@/stores/userStore";
 import { formatDate } from "@/lib/utils";
 
 const GreenCircle = () => (
-  <div className="w-5 h-5 rounded-full  bg-green-500"></div>
+  <div className="w-5 h-5 rounded-full bg-green-500"></div>
 );
 const BlueCircle = () => (
   <div className="w-5 h-5 rounded-full border-3 bg-blue-500"></div>
@@ -114,13 +115,32 @@ export default function Page() {
           <div className="flex-1 p-4 w-full flex justify-center">
             <div className="w-full max-w-md">
               <Topbar title="My Services" />
-              <EmptyAndNotLogined
-                icon={<GiAutoRepair />}
-                title="Loading"
-                showAuth={false}
-                showAction={false}
-                description="Loading your services..."
-              />
+              {/* Skeleton Loading State */}
+              <div className="flex flex-col items-center mt-4 px-4 space-y-4 w-full">
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="bg-gray-100 shadow-sm rounded-[6px] p-5 w-full max-w-md"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        <Skeleton className="w-5 h-5 rounded-full" />
+                        <Skeleton className="h-6 w-24" /> {/* Status text */}
+                      </div>
+                      <Skeleton className="w-4 h-4" /> {/* Arrow icon */}
+                    </div>
+                    <Skeleton className="h-4 w-32 mb-2" /> {/* Date */}
+                    <div className="grid grid-cols-2 gap-y-3 text-gray-600 text-sm">
+                      <Skeleton className="h-4 w-20" /> {/* Label */}
+                      <Skeleton className="h-4 w-28 justify-self-end" /> {/* Value */}
+                      <Skeleton className="h-4 w-16" /> {/* Label */}
+                      <Skeleton className="h-4 w-24 justify-self-end" /> {/* Value */}
+                      <Skeleton className="h-4 w-12" /> {/* Label */}
+                      <Skeleton className="h-4 w-20 justify-self-end" /> {/* Value */}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -134,7 +154,7 @@ export default function Page() {
         <div className="flex-1 p-4 w-full flex justify-center">
           <div className="w-full max-w-md">
             <Topbar title="My Services" />
-            {orders.length === 0 ? (
+            {orders.length === 0 ? ( // Ensure this condition is mutually exclusive with loading state
               <EmptyAndNotLogined
                 icon={<GiAutoRepair />}
                 title="No Services yet"
@@ -149,7 +169,7 @@ export default function Page() {
                 {orders.map((service, index) => (
                   <div
                     key={index}
-                    className="bg-gray-100 shadow-sm rounded-[6px] p-5 w-full max-w-md cursor-pointer"
+                    className="bg-gray-100 shadow-sm rounded-[6px] p-5 w-full max-w-md cursor-pointer transition-colors hover:bg-gray-200"
                     onClick={() =>
                       router.push(`/my-services/summary?id=${service._id}`)
                     }
