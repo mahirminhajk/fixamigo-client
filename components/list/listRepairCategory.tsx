@@ -31,7 +31,7 @@ const ListRepairCategory = () => {
 
       {/* Responsive Grid */}
       <div className="flex justify-center mt-6">
-        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 place-items-center">
+        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 place-items-center">
           {repairCategory.map((category, index) => (
             <Link
               href={`/repair/${category.slug}`}

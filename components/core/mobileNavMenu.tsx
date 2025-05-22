@@ -36,21 +36,21 @@ const MobileNavMenu = ({
       <>
         <Link
           href="/"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
         >
           Home
         </Link>
         <Link
           href="/repair"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
         >
           All Repairs
         </Link>
         <Link
           href="/my-services"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
         >
           Orders
@@ -69,21 +69,21 @@ const MobileNavMenu = ({
         </Link>
         <Link
           href="/about"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
         >
           About
         </Link>
         <Link
           href="/my-services"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
         >
           Orders
         </Link>
         <Link
           href="/contact"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
+          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
         >
           Contact

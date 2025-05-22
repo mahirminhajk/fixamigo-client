@@ -115,7 +115,7 @@ const CheckoutPickupDateCard = ({
   return (
     <>
       <Sheet open={open} onOpenChange={toggleSheet}>
-        <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
+        <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
           <div>
             <p className="text-gray-500 text-sm text-left">Pickup date</p>
             <div className="flex justify-between items-center">

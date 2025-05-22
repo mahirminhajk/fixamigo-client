@@ -12,13 +12,15 @@ export default function Topbar({ title }: Readonly<{ title: string }>) {
         {/* Back Button on the Left */}
         <button
           onClick={() => router.back()}
-          className="absolute left-0 flex items-center space-x-2 text-gray-800 hover:text-blue-600 transition duration-300"
+          className="absolute left-0 p-2 flex items-center space-x-2 text-gray-800 hover:text-blue-600 transition duration-300" // Added p-2 for better tap target
+          aria-label="Go back"
         >
           <FaCircleChevronLeft className="w-6 h-6" />
         </button>
 
         {/* Centered Heading */}
-        <h1 className="text-xl font-bold text-gray-900 capitalize">{title}</h1>
+        {/* Added px-10 for padding on sides (approx width of button + some space), and truncate */}
+        <h1 className="text-xl font-bold text-gray-900 capitalize px-10 truncate">{title}</h1>
       </div>
     </div>
   );

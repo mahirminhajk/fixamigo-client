@@ -64,7 +64,7 @@ export default function Navbar({ city }: NavbarProps) {
             alt="Logo"
             width={100}
             height={40}
-            className="h-10 w-auto"
+            className="h-8 sm:h-10 w-auto" // Adjusted logo size for smaller screens
             priority
           />
         </div>
@@ -87,10 +87,16 @@ export default function Navbar({ city }: NavbarProps) {
           <Search className="w-6 h-6 cursor-pointer" />
           <CartBtn />
           <ProfileBtn />
-          <Menu
-            className="w-6 h-6 cursor-pointer md:hidden"
+          {/* Improved tappable area for Menu icon */}
+          <button
             onClick={() => setMobileMenuOpen(true)}
-          />
+            className="p-2 md:hidden -mr-2" // Added padding, negative margin to maintain alignment
+            aria-label="Open mobile menu"
+          >
+            <Menu
+              className="w-6 h-6 cursor-pointer"
+            />
+          </button>
         </div>
       </nav>
 
