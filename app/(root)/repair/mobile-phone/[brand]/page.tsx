@@ -3,6 +3,7 @@ import { listBrandPageMetadata } from "@/lib/seo/listBrandMetadata";
 import { Metadata } from "next";
 import BrandPageClient from "@/components/pageSpecific/BrandPageClient"; // Import the new client component
 import { IDevice } from "@/types"; // Import IDevice for type safety
+import { fetchDevicesByBrand } from "@/lib/apiService"; // Import the new fetch function
 
 // Static Generation
 export const revalidate = 3600;
@@ -45,24 +46,7 @@ export async function generateMetadata({
 
 // Fetch function (remains on the server)
 const getData = async (brand: string): Promise<IDevice[]> => {
-  try {
-    const res = await fetch(
-      `${process.env.API_URL}/device/brand?value=${brand}`
-    );
-
-    if (!res.ok) {
-      console.error(
-        `Failed to fetch data for brand ${brand}: ${res.status} ${res.statusText}`
-      );
-      return []; // Return empty array on failure
-    }
-
-    const jsonData = await res.json();
-    return (jsonData.data as IDevice[]) || []; // Type assertion and ensure data property exists
-  } catch (error) {
-    console.error("Error fetching models:", error);
-    return []; // Return empty array on error
-  }
+  return fetchDevicesByBrand(brand); // Use the new fetch function
 };
 
 // Page Component (Server Component that fetches data and passes to Client Component)

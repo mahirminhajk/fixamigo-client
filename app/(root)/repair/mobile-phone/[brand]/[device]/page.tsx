@@ -3,6 +3,7 @@ import { brands } from "@/constants";
 import { getDeviceMetadata } from "@/lib/seo/deviceMetadata";
 import { IDevice } from "@/types/device";
 import { Metadata } from "next";
+import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService"; // Import the new fetch functions
 
 // Static Generation
 export const revalidate = 3600;
@@ -12,20 +13,8 @@ export async function generateStaticParams() {
 
   const brandPromises = brands.map(async (brand) => {
     try {
-      const res = await fetch(
-        `${process.env.API_URL}/device/brand?value=${brand.slug}&onlySlug=true`
-      );
-      if (!res.ok) {
-        console.error(
-          `Failed to fetch device slugs for ${brand.slug}. Status: ${res.status}`
-        );
-        return []; // Return empty array for this brand if fetch fails
-      }
-      const jsonRes = await res.json();
-      // Ensure jsonRes.data is an array before mapping
-      const devicesData: IDevice[] = Array.isArray(jsonRes.data)
-        ? jsonRes.data
-        : [];
+      // Use the new fetch function
+      const devicesData: IDevice[] = await fetchDevicesByBrand(brand.slug);
 
       return devicesData.map((d) => ({
         brand: brand.slug,
@@ -58,14 +47,7 @@ export async function generateMetadata({
 
 // Fetch function
 const getData = async (deviceSlug: string) => {
-  try {
-    const res = await fetch(`${process.env.API_URL}/device/s/${deviceSlug}`);
-    if (!res.ok) throw new Error("Failed to fetch data");
-    return (await res.json()).data;
-  } catch (error) {
-    console.error("Error fetching models:", error);
-    return null;
-  }
+  return fetchDeviceBySlug(deviceSlug); // Use the new fetch function
 };
 
 // Page Component

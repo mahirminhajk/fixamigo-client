@@ -1,11 +1,10 @@
-import { IDevice } from "@/types";
+import { fetchDeviceBySlug } from "@/lib/apiService"; // Import the new fetch function
 
 export async function getDeviceMetadata(brand: string, device: string) {
   try {
-    const res = await fetch(`${process.env.API_URL}/device/s/${device}`);
+    const deviceData = await fetchDeviceBySlug(device); // Use the new fetch function
 
-    if (!res.ok) throw new Error("Failed to fetch device metadata");
-    const deviceData: IDevice = (await res.json()).data;
+    if (!deviceData) throw new Error("Failed to fetch device metadata"); // Handle null case
 
     const brandName = deviceData.company || brand;
     const deviceName = deviceData.name;
