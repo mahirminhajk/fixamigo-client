@@ -6,7 +6,7 @@ export async function fetchDevicesByBrand(brand: string): Promise<IDevice[]> {
       `${process.env.API_URL}/device/brand?value=${brand}`,
       {
         next: {
-          tags: [`brand:${brand}`],
+          tags: [`brand:${brand}`, `brand`],
         },
       }
     );
@@ -32,7 +32,7 @@ export async function fetchDeviceBySlug(
   try {
     const res = await fetch(`${process.env.API_URL}/device/s/${deviceSlug}`, {
       next: {
-        tags: [`device:${deviceSlug}`],
+        tags: [`device:${deviceSlug}`, `device`],
       },
     });
     if (!res.ok) {
