@@ -5,6 +5,7 @@ export async function fetchDevicesByBrand(brand: string): Promise<IDevice[]> {
     const res = await fetch(
       `${process.env.API_URL}/device/brand?value=${brand}`,
       {
+        cache: "force-cache",
         next: {
           tags: [`brand:${brand}`, `brand`],
         },
@@ -31,6 +32,7 @@ export async function fetchDeviceBySlug(
 ): Promise<IDevice | null> {
   try {
     const res = await fetch(`${process.env.API_URL}/device/s/${deviceSlug}`, {
+      cache: "force-cache",
       next: {
         tags: [`device:${deviceSlug}`, `device`],
       },

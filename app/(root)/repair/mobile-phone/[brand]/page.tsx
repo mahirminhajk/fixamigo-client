@@ -6,7 +6,6 @@ import { IDevice } from "@/types"; // Import IDevice for type safety
 import { fetchDevicesByBrand } from "@/lib/apiService"; // Import the new fetch function
 
 // Static Generation
-export const revalidate = 3600;
 export const dynamicParams = false; // Keep this if you want to restrict to generated paths
 
 export async function generateStaticParams() {
