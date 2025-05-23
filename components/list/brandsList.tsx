@@ -28,7 +28,7 @@ const BrandsList = ({
 
   const displayedBrands = useMemo(() => {
     if (variant === "min") {
-      return filteredBrands.slice(0, 12);
+      return filteredBrands.slice(0, 10); //TODO: Adjust this number as needed for smaller view (less), and big view higher.
     }
     return filteredBrands;
   }, [filteredBrands, variant]);
@@ -86,24 +86,24 @@ const BrandsList = ({
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6 items-stretch justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-y-4 gap-x-6 sm:gap-y-6 sm:gap-x-10 items-stretch justify-center">
             {displayedBrands.map((brand) => (
               <Link
                 key={brand.slug}
                 href={`/repair/${category}/${brand.slug}`}
-                className="group bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center text-center p-4 
+                className="group bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center text-center p-2 sm:p-3 md:p-4 
                            transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 aspect-[4/3]"
               >
-                <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mb-2 transition-transform duration-300 ease-in-out group-hover:scale-110">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center mb-1 sm:mb-2 transition-transform duration-300 ease-in-out group-hover:scale-110">
                   <Image
                     src={brand.image}
                     alt={`${brand.name} logo`}
-                    width={80}
-                    height={80}
+                    width={80} // Max width, object-contain will handle scaling within the div
+                    height={80} // Max height
                     className="object-contain max-w-full max-h-full"
                   />
                 </div>
-                <p className="text-sm sm:text-base font-semibold text-gray-800 group-hover:text-blue-600 transition-colors duration-200">
+                <p className="text-xs sm:text-sm md:text-base font-semibold text-gray-800 group-hover:text-blue-600 transition-colors duration-200">
                   {brand.name}
                 </p>
               </Link>
