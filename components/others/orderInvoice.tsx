@@ -17,7 +17,9 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
             <Image
               src={order.device.image}
               alt={order.device.name}
-              className="w-full h-full object-cover rounded"
+              width={80} // Max width, object-contain will handle scaling within the div
+              height={80} // Max height
+              className="object-cover rounded max-w-full max-h-full"
             />
           </div>
           <div className="flex-1">
@@ -38,7 +40,13 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
         {order.sparePartsDetails?.map((spare, i) => (
           <div className="flex items-center gap-4" key={i}>
             <div className="w-12 h-16 rounded">
-              <Image src={getSparePartsIcon(spare.category)} alt={spare.name} />
+              <Image
+                src={getSparePartsIcon(spare.category)}
+                alt={spare.name}
+                width={48}
+                height={48}
+                className="mr-3"
+              />
             </div>
             <div className="flex-1">
               <p className="font-medium">{spare.name.toUpperCase()}</p>
