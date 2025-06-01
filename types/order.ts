@@ -35,6 +35,11 @@ export interface IOrder {
     transactionId?: string;
   };
 
+  agent?: {
+    name: string;
+    phone: string;
+  };
+
   status: OrderStatus;
 
   timeline: ITimeline[];

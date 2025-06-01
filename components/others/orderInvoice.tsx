@@ -9,6 +9,33 @@ interface OrderInvoiceProps {
 const OrderInvoice = ({ order }: OrderInvoiceProps) => {
   return (
     <div className="max-w-md mx-auto p-4 space-y-4">
+      {order.agent && (
+        <>
+          <h2 className="font-semibold text-lg">Contact Agent</h2>
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <p className="font-medium text-gray-700">
+                  Name:{" "}
+                  <span className="font-semibold text-gray-900">
+                    {order.agent.name.toUpperCase()}
+                  </span>
+                </p>
+                <p className="font-medium text-gray-700">
+                  Phone:{" "}
+                  <a
+                    href={`tel:${order.agent.phone}`}
+                    className="font-semibold text-blue-600 hover:underline"
+                  >
+                    {order.agent.phone}
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
       {/* Device Section */}
       <h2 className="font-semibold">Device</h2>
       <div className="bg-gray-100 p-4 rounded-[6px]">
