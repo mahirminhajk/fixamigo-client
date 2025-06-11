@@ -47,7 +47,7 @@ export default function ModelList({ models, brand, heading }: ModelListProps) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
             {models.map((model) => (
               <Link
                 key={model._id} // Use unique _id for key
@@ -59,8 +59,8 @@ export default function ModelList({ models, brand, heading }: ModelListProps) {
                   <Image
                     src={model.images?.[0] || "/placeholder.png"} // Optional chaining for images
                     alt={`Image of ${model.name}`}
-                    width={160} // Increased size for better visuals
-                    height={160}
+                    width={150} // Adjusted size for 150x150 thumbnail
+                    height={150} // Adjusted size for 150x150 thumbnail
                     className="object-contain w-full h-full group-hover:scale-110 transition-transform duration-300 ease-in-out"
                     priority // Consider adding priority for above-the-fold images if applicable after lazy loading
                   />
