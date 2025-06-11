@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
         break;
       case "all-devices":
         revalidateTag(`device`);
+        break;
       default:
         break;
     }
