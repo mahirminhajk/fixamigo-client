@@ -11,6 +11,13 @@ export const brands = [
   { name: "Pixel", slug: "google", image: "/brands/pixel.png" },
   { name: "Poco", slug: "poco", image: "/brands/poco.png" },
   { name: "Realme", slug: "realme", image: "/brands/realme.png" },
+  { name: "Xiaomi", slug: "xiaomi", image: "/brands/realme.png" },
+  { name: "Nothing", slug: "nothing", image: "/brands/realme.png" },
+  { name: "Nokia", slug: "nokia", image: "/brands/realme.png" },
+  { name: "Huawei", slug: "huawei", image: "/brands/realme.png" },
+  { name: "Lg", slug: "lg", image: "/brands/realme.png" },
+  { name: "Micromax", slug: "micromax", image: "/brands/realme.png" },
+  { name: "Sony", slug: "sony", image: "/brands/realme.png" },
 ];
 
 export const repairCategory = [
