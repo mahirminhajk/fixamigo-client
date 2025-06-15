@@ -12,6 +12,7 @@ import { IAddress } from "@/types/address";
 import { IOrder, PaymentMode } from "@/types/order";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { PopupLoading } from "@/components/others/popupLoading";
 
 export default function Page() {
   //*state
@@ -27,7 +28,6 @@ export default function Page() {
   const router = useRouter();
   //*store
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
-  const clearCart = useCartStore((state) => state.clearCart);
   const clearUser = useUserStore((state) => state.clearUser);
 
   //* pre-checkout
@@ -145,16 +145,11 @@ export default function Page() {
     await api
       .patch(`/order/${order?._id}/book`, {})
       .then((res) => {
-        //? empty cart
-        clearCart();
-        //? remove the '/repair/checkout' page and replace with '/repair/summary?id=orderId'
         router.replace(`/my-services/summary?id=${res.data.data.order._id}`);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
@@ -183,30 +178,13 @@ export default function Page() {
     );
   }
 
-  //* loading
-  if (loading) {
-    return (
-      <section>
-        <div className="flex flex-col items-center">
-          <div className="flex-1 overflow-auto p-4 w-full flex justify-center">
-            <div className="w-full max-w-md">
-              <Topbar title="Checkout" />
-              <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
-                <p className="text-center text-xl font-semibold">Loading...</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section>
       <div className="flex flex-col items-center">
         <div className="flex-1 overflow-auto p-4 w-full flex justify-center">
           <div className="w-full max-w-md">
             <Topbar title="Checkout" />
+            <PopupLoading show={loading} />
 
             <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
               <CheckoutAddressCard
@@ -232,7 +210,11 @@ export default function Page() {
           </div>
         </div>
 
-        <PlaceServiceBtn order={order} bookOrder={handleBookOrder} />
+        <PlaceServiceBtn
+          order={order}
+          bookOrder={handleBookOrder}
+          loading={loading}
+        />
       </div>
     </section>
   );

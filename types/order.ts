@@ -1,8 +1,10 @@
 import { IAddress } from "./address";
 
 export interface IOrder {
+  _id: string;
   user: string;
   address?: IAddress;
+
   device: {
     _id: string;
     name: string;
@@ -10,7 +12,18 @@ export interface IOrder {
     company?: string;
     image: string;
   };
-  spareParts: string[];
+  spareParts?: string[];
+  sparePartsDetails?: {
+    _id: string;
+    name: string;
+    category: string;
+    price: {
+      total: number;
+      final: number;
+      discountPercentage: number;
+    };
+  }[];
+
   price: {
     original: number;
     total: number;
@@ -21,16 +34,22 @@ export interface IOrder {
     mode: PaymentMode;
     transactionId?: string;
   };
+
+  agent?: {
+    name: string;
+    phone: string;
+  };
+
   status: OrderStatus;
+
   timeline: ITimeline[];
+
   schedules?: {
     pickupDate?: Date;
     deliveryDate?: Date;
   };
 
-  _id?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: Date;
 }
 
 export enum PaymentMode {
@@ -43,11 +62,15 @@ export enum OrderStatus {
   ACCEPTED = "ACCEPTED",
 
   SCHEDULED_PICKUP = "SCHEDULED_PICKUP",
+  EN_ROUTE = "EN_ROUTE",
   PICKED_UP = "PICKED_UP",
+
   REACHED_STORE = "REACHED_STORE",
   REPAIRING = "REPAIRING",
   REPAIRED = "REPAIRED",
+
   SCHEDULED_DELIVERY = "SCHEDULED_DELIVERY",
+  OUT_FOR_DELIVERY = "OUT_FOR_DELIVERY",
   DELIVERED = "DELIVERED",
   COMPLETED = "COMPLETED",
 

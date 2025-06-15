@@ -11,6 +11,13 @@ export const brands = [
   { name: "Pixel", slug: "google", image: "/brands/pixel.png" },
   { name: "Poco", slug: "poco", image: "/brands/poco.png" },
   { name: "Realme", slug: "realme", image: "/brands/realme.png" },
+  { name: "Xiaomi", slug: "xiaomi", image: "/brands/realme.png" },
+  { name: "Nothing", slug: "nothing", image: "/brands/realme.png" },
+  { name: "Nokia", slug: "nokia", image: "/brands/realme.png" },
+  { name: "Huawei", slug: "huawei", image: "/brands/realme.png" },
+  { name: "Lg", slug: "lg", image: "/brands/realme.png" },
+  { name: "Micromax", slug: "micromax", image: "/brands/realme.png" },
+  { name: "Sony", slug: "sony", image: "/brands/realme.png" },
 ];
 
 export const repairCategory = [
@@ -46,3 +53,12 @@ export const CONTACT_INFO = {
   waPhone: "918086009808",
   email: "fixamigo.offical@gmail.com", //TODO: make sure this correct
 };
+
+export const supportCities = [
+  { name: "Malappuram", slug: "malappuram" },
+  { name: "Kottakkal", slug: "kottakkal" },
+  { name: "Kondotty", slug: "kondotty" },
+  { name: "Tirur", slug: "tirur" },
+  { name: "Ponnani", slug: "ponnani" },
+  { name: "Perinthalmanna", slug: "perinthalmanna" },
+];

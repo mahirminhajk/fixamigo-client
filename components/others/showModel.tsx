@@ -15,7 +15,7 @@ function ShowModel({ deviceData }: ShowModelProps) {
         <div className="rounded-xl  flex flex-col items-center">
           <div className="w-56 h-56 flex items-center justify-center">
             <Image
-              src={deviceData.images[0]}
+              src={deviceData.images[1]}
               alt={deviceData.name}
               width={224}
               height={224}

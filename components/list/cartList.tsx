@@ -1,6 +1,6 @@
 "use client";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
-import { getSparePartsIcon } from "@/lib/utils";
+import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { useCartStore } from "@/stores/cartStore";
 import Image from "next/image";
 import { Button } from "../ui/button";
@@ -45,7 +45,12 @@ const CartList = () => {
                   {/* Price Details - Matches the Reference Image */}
                   <div className="flex items-center space-x-2">
                     <span className="text-blue-600 font-semibold">
-                      -{item.price.discountPercentage}%
+                      -
+                      {getDiscountPercentage(
+                        item.price.total,
+                        item.price.final
+                      )}
+                      %
                     </span>
                     <span className="text-gray-500 line-through">
                       ₹{item.price.total}
@@ -58,9 +63,15 @@ const CartList = () => {
 
                 {/* Remove Button */}
                 <div className="flex flex-col items-center">
-                  <button onClick={() => removeFromCart(item._id)}>
-                    <MdDelete className="w-8 h-8 text-red-500 hover:text-red-700" />
-                  </button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeFromCart(item._id)}
+                    aria-label="Remove item"
+                    className="text-red-500 hover:text-red-700" // Keep the red color
+                  >
+                    <MdDelete className="size-5" /> {/* Adjusted size to fit well in icon button */}
+                  </Button>
                 </div>
               </div>
             ))}

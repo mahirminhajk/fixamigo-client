@@ -4,6 +4,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { FaCartPlus, FaTrash } from "react-icons/fa";
 import { ISparePart, ICartDevice } from "@/types";
+import { Button } from "@/components/ui/button"; // Import the Button component
 
 interface AddToCartBtnProps {
   sparePart: ISparePart;
@@ -19,8 +20,7 @@ export default function AddToCartBtn({
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const isInCart = useCartStore((state) => state.isInCart);
 
-  //TODO: this working or not ?
-  if (!cart) return null; // 🚀 Avoids hydration issues
+  if (!cart) return null; 
 
   const itemInCart = isInCart(sparePart._id);
 
@@ -33,13 +33,14 @@ export default function AddToCartBtn({
   };
 
   return (
-    <button
-      className={`px-3 py-2 text-sm rounded-[4px] transition duration-300 ${
-        itemInCart ? "bg-red-600 text-white" : "bg-black text-white"
-      }`}
+    <Button
+      variant={itemInCart ? "destructive" : "default"}
+      size="icon" // Using "icon" size for a compact button, ensures 36x36px hit area
       onClick={handleToggleCart}
+      aria-label={itemInCart ? "Remove from cart" : "Add to cart"}
+      className={itemInCart ? "" : "bg-black hover:bg-black/80"} // Custom black color for default state
     >
-      {itemInCart ? <FaTrash /> : <FaCartPlus />}
-    </button>
+      {itemInCart ? <FaTrash className="size-4" /> : <FaCartPlus className="size-4" />}
+    </Button>
   );
 }

@@ -86,12 +86,36 @@ const CheckoutPickupDateCard = ({
     setOpen(false);
   };
 
+  const isToday = (date: { fullDate: string }) => {
+    const today = new Date();
+    const [day, month, year] = date.fullDate.split("-").map(Number);
+    const dateObj = new Date(year, month - 1, day);
+    return (
+      today.getDate() === dateObj.getDate() &&
+      today.getMonth() === dateObj.getMonth() &&
+      today.getFullYear() === dateObj.getFullYear()
+    );
+  };
+
+  const isTomorrow = (date: { fullDate: string }) => {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const [day, month, year] = date.fullDate.split("-").map(Number);
+    const dateObj = new Date(year, month - 1, day);
+    return (
+      tomorrow.getDate() === dateObj.getDate() &&
+      tomorrow.getMonth() === dateObj.getMonth() &&
+      tomorrow.getFullYear() === dateObj.getFullYear()
+    );
+  };
+
   if (loading) return <p>Loading...</p>;
 
   return (
     <>
       <Sheet open={open} onOpenChange={toggleSheet}>
-        <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer">
+        <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
           <div>
             <p className="text-gray-500 text-sm text-left">Pickup date</p>
             <div className="flex justify-between items-center">
@@ -135,12 +159,12 @@ const CheckoutPickupDateCard = ({
                   }`}
                   onClick={() => setDate(date)}
                 >
-                  {index === 0 && (
+                  {isToday(date) && (
                     <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
                       Today
                     </p>
                   )}
-                  {index === 1 && (
+                  {isTomorrow(date) && (
                     <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
                       Tomorrow
                     </p>

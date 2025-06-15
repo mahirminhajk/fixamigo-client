@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/popover";
 import api from "@/lib/axiosInstance";
 
+import { Button } from "@/components/ui/button"; // Import Button
+
 const ProfileBtn = () => {
   //* user-store
   const clearUser = useUserStore((state) => state.clearUser);
@@ -35,38 +37,46 @@ const ProfileBtn = () => {
       {user?._id ? (
         <Popover>
           <PopoverTrigger asChild>
-            <UserRoundCheckIcon className="w-6 h-6 cursor-pointer" />
+            <Button variant="ghost" size="icon" aria-label="Open user profile menu">
+              <UserRoundCheckIcon className="size-6" />
+            </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80">
+          <PopoverContent className="w-60"> {/* Adjusted width slightly */}
             <div>
-              <div className="flex flex-col space-y-4 p-4">
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold">{user.name}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {user.phoneNo}
-                  </p>
-                </div>
+              <div className="flex flex-col space-y-1 p-2 border-b mb-2"> {/* Reduced padding, added border */}
+                <h4 className="text-sm font-semibold">{user.name}</h4>
+                <p className="text-xs text-muted-foreground"> {/* Slightly smaller text for phone */}
+                  {user.phoneNo}
+                </p>
               </div>
               <div className="flex flex-col space-y-1">
-                <button className="text-sm text-left hover:bg-accent hover:text-accent-foreground rounded-md p-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start"
+                  // onClick={() => {/* TODO: Implement navigation to My Orders */}}
+                >
                   My Orders
-                </button>
-                <button
-                  className="text-sm text-left text-red-500 hover:bg-red-50 rounded-md p-2"
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="w-full justify-start text-red-500 hover:text-red-500 hover:bg-red-50"
                   onClick={onSignOut}
                 >
                   Sign Out
-                </button>
+                </Button>
               </div>
             </div>
           </PopoverContent>
         </Popover>
       ) : (
         <Sheet open={open} onOpenChange={onOpenChange}>
-          <SheetTrigger>
-            <div className="pt-1">
-              <User className="cursor-pointer" />
-            </div>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" aria-label="Open login menu">
+              {/* Removed pt-1 as Button size="icon" handles centering */}
+              <User className="size-6" /> 
+            </Button>
           </SheetTrigger>
           <UserRegSheet onCompleted={onCompleted} />
         </Sheet>

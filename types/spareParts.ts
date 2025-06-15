@@ -5,7 +5,7 @@ export interface ISparePart {
   category: string;
   price: {
     total: number;
-    discountPercentage: number;
+    repair: number;
     final: number;
   };
 }

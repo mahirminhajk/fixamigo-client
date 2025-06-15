@@ -7,7 +7,7 @@ export interface IDevice {
   images: string[];
   type: string;
   company: string;
-  spareParts: ISparePart[] | string[];
+  spareParts: ISparePart[];
 }
 
 export interface ICartDevice {
