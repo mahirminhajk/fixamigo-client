@@ -25,14 +25,14 @@ export async function POST(req: NextRequest) {
   try {
     // revalidate based on type
     switch (type) {
-      case "brand":
+      case "brand": // when: added when device to a specific brand
         revalidateTag(`brand:${identifier}`);
-        break;
+        break; // when: updated a device any data
       case "device":
         revalidateTag(`device:${identifier}`);
         break;
-      case "all-devices":
-        revalidateTag(`device`);
+      case "all-devices": // when: price rule or any got updated
+        revalidateTag(`devices`);
         break;
       default:
         break;
