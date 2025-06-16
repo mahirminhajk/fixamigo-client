@@ -34,7 +34,7 @@ export async function fetchDeviceBySlug(
     const res = await fetch(`${process.env.API_URL}/device/s/${deviceSlug}`, {
       cache: "force-cache",
       next: {
-        tags: [`device:${deviceSlug}`, `device`],
+        tags: [`device:${deviceSlug}`, `devices`],
       },
     });
     if (!res.ok) {
