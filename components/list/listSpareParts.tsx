@@ -2,6 +2,7 @@ import Image from "next/image";
 import AddToCartBtn from "../buttons/addToCartBtn";
 import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { ICartDevice, ISparePart } from "@/types";
+import RedirectToAdminButton from "../admin/redirectToAdminButton";
 
 interface ListSparePartsProps {
   spareParts: ISparePart[];
@@ -44,6 +45,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                 </div>
               </div>
             </div>
+            <RedirectToAdminButton id={item._id} type="sparePart" />
             <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
           </div>
         </div>

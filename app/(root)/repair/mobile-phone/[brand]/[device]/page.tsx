@@ -4,6 +4,7 @@ import { getDeviceMetadata } from "@/lib/seo/deviceMetadata";
 import { IDevice } from "@/types/device";
 import { Metadata } from "next";
 import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService"; // Import the new fetch functions
+import RedirectToAdminButton from "@/components/admin/redirectToAdminButton";
 
 // Static Generation
 export const dynamicParams = false;
@@ -68,6 +69,7 @@ export default async function Page({
 
   return (
     <section>
+      <RedirectToAdminButton id={deviceData._id} type="device" />
       <DeviceDetailsContent deviceData={deviceData} />
     </section>
   );
