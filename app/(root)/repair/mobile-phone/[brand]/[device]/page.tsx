@@ -7,7 +7,8 @@ import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService"; // Im
 import RedirectToAdminButton from "@/components/admin/redirectToAdminButton";
 
 // Static Generation
-export const dynamicParams = false;
+export const revalidate = false;
+export const dynamicParams = true;
 export async function generateStaticParams() {
   const paths: { brand: string; device: string }[] = [];
 
