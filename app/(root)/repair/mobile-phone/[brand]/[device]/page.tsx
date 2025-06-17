@@ -6,7 +6,8 @@ import { Metadata } from "next";
 import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService"; // Import the new fetch functions
 
 // Static Generation
-export const dynamicParams = false;
+export const revalidate = false;
+export const dynamicParams = true;
 export async function generateStaticParams() {
   const paths: { brand: string; device: string }[] = [];
 

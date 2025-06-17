@@ -6,6 +6,7 @@ import { getCityMetadata } from "@/lib/seo/cityMetadata";
 
 // Static Generation
 export const dynamicParams = false;
+export const revalidate = false;
 export async function generateStaticParams() {
   return supportCities.map((city) => ({
     city: city.slug,
