@@ -20,13 +20,14 @@ export default function AddToCartBtn({
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const isInCart = useCartStore((state) => state.isInCart);
 
-  if (!cart) return null; 
+  if (!cart) return null;
 
-  const itemInCart = isInCart(sparePart._id);
+  // Check if the spare part is in the cart for the current device only
+  const itemInCart = isInCart(cartDevice._id, sparePart._id);
 
   const handleToggleCart = () => {
     if (itemInCart) {
-      removeFromCart(sparePart._id);
+      removeFromCart(cartDevice._id, sparePart._id);
     } else {
       addToCart(cartDevice, sparePart);
     }
@@ -40,7 +41,11 @@ export default function AddToCartBtn({
       aria-label={itemInCart ? "Remove from cart" : "Add to cart"}
       className={itemInCart ? "" : "bg-black hover:bg-black/80"} // Custom black color for default state
     >
-      {itemInCart ? <FaTrash className="size-4" /> : <FaCartPlus className="size-4" />}
+      {itemInCart ? (
+        <FaTrash className="size-4" />
+      ) : (
+        <FaCartPlus className="size-4" />
+      )}
     </Button>
   );
 }
