@@ -11,7 +11,7 @@ import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
 import { IOrder, PaymentMode } from "@/types/order";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PopupLoading } from "@/components/others/popupLoading";
 
 export default function Page() {
@@ -26,16 +26,24 @@ export default function Page() {
   >(null);
   //* hooks
   const router = useRouter();
+  const searchParams = useSearchParams();
   //*store
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
   const clearUser = useUserStore((state) => state.clearUser);
+
+  //* get the device parm or set  default to first cart item device
+  const deviceId =
+    searchParams.get("device") || cart?.items?.[0]?.device?._id || null;
+
+  // Find the cart item for the selected device
+  const cartItem = cart?.items?.find((item) => item.device._id === deviceId);
 
   //* pre-checkout
   const sendCheckoutRequest = async () => {
     setLoading(true);
     const data = {
-      device: cart?.device?._id,
-      spareParts: cart?.spareParts.map((sp) => sp._id),
+      device: cartItem?.device._id,
+      spareParts: cartItem?.spareParts.map((sp) => sp._id),
     };
     await api
       .post("/order/checkout", data)
@@ -62,13 +70,13 @@ export default function Page() {
   };
 
   useEffect(() => {
-    if (cart?.device && cart?.spareParts?.length > 0) {
+    if (cartItem?.device && cartItem?.spareParts?.length > 0) {
       (async () => {
         await sendCheckoutRequest();
       })();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cart]);
+  }, [cartItem]);
 
   //* onAddressSubmit
   const onAddressSubmit = async (address: IAddress | string) => {
@@ -159,7 +167,7 @@ export default function Page() {
   }
 
   //* empty cart
-  if (!cart.device || cart.spareParts.length === 0) {
+  if (!cartItem?.device || cartItem.spareParts.length === 0) {
     return (
       <section>
         <div className="flex flex-col items-center">
@@ -168,7 +176,9 @@ export default function Page() {
               <Topbar title="Checkout" />
               <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
                 <p className="text-center text-xl font-semibold">
-                  Your cart is empty
+                  {cart?.items?.length === 0
+                    ? "Your cart is empty"
+                    : "No device found for checkout. Please select a device from your cart."}
                 </p>
               </div>
             </div>
