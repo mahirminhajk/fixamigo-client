@@ -3,8 +3,9 @@ import { brands } from "@/constants";
 import { getDeviceMetadata } from "@/lib/seo/deviceMetadata";
 import { IDevice } from "@/types/device";
 import { Metadata } from "next";
-import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService"; // Import the new fetch functions
-import RedirectToAdminButton from "@/components/admin/redirectToAdminButton";
+import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService";
+import React from "react";
+import DeviceCartBarClient from "@/components/pageSpecific/DeviceCartBarClient";
 
 // Static Generation
 export const revalidate = false;
@@ -69,9 +70,12 @@ export default async function Page({
   }
 
   return (
-    <section>
-      <RedirectToAdminButton id={deviceData._id} type="device" />
-      <DeviceDetailsContent deviceData={deviceData} />
-    </section>
+    <main className="relative min-h-screen">
+      <section>
+        <DeviceDetailsContent deviceData={deviceData} />
+      </section>
+      {/* --- Cart Bar Client Component --- */}
+      <DeviceCartBarClient />
+    </main>
   );
 }
