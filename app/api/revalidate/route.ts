@@ -32,7 +32,8 @@ export async function POST(req: NextRequest) {
         revalidateTag(`device:${identifier}`);
         break;
       case "all-devices": // when: price rule or any got updated
-        revalidateTag(`devices`);
+        revalidateTag("devices");
+        revalidateTag("brands");
         break;
       default:
         break;
