@@ -10,11 +10,11 @@ import { useCartStore } from "@/stores/cartStore";
 import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
 import { IOrder, PaymentMode } from "@/types/order";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PopupLoading } from "@/components/others/popupLoading";
 
-export default function Page() {
+function CheckoutPageContent() {
   //*state
   const [order, setOrder] = useState<IOrder | null>(null);
   const [pickupAvailableDates, setPickupAvailableDates] = useState<string[]>(
@@ -227,6 +227,14 @@ export default function Page() {
         />
       </div>
     </section>
+  );
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+      <CheckoutPageContent />
+    </Suspense>
   );
 }
 //TODO: show order summary in is page.
