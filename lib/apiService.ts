@@ -7,7 +7,7 @@ export async function fetchDevicesByBrand(brand: string): Promise<IDevice[]> {
       {
         cache: "force-cache",
         next: {
-          tags: [`brand:${brand}`, `brand`],
+          tags: [`brand:${brand}`, `brands`],
         },
       }
     );
