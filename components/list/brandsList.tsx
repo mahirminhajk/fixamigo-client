@@ -112,10 +112,24 @@ const BrandsList = ({
         )}
 
         {variant === "min" && displayedBrands.length > 0 && (
-          <div className="text-center mt-8">
+          <div className="text-center mt-10">
             <Link href={`/repair/${category}`} legacyBehavior>
-              <a className="inline-block px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
+              <a className="inline-flex items-center gap-2 px-5 py-2 text-base font-semibold text-white bg-gradient-to-r from-blue-600 to-blue-400 rounded-lg shadow-md hover:from-blue-700 hover:to-blue-500 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-60 transition-all duration-200">
                 View All Brands
+                <svg
+                  className="w-4 h-4 ml-1"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  ></path>
+                </svg>
               </a>
             </Link>
           </div>
