@@ -136,39 +136,37 @@ const BrandsList = ({
         )}
 
         {/* Support/help full-width widget card */}
-        {variant === "all" && (
-          <div className="flex justify-center mt-8">
-            <Link
-              href="/support-request?type=brand"
-              className="flex items-center w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-sm p-6 hover:shadow-lg hover:bg-gray-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            >
-              <div className="flex-shrink-0">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-8 h-8 text-blue-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
-                  />
-                </svg>
-              </div>
-              <div className="ml-4 text-left">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Your brand not listed?
-                </h3>
-                <p className="text-gray-600">
-                  Let us know and we’ll get it added for you.
-                </p>
-              </div>
-            </Link>
-          </div>
-        )}
+        <div className="flex justify-center mt-8">
+          <Link
+            href="/support-request?type=brand"
+            className="flex items-center w-full max-w-md bg-white border border-gray-200 rounded-xl shadow-sm p-6 hover:shadow-lg hover:bg-gray-50 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+          >
+            <div className="flex-shrink-0">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 h-8 text-blue-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                />
+              </svg>
+            </div>
+            <div className="ml-4 text-left">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Your brand not listed?
+              </h3>
+              <p className="text-gray-600">
+                Let us know and we’ll get it added for you.
+              </p>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   );
