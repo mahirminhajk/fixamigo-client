@@ -2,6 +2,7 @@ import Image from "next/image";
 import AddToCartBtn from "../buttons/addToCartBtn";
 import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { ICartDevice, ISparePart } from "@/types";
+import Link from "next/link";
 
 interface ListSparePartsProps {
   spareParts: ISparePart[];
@@ -53,6 +54,47 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
             </div>
           </div>
         ))}
+        {/* Support/help request card styled like spare parts */}
+        <div className="bg-gray-100 py-4 rounded-[6px] shadow-sm mb-3">
+          <Link
+            href={`/support-request?type=device&value=${cartDevice.slug}`}
+            className="flex items-center justify-between px-4"
+          >
+            <div className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6 text-blue-500 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                />
+              </svg>
+              <span className="text-sm font-medium text-gray-800">
+                Can&apos;t find the service you need? Request here
+              </span>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </div>
       </div>
     </>
   );
