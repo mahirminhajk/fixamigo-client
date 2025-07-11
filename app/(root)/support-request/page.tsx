@@ -1,13 +1,13 @@
 import SupportRequestForm from "../../../components/SupportRequestForm";
 
 type SearchParams = {
-  type?: "brand" | "device";
+  type?: "brand" | "device" | "service";
   value?: string;
 };
 
 export default function Page({ searchParams }: { searchParams: SearchParams }) {
   // Determine request type and initial value from URL
-  const type = searchParams.type === "device" ? "device" : "brand";
+  const type = searchParams.type ?? "brand";
   const value = searchParams.value ?? "";
 
   return (
