@@ -1,0 +1,21 @@
+import SupportRequestForm from "../../../components/SupportRequestForm";
+
+type SearchParams = {
+  type?: "brand" | "device";
+  value?: string;
+};
+
+export default function Page({ searchParams }: { searchParams: SearchParams }) {
+  // Determine request type and initial value from URL
+  const type = searchParams.type === "device" ? "device" : "brand";
+  const value = searchParams.value ?? "";
+
+  return (
+    <div className="max-w-md mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">
+        Support Request ({type.charAt(0).toUpperCase() + type.slice(1)})
+      </h1>
+      <SupportRequestForm type={type} value={value} />
+    </div>
+  );
+}
