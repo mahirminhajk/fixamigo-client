@@ -6,7 +6,7 @@ import Select from "react-select";
 import { useUserStore } from "@/stores/userStore";
 
 type SupportRequestFormProps = {
-  type: "brand" | "device" | "service";
+  type: string; // "brand" | "device" | "service"
   value: string;
 };
 
@@ -42,7 +42,7 @@ export default function SupportRequestForm({
     setStatus(null);
     try {
       const data: SupportRequestData = {
-        type,
+        type: type as "brand" | "device" | "service",
         details: { description },
         user: user?._id || "",
       };

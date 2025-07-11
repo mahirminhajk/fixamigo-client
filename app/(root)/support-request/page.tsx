@@ -1,14 +1,13 @@
 import SupportRequestForm from "../../../components/SupportRequestForm";
 
-type SearchParams = {
-  type?: "brand" | "device" | "service";
-  value?: string;
-};
-
-export default function Page({ searchParams }: { searchParams: SearchParams }) {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) {
   // Determine request type and initial value from URL
-  const type = searchParams.type ?? "brand";
-  const value = searchParams.value ?? "";
+  const type = (await searchParams).type ?? "brand";
+  const value = (await searchParams).value ?? "";
 
   return (
     <div className="max-w-md mx-auto p-4">
