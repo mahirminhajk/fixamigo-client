@@ -17,17 +17,11 @@ export default function SupportRequestForm({
   const user = useUserStore((state) => state.user);
 
   // Suggestions
-  const deviceServices = [
+  const serviceOptions = [
     "Screen Repair",
     "Battery Replacement",
     "Software Issue",
   ];
-  const serviceOptions = ["Installation", "Maintenance", "Consultation"];
-  // Map to react-select option format
-  const deviceServiceOptions = deviceServices.map((opt) => ({
-    value: opt,
-    label: opt,
-  }));
   const serviceCategoryOptions = serviceOptions.map((opt) => ({
     value: opt,
     label: opt,
@@ -35,6 +29,7 @@ export default function SupportRequestForm({
 
   // Dynamic state for inputs
   const [brandName, setBrandName] = useState(type === "brand" ? value : "");
+  const [deviceName, setDeviceName] = useState("");
   const [serviceType, setServiceType] = useState("");
   const [description, setDescription] = useState("");
   const [phoneNo, setPhoneNo] = useState(user?.phoneNo ?? "");
@@ -48,21 +43,21 @@ export default function SupportRequestForm({
     try {
       const data: SupportRequestData = {
         type,
-        details: {
-          description: description,
-        },
+        details: { description },
         user: user?._id || "",
       };
       if (type === "brand") {
         data.details.brand = brandName;
-      } else if (type === "device") {
+      } else if (type === "service") {
         // device value passed in prop
         data.details.device = value;
         data.details.service = serviceType;
         data.phone = phoneNo;
       } else {
-        // service type request
-        data.details.service = serviceType || value;
+        // device request
+        data.details.brand = value;
+        data.details.device = deviceName;
+        data.details.service = serviceType;
         data.phone = phoneNo;
       }
 
@@ -71,6 +66,7 @@ export default function SupportRequestForm({
 
       // reset inputs
       if (type === "brand") setBrandName("");
+      setDeviceName("");
       setServiceType("");
       setDescription("");
     } catch {
@@ -100,7 +96,7 @@ export default function SupportRequestForm({
       {type === "device" && (
         <>
           <div>
-            <label className="block font-medium mb-1">Device Model</label>
+            <label className="block font-medium mb-1">Brand</label>
             <input
               type="text"
               value={value}
@@ -109,15 +105,28 @@ export default function SupportRequestForm({
             />
           </div>
           <div>
-            <label className="block font-medium mb-1">Service Needed</label>
+            <label className="block font-medium mb-1">Device Model/Name</label>
+            <input
+              type="text"
+              value={deviceName}
+              onChange={(e) => setDeviceName(e.target.value)}
+              placeholder="Enter your device model or name"
+              required
+              className="w-full border rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-1">
+              What kind of service are you looking for
+            </label>
             <Select
-              options={deviceServiceOptions}
+              options={serviceCategoryOptions}
               value={
-                deviceServiceOptions.find((o) => o.value === serviceType) ||
+                serviceCategoryOptions.find((o) => o.value === serviceType) ||
                 null
               }
               onChange={(option) => setServiceType(option ? option.value : "")}
-              placeholder="Type or select a service"
+              placeholder="Select a service"
               className="w-full"
               isClearable
               isSearchable
@@ -139,7 +148,7 @@ export default function SupportRequestForm({
             />
           </div>
           <div>
-            <label className="block font-medium mb-1">Sub-Service Needed</label>
+            <label className="block font-medium mb-1">Service Needed</label>
             <Select
               options={serviceCategoryOptions}
               value={
@@ -147,7 +156,7 @@ export default function SupportRequestForm({
                 null
               }
               onChange={(option) => setServiceType(option ? option.value : "")}
-              placeholder="Type or select a sub-service"
+              placeholder="Type or select a service"
               className="w-full"
               isClearable
               isSearchable

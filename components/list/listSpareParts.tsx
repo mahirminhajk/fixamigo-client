@@ -57,7 +57,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
         {/* Support/help request card styled like spare parts */}
         <div className="bg-gray-100 py-4 rounded-[6px] shadow-sm mb-3">
           <Link
-            href={`/support-request?type=device&value=${cartDevice.slug}`}
+            href={`/support-request?type=service&value=${cartDevice.slug}`}
             className="flex items-center justify-between px-4"
           >
             <div className="flex items-center">
