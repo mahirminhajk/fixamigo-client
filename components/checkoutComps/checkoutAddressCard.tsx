@@ -134,7 +134,7 @@ const CheckoutAddressCard = ({
           </div>
         </div>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="w-screen">
         <SheetHeader>
           <SheetTitle>Add Address</SheetTitle>
           <SheetDescription>

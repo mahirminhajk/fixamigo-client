@@ -139,7 +139,7 @@ const CheckoutPickupDateCard = ({
           </div>
         </SheetTrigger>
 
-        <SheetContent>
+        <SheetContent className="w-screen">
           <SheetHeader>
             <SheetTitle>Pickup Date</SheetTitle>
             <SheetDescription>

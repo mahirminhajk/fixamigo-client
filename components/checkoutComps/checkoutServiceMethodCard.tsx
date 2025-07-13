@@ -9,21 +9,23 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-interface CheckoutPaymentMethodCardProps {
-  onPaymentMethodChange: () => void;
+interface CheckoutServiceMethodCardProps {
+  onServiceMethodChange: () => void;
 }
 
-const CheckoutPaymentMethodCard = ({
-  onPaymentMethodChange,
-}: CheckoutPaymentMethodCardProps) => {
+const CheckoutServiceMethodCard = ({
+  onServiceMethodChange,
+}: CheckoutServiceMethodCardProps) => {
   const [open, setOpen] = useState(false);
   const toggleSheet = () => setOpen(!open);
 
-  const [selectedMethod, setSelectedMethod] = useState<string | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<string | null>(
+    "pickupDelivery"
+  );
 
   const handleMethodChange = (method: string) => {
     setSelectedMethod(method);
-    onPaymentMethodChange(); //! For now, there is no other payment method, that is the reason not passing any argument.
+    onServiceMethodChange(); //! For now, there is no other service method functionality
     toggleSheet();
   };
 
@@ -31,18 +33,18 @@ const CheckoutPaymentMethodCard = ({
     <Sheet open={open} onOpenChange={toggleSheet}>
       <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
         <div>
-          <p className="text-gray-500 text-sm text-left">Payment Method</p>
+          <p className="text-gray-500 text-sm text-left">Service Method</p>
           <div className="flex justify-between items-center">
             {selectedMethod ? (
               <>
                 <p className="text-lg font-semibold">
-                  {selectedMethod === "onDelivery"
-                    ? "On Delivery"
-                    : "Online Payment"}
+                  {selectedMethod === "pickupDelivery"
+                    ? "Pickup & Delivery Repair"
+                    : "On-Site Repair"}
                 </p>
               </>
             ) : (
-              <p className="text-gray-500">Select a payment method</p>
+              <p className="text-gray-500">Select a service method</p>
             )}
 
             <span className="">
@@ -53,27 +55,25 @@ const CheckoutPaymentMethodCard = ({
       </SheetTrigger>
       <SheetContent className="w-screen">
         <SheetHeader>
-          <SheetTitle>Select Payment Method</SheetTitle>
-          <SheetDescription>
-            Please choose your preferred payment method.
-          </SheetDescription>
+          <SheetTitle>Service Method</SheetTitle>
+          <SheetDescription>Choose how we repair your device.</SheetDescription>
         </SheetHeader>
         <div className="mt-4">
           <div className="bg-white p-4 rounded-xl shadow-md mb-4">
             <label className="flex items-center">
               <input
                 type="radio"
-                name="paymentMethod"
-                value="onDelivery"
-                checked={selectedMethod === "onDelivery"}
-                onChange={() => handleMethodChange("onDelivery")}
+                name="serviceMethod"
+                value="pickupDelivery"
+                checked={selectedMethod === "pickupDelivery"}
+                onChange={() => handleMethodChange("pickupDelivery")}
                 className="mr-2"
               />
               <div>
-                <p className="text-lg font-medium">On Delivery</p>
+                <p className="text-lg font-medium">Pickup & Delivery Repair</p>
                 <p className="text-sm text-gray-500">
-                  Pay the delivery boy in cash or UPI upon receiving the
-                  repaired device.
+                  We pick up your device, repair it at our center, and deliver
+                  it back to you.
                 </p>
               </div>
             </label>
@@ -82,17 +82,24 @@ const CheckoutPaymentMethodCard = ({
             <label className="flex items-center">
               <input
                 type="radio"
-                name="paymentMethod"
-                value="online"
-                checked={selectedMethod === "online"}
-                onChange={() => handleMethodChange("online")}
+                name="serviceMethod"
+                value="onSite"
+                checked={selectedMethod === "onSite"}
+                onChange={() => handleMethodChange("onSite")}
                 disabled
                 className="mr-2"
               />
               <div>
-                <p className="text-lg font-medium text-gray-400">Online</p>
+                <p className="text-lg font-medium text-gray-400">
+                  On-Site Repair
+                </p>
                 <p className="text-sm text-gray-500">
-                  This method is currently unavailable.
+                  Our technician comes to your location and repairs the device
+                  on the spot.
+                </p>
+                <p className="text-xs text-red-500 mt-1">
+                  This method is currently not available as we are expanding our
+                  on-site services.
                 </p>
               </div>
             </label>
@@ -103,4 +110,4 @@ const CheckoutPaymentMethodCard = ({
   );
 };
 
-export default CheckoutPaymentMethodCard;
+export default CheckoutServiceMethodCard;

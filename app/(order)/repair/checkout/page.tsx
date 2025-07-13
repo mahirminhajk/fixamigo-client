@@ -2,6 +2,7 @@
 import CheckoutAddressCard from "@/components/checkoutComps/checkoutAddressCard";
 import CheckoutPaymentMethodCard from "@/components/checkoutComps/checkoutPaymentMethodCard";
 import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
+import CheckoutServiceMethodCard from "@/components/checkoutComps/checkoutServiceMethodCard";
 import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import Topbar from "@/components/core/topbar";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
@@ -147,6 +148,12 @@ function CheckoutPageContent() {
     });
   };
 
+  //* onServiceMethodChange
+  const onServiceMethodChange = async () => {
+    console.log("Service method changed");
+    // No functionality needed for now as per requirement
+  };
+
   //* handleBookOrder
   const handleBookOrder = async () => {
     setLoading(true);
@@ -197,6 +204,9 @@ function CheckoutPageContent() {
             <PopupLoading show={loading} />
 
             <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
+              <CheckoutServiceMethodCard
+                onServiceMethodChange={onServiceMethodChange}
+              />
               <CheckoutAddressCard
                 address={order?.address}
                 onAddressSubmit={onAddressSubmit}
