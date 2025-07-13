@@ -47,11 +47,27 @@ export const repairCategory = [
   },
 ];
 
-export const CONTACT_INFO = {
+export const INFO = {
   phone: "+918086009808",
+  phoneLink(): string {
+    return `tel:${this.phone}`;
+  },
   phoneLabel: "+91 80860 09808",
   waPhone: "918086009808",
-  email: "fixamigo.offical@gmail.com", //TODO: make sure this correct
+  waLink(message = "hi"): string {
+    return `https://wa.me/${this.waPhone}?text=${encodeURIComponent(message)}`;
+  },
+  email: "support@fixamigo.com",
+  emailLink(): string {
+    return `mailto:${this.email}`;
+  },
+  name: "Fixamigo",
+  tagline: "Fixing like a true amigo",
+  tagline2: "Your Online Service Center",
+  address: "Malappuram, Kerala, India",
+  addressLink: "https://maps.app.goo.gl/E69gN8PF1PR3uQDW8",
+  website: "https://fixamigo.com",
+  instagram: "https://instagram.com/fixamigo.in",
 };
 
 export const supportCities = [

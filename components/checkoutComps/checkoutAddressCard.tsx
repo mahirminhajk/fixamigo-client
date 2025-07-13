@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
-import { CONTACT_INFO } from "@/constants";
+import { INFO } from "@/constants";
 
 interface AddressFormData {
   name: string;
@@ -107,13 +107,13 @@ const CheckoutAddressCard = ({
                   </span>{" "}
                   <span className="text-green-500 font-semibold">
                     <a
-                      href={`https://wa.me/${
-                        CONTACT_INFO.waPhone
-                      }?text=Hi%2C%20I%20am%20trying%20to%20book%20a%20service%20for%20the%20pin%20code%20${watch(
-                        "pincode"
-                      )}%20Could%20you%20please%20assist%20me%3F`}
+                      href={INFO.waLink(
+                        `Hi, I am trying to book a service for the pin code ${watch(
+                          "pincode"
+                        )} Could you please assist me?`
+                      )}
                     >
-                      {CONTACT_INFO.phoneLabel}
+                      {INFO.phoneLabel}
                     </a>
                   </span>
                 </p>
@@ -124,9 +124,11 @@ const CheckoutAddressCard = ({
                   </span>{" "}
                   <span className="text-green-500 font-semibold">
                     <a
-                      href={`https://wa.me/${CONTACT_INFO.waPhone}?text=Hi%2C%20I%20am%20unable%20to%20place%20an%20order%2E%20Please%20help%20me%2E`}
+                      href={INFO.waLink(
+                        "Hi, I am unable to place an order. Please help me."
+                      )}
                     >
-                      {CONTACT_INFO.phoneLabel}
+                      {INFO.phoneLabel}
                     </a>
                   </span>
                 </p>

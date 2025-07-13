@@ -1,4 +1,5 @@
 import Navbar from "@/components/core/navbar";
+import Footer from "@/components/core/footer";
 import { ReactNode } from "react";
 
 function Layout({ children }: Readonly<{ children?: ReactNode }>) {
@@ -6,6 +7,7 @@ function Layout({ children }: Readonly<{ children?: ReactNode }>) {
     <>
       <Navbar />
       <main>{children}</main>
+      <Footer />
     </>
   );
 }
