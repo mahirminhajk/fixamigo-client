@@ -27,31 +27,31 @@ const ServiceSteps = () => {
   ];
 
   return (
-    <section className="w-full max-w-5xl mx-auto px-2 md:px-6 py-8">
-      <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
+    <section className="w-full max-w-5xl mx-auto px-2 md:px-6 py-4 md:py-8">
+      <h2 className="text-xl md:text-3xl font-bold text-center mb-4 md:mb-8">
         How Our Service Works
       </h2>
-      <div className="flex flex-col md:flex-row md:justify-between md:items-stretch gap-8">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-stretch gap-3 md:gap-8">
         {steps.map((step, index) => (
           <div
             key={index}
-            className="group flex flex-col items-start md:items-center flex-1 text-center md:text-left bg-white border border-gray-200 shadow-md hover:shadow-2xl hover:border-blue-300 hover:bg-blue-50 rounded-2xl p-5 md:p-7 transition-all duration-200 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 h-full min-h-[260px]"
+            className="group flex flex-row md:flex-col items-center md:items-center flex-1 text-left md:text-center bg-white border border-gray-200 shadow-sm md:shadow-md hover:shadow-lg md:hover:shadow-2xl hover:border-blue-300 hover:bg-blue-50 rounded-xl md:rounded-2xl p-3 md:p-7 transition-all duration-200 ease-in-out cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-400 h-full md:min-h-[260px]"
             tabIndex={0}
           >
-            <div className="transition-transform duration-200 group-hover:scale-110 group-active:scale-95 mb-3 w-full flex justify-center md:justify-center">
+            <div className="transition-transform duration-200 group-hover:scale-110 group-active:scale-95 mb-0 md:mb-3 mr-3 md:mr-0 flex-shrink-0 md:w-full md:flex md:justify-center">
               <Image
                 src={step.imgSrc}
                 alt={step.title}
                 width={64}
                 height={64}
-                className="w-14 h-14 md:w-16 md:h-16 drop-shadow-sm"
+                className="w-10 h-10 md:w-16 md:h-16 drop-shadow-sm"
               />
             </div>
-            <div className="flex flex-col flex-1 justify-between w-full">
-              <h3 className="text-lg md:text-xl font-semibold mb-1">
+            <div className="flex flex-col flex-1 justify-center md:justify-between w-full">
+              <h3 className="text-base md:text-xl font-semibold mb-1">
                 {index + 1}. {step.title}
               </h3>
-              <p className="text-gray-600 text-sm md:text-base min-h-[48px] flex items-center justify-center md:justify-start">
+              <p className="text-gray-600 text-xs md:text-base md:min-h-[48px] md:flex md:items-center md:justify-center">
                 {step.description}
               </p>
             </div>
