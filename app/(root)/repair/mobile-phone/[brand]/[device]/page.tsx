@@ -70,8 +70,8 @@ export default async function Page({
   }
 
   return (
-    <main className="relative min-h-screen">
-      <section>
+    <main className="relative min-h-screen bg-gray-50 lg:bg-white">
+      <section className="lg:py-8">
         <DeviceDetailsContent deviceData={deviceData} />
       </section>
       {/* --- Cart Bar Client Component --- */}

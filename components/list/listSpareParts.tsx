@@ -12,50 +12,103 @@ interface ListSparePartsProps {
 function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
   return (
     <>
-      <div className="w-full max-w-md mx-auto p-4">
+      <div className="w-full max-w-md mx-auto lg:max-w-none p-4">
         <h2 className="text-lg font-bold mb-2">SPARE PARTS</h2>
         <hr className="bg-black mb-4" />
 
-        {spareParts.map((item) => (
-          <div
-            key={item._id}
-            className="bg-gray-100 py-4 pr-2 rounded-[6px] shadow-sm mb-3"
-          >
-            <div className="flex items-center justify-between px-4">
-              <div className="flex items-center">
-                <Image
-                  src={getSparePartsIcon(item.category)}
-                  alt={item.label}
-                  width={48}
-                  height={48}
-                  className="mr-3"
-                />
-                <div>
-                  <p className="font-medium text-black">{item.label}</p>
-                  <div className="flex items-center space-x-2 text-sm">
-                    <span className="text-blue-600 font-semibold">
-                      -
-                      {getDiscountPercentage(
-                        item.price.total,
-                        item.price.final
-                      )}
-                      %
-                    </span>
-                    <span className="line-through text-gray-500">
-                      ₹{item.price.total}
-                    </span>
+        {/* Mobile Layout - Single Column */}
+        <div className="lg:hidden space-y-3">
+          {spareParts.map((item) => (
+            <div
+              key={item._id}
+              className="bg-gray-100 py-4 pr-2 rounded-[6px] shadow-sm"
+            >
+              <div className="flex items-center justify-between px-4">
+                <div className="flex items-center">
+                  <Image
+                    src={getSparePartsIcon(item.category)}
+                    alt={item.label}
+                    width={48}
+                    height={48}
+                    className="mr-3"
+                  />
+                  <div>
+                    <p className="font-medium text-black">{item.label}</p>
+                    <div className="flex items-center space-x-2 text-sm">
+                      <span className="text-blue-600 font-semibold">
+                        -
+                        {getDiscountPercentage(
+                          item.price.total,
+                          item.price.final
+                        )}
+                        %
+                      </span>
+                      <span className="line-through text-gray-500">
+                        ₹{item.price.total}
+                      </span>
+                      <span className="text-black font-bold">
+                        ₹{item.price.final}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Layout - Grid */}
+        <div className="hidden lg:grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {spareParts.map((item) => (
+            <div
+              key={item._id}
+              className="bg-gray-100 p-4 rounded-[6px] shadow-sm hover:shadow-md transition-shadow duration-200"
+            >
+              <div className="flex flex-col space-y-3">
+                <div className="flex items-center">
+                  <Image
+                    src={getSparePartsIcon(item.category)}
+                    alt={item.label}
+                    width={40}
+                    height={40}
+                    className="mr-3"
+                  />
+                  <div className="flex-1">
+                    <p className="font-medium text-black text-sm">
+                      {item.label}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex flex-col space-y-1">
+                    <div className="flex items-center space-x-2 text-sm">
+                      <span className="text-blue-600 font-semibold">
+                        -
+                        {getDiscountPercentage(
+                          item.price.total,
+                          item.price.final
+                        )}
+                        %
+                      </span>
+                      <span className="line-through text-gray-500">
+                        ₹{item.price.total}
+                      </span>
+                    </div>
                     <span className="text-black font-bold">
                       ₹{item.price.final}
                     </span>
                   </div>
+                  <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
                 </div>
               </div>
-              <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
         {/* Support/help request card styled like spare parts */}
-        <div className="bg-gray-100 py-4 rounded-[6px] shadow-sm mb-3">
+        <div className="bg-gray-100 py-4 rounded-[6px] shadow-sm mt-4 lg:col-span-full">
           <Link
             href={`/support-request?type=service&value=${cartDevice.slug}`}
             className="flex items-center justify-between px-4"
