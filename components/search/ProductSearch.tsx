@@ -198,10 +198,12 @@ const ProductSearch: React.FC = () => {
         shouldMaintainFocusRef.current &&
         inputRef.current &&
         document.activeElement !== inputRef.current &&
-        searchQuery.length > 0
+        searchQuery.length > 0 &&
+        isOpen
       ) {
-        // Only restore focus if we're not clicking on a dropdown item
-        if (!searchRef.current?.contains(document.activeElement)) {
+        // Only restore focus if we're not interacting with the dropdown
+        const activeElement = document.activeElement as HTMLElement;
+        if (!searchRef.current?.contains(activeElement)) {
           inputRef.current.focus();
           const length = inputRef.current.value.length;
           inputRef.current.setSelectionRange(length, length);
@@ -209,9 +211,9 @@ const ProductSearch: React.FC = () => {
       }
     };
 
-    const intervalId = setInterval(focusMonitor, 50);
+    const intervalId = setInterval(focusMonitor, 100);
     return () => clearInterval(intervalId);
-  }, [searchQuery]);
+  }, [searchQuery, isOpen]);
 
   const handleProductSelect = React.useCallback(
     (product: SearchProduct) => {
