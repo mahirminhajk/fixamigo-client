@@ -151,17 +151,67 @@ const ProductSearch: React.FC = () => {
   // Focus management after state updates
   useEffect(() => {
     if (shouldMaintainFocusRef.current && inputRef.current) {
-      // Use requestAnimationFrame to ensure DOM has updated
+      // Use multiple animation frames to ensure DOM has fully updated
       requestAnimationFrame(() => {
-        if (inputRef.current && shouldMaintainFocusRef.current) {
-          inputRef.current.focus();
-          // Set cursor to end of text
-          const length = inputRef.current.value.length;
-          inputRef.current.setSelectionRange(length, length);
-        }
+        requestAnimationFrame(() => {
+          if (inputRef.current && shouldMaintainFocusRef.current) {
+            inputRef.current.focus();
+            // Set cursor to end of text
+            const length = inputRef.current.value.length;
+            inputRef.current.setSelectionRange(length, length);
+          }
+        });
       });
     }
   }, [isOpen, filteredProducts]);
+
+  // Additional focus preservation effect specifically for search results
+  useEffect(() => {
+    if (
+      shouldMaintainFocusRef.current &&
+      filteredProducts.length > 0 &&
+      inputRef.current
+    ) {
+      const preserveFocus = () => {
+        if (inputRef.current && shouldMaintainFocusRef.current) {
+          inputRef.current.focus();
+          const length = inputRef.current.value.length;
+          inputRef.current.setSelectionRange(length, length);
+        }
+      };
+
+      // Immediate focus
+      preserveFocus();
+
+      // Delayed focus to handle any async DOM updates
+      const timeoutId = setTimeout(preserveFocus, 10);
+      return () => clearTimeout(timeoutId);
+    }
+  }, [filteredProducts]);
+
+  // Monitor focus and restore if lost unexpectedly during typing
+  useEffect(() => {
+    if (!shouldMaintainFocusRef.current) return;
+
+    const focusMonitor = () => {
+      if (
+        shouldMaintainFocusRef.current &&
+        inputRef.current &&
+        document.activeElement !== inputRef.current &&
+        searchQuery.length > 0
+      ) {
+        // Only restore focus if we're not clicking on a dropdown item
+        if (!searchRef.current?.contains(document.activeElement)) {
+          inputRef.current.focus();
+          const length = inputRef.current.value.length;
+          inputRef.current.setSelectionRange(length, length);
+        }
+      }
+    };
+
+    const intervalId = setInterval(focusMonitor, 50);
+    return () => clearInterval(intervalId);
+  }, [searchQuery]);
 
   const handleProductSelect = React.useCallback(
     (product: SearchProduct) => {
@@ -248,22 +298,38 @@ const ProductSearch: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto mb-8 px-4">
-      <div className="relative" ref={searchRef}>
+    <section className="w-full max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-12">
+      {/* Header Section */}
+      <div className="text-center mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+          Find Your Device
+        </h2>
+        <p className="text-gray-600 text-lg">
+          Search for your device to get repair parts and services
+        </p>
+      </div>
+
+      <div className="relative max-w-2xl mx-auto" ref={searchRef}>
         {/* Search Input */}
-        <div className="relative">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+        <div className="relative group">
+          <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-10">
+            <Search className="h-6 w-6 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200" />
           </div>
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search your Device here"
+            placeholder="Search your device here (e.g., iPhone 14, Samsung Galaxy)"
             value={searchQuery}
             onChange={(e) => {
               setSearchQuery(e.target.value);
-              // Mark that we want to maintain focus
               shouldMaintainFocusRef.current = true;
+              // Ensure input stays focused during typing
+              if (
+                inputRef.current &&
+                document.activeElement !== inputRef.current
+              ) {
+                inputRef.current.focus();
+              }
             }}
             onFocus={() => {
               shouldMaintainFocusRef.current = true;
@@ -272,88 +338,165 @@ const ProductSearch: React.FC = () => {
               }
             }}
             onBlur={(e) => {
-              // Check if blur is happening due to clicking on dropdown
               const relatedTarget = e.relatedTarget as HTMLElement;
+
+              // If clicking within the search container, prevent blur and maintain focus
               if (searchRef.current?.contains(relatedTarget)) {
-                // If clicking on dropdown, don't lose focus
                 e.preventDefault();
-                inputRef.current?.focus();
+                e.stopPropagation();
+                // Immediately refocus
+                setTimeout(() => {
+                  if (inputRef.current) {
+                    inputRef.current.focus();
+                    const length = inputRef.current.value.length;
+                    inputRef.current.setSelectionRange(length, length);
+                  }
+                }, 0);
                 return;
               }
 
               shouldMaintainFocusRef.current = false;
-              // Delay closing dropdown to allow clicking on items
+              // Longer delay to allow for dropdown interactions
               setTimeout(() => {
-                // Only close if focus didn't move to a dropdown item
                 if (!searchRef.current?.contains(document.activeElement)) {
                   setIsOpen(false);
                   setSelectedIndex(-1);
                 }
-              }, 150);
+              }, 200);
             }}
-            className="w-full pl-12 pr-12 py-4 border-2 border-blue-200 rounded-full focus:outline-none focus:border-blue-500 text-lg placeholder-gray-500 bg-white shadow-sm transition-colors"
+            className="w-full pl-14 pr-14 py-5 text-lg border-2 border-gray-200 rounded-2xl 
+                       bg-white shadow-lg hover:shadow-xl focus:shadow-xl
+                       focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100
+                       placeholder-gray-400 transition-all duration-300 ease-in-out
+                       disabled:bg-gray-50 disabled:cursor-not-allowed"
             disabled={isPending}
           />
           {searchQuery && (
             <button
               onClick={clearSearch}
-              className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute inset-y-0 right-0 pr-5 flex items-center text-gray-400 
+                         hover:text-gray-600 hover:bg-gray-50 rounded-r-2xl transition-all duration-200 z-10
+                         disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isPending}
+              aria-label="Clear search"
             >
-              <X className="h-5 w-5" />
+              <X className="h-6 w-6" />
             </button>
           )}
+
+          {/* Focus ring effect */}
+          <div
+            className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400 to-purple-400 opacity-0 
+                          group-focus-within:opacity-20 transition-opacity duration-300 -z-10 blur-xl"
+          ></div>
         </div>
 
         {/* Loading State */}
         {isPending && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
+          <div
+            className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 
+                          rounded-2xl shadow-xl z-50 p-6 backdrop-blur-sm"
+          >
             <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
-              <span className="ml-2 text-gray-500">Searching...</span>
+              <div className="relative">
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-200"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent absolute top-0"></div>
+              </div>
+              <span className="ml-3 text-gray-600 font-medium">
+                Searching devices...
+              </span>
             </div>
           </div>
         )}
 
         {/* Search Results Dropdown */}
         {isOpen && !isPending && filteredProducts.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
-            {filteredProducts.map((product, index) => (
-              <div
-                key={product.id}
-                className={`flex items-center p-4 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors ${
-                  index === selectedIndex
-                    ? "bg-blue-50 border-blue-200"
-                    : "hover:bg-gray-50"
-                }`}
-                onMouseDown={(e) => {
-                  // Prevent default to stop blur event
-                  e.preventDefault();
-                  handleProductSelect(product);
-                }}
-                onMouseEnter={() => setSelectedIndex(index)}
-              >
-                <div className="flex-shrink-0 w-12 h-12 mr-4">
-                  <Image
-                    src={product.image}
-                    alt={product.brand}
-                    width={48}
-                    height={48}
-                    className="w-full h-full object-contain rounded"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = "/brands/apple.png"; // Fallback image
-                    }}
-                  />
+          <div
+            className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 
+                          rounded-2xl shadow-2xl z-50 max-h-96 overflow-hidden backdrop-blur-sm"
+            onMouseDown={(e) => {
+              // Prevent the dropdown from stealing focus
+              e.preventDefault();
+            }}
+          >
+            <div className="p-3 border-b border-gray-100 bg-gray-50">
+              <p className="text-sm font-medium text-gray-700">
+                Found {filteredProducts.length} device
+                {filteredProducts.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+            <div className="max-h-80 overflow-y-auto">
+              {filteredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  className={`group flex items-center p-4 cursor-pointer border-b border-gray-50 last:border-b-0 
+                             transition-all duration-200 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50
+                             ${
+                               index === selectedIndex
+                                 ? "bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-100"
+                                 : ""
+                             }`}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleProductSelect(product);
+                  }}
+                  onMouseEnter={() => setSelectedIndex(index)}
+                  onMouseMove={(e) => {
+                    e.preventDefault();
+                    setSelectedIndex(index);
+                  }}
+                >
+                  <div
+                    className="flex-shrink-0 w-14 h-14 mr-4 bg-white rounded-xl shadow-sm 
+                                  border border-gray-100 p-2 group-hover:shadow-md transition-shadow duration-200"
+                  >
+                    <Image
+                      src={product.image}
+                      alt={product.brand}
+                      width={56}
+                      height={56}
+                      className="w-full h-full object-contain"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/brands/apple.png";
+                      }}
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3
+                      className="text-base font-semibold text-gray-900 group-hover:text-blue-700 
+                                   transition-colors duration-200 truncate"
+                    >
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-gray-500 group-hover:text-gray-600 transition-colors duration-200">
+                      {product.brand}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0 ml-4">
+                    <div
+                      className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center 
+                                    group-hover:bg-blue-200 transition-colors duration-200"
+                    >
+                      <svg
+                        className="w-4 h-4 text-blue-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-medium text-gray-900">
-                    {product.name}
-                  </h3>
-                  <p className="text-xs text-gray-500 mt-1">{product.brand}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
 
@@ -362,14 +505,61 @@ const ProductSearch: React.FC = () => {
           !isPending &&
           searchQuery.trim() &&
           filteredProducts.length === 0 && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
-              <p className="text-gray-500 text-center">
-                No products found for &quot;{searchQuery}&quot;
-              </p>
+            <div
+              className="absolute top-full left-0 right-0 mt-3 bg-white border border-gray-200 
+                            rounded-2xl shadow-xl z-50 p-8 text-center backdrop-blur-sm"
+            >
+              <div className="mb-4">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Search className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  No devices found
+                </h3>
+                <p className="text-gray-500 mb-4">
+                  We couldn&apos;t find any devices matching &quot;{searchQuery}
+                  &quot;
+                </p>
+                <div className="text-sm text-gray-400">
+                  <p>Try searching with:</p>
+                  <ul className="mt-2 space-y-1">
+                    <li>• Brand name (e.g., Samsung, Apple, OnePlus)</li>
+                    <li>• Model number (e.g., Galaxy S23, iPhone 14)</li>
+                    <li>• Different spelling or shorter terms</li>
+                  </ul>
+                </div>
+              </div>
             </div>
           )}
       </div>
-    </div>
+
+      {/* Quick Search Suggestions */}
+      <div className="mt-8 text-center">
+        <p className="text-sm text-gray-500 mb-4">Popular searches:</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {[
+            "iPhone 14",
+            "Samsung Galaxy",
+            "OnePlus",
+            "Google Pixel",
+            "Xiaomi",
+          ].map((suggestion) => (
+            <button
+              key={suggestion}
+              onClick={() => {
+                setSearchQuery(suggestion);
+                shouldMaintainFocusRef.current = true;
+                inputRef.current?.focus();
+              }}
+              className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 
+                         rounded-full transition-colors duration-200 hover:shadow-md"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 
