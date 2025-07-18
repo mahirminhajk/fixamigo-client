@@ -55,57 +55,119 @@ export default function Navbar({ city }: NavbarProps) {
   }
 
   return (
-    <header className="bg-white shadow-md z-50">
-      <nav className="container mx-auto flex items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <div>
-          <Image
-            src="/logos/text.png"
-            alt="Logo"
-            width={100}
-            height={40}
-            className="h-8 sm:h-10 w-auto" // Adjusted logo size for smaller screens
-            priority
-          />
-        </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex space-x-6 text-lg font-medium">
-          {desktopNavLinks}
-        </div>
-
-        {/* Icons */}
-        <div className="flex items-center space-x-4">
-          {city && (
-            <div className="flex flex-col items-center text-xs text-gray-700 mr-2">
-              <MapPin className="w-4 h-4 mb-0.5 text-gray-500" />
-              <span className="truncate max-w-[60px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]">
-                {city}
-              </span>
-            </div>
-          )}
-          <Search className="w-6 h-6 cursor-pointer" />
-          <CartBtn />
-          <ProfileBtn />
-          {/* Improved tappable area for Menu icon */}
-          <button
-            onClick={() => setMobileMenuOpen(true)}
-            className="p-2 md:hidden -mr-2" // Added padding, negative margin to maintain alignment
-            aria-label="Open mobile menu"
+    <>
+      {/* Testing Phase Banner */}
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10"></div>
+        <div className="relative z-10">
+          <Link
+            href="/support-request"
+            className="block hover:bg-black/10 transition-colors duration-300 cursor-pointer"
           >
-            <Menu
-              className="w-6 h-6 cursor-pointer"
-            />
-          </button>
-        </div>
-      </nav>
+            <div className="container mx-auto px-4 py-2 sm:px-6 sm:py-3">
+              {/* Mobile Layout */}
+              <div className="flex flex-col sm:hidden text-center gap-1">
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="text-sm font-semibold">
+                    We&apos;re Just Getting Started!
+                  </div>
+                </div>
+                <div className="text-xs opacity-90 leading-tight px-2">
+                  Early version — Your feedback helps us improve!
+                </div>
+              </div>
 
-      {/* Mobile Menu */}
-      <MobileNavMenu
-        menuOpen={mobileMenuOpen}
-        setMenuOpen={setMobileMenuOpen}
-        isRepairSection={isRepairSection} // Pass the flag here
-      />
-    </header>
+              {/* Desktop Layout */}
+              <div className="hidden sm:flex items-center justify-center text-center gap-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="text-base font-semibold">
+                    We&apos;re Just Getting Started!
+                  </div>
+                </div>
+                <div className="w-px h-4 bg-white/30"></div>
+                <div className="text-sm opacity-90">
+                  This is our early version — we&apos;re improving every day.
+                  Your feedback helps us make it better!
+                </div>
+                <div className="flex items-center gap-1 text-xs font-medium bg-white/20 px-3 py-1 rounded-full">
+                  <span>Share Feedback</span>
+                  <svg
+                    className="w-3 h-3"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+        {/* Animated background effect */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent 
+                        transform -skew-x-12 translate-x-[-100%] animate-pulse"
+        ></div>
+      </div>
+
+      <header className="bg-white shadow-md z-50">
+        <nav className="container mx-auto flex items-center justify-between px-6 py-4">
+          {/* Logo */}
+          <div>
+            <Image
+              src="/logos/text.png"
+              alt="Logo"
+              width={100}
+              height={40}
+              className="h-8 sm:h-10 w-auto" // Adjusted logo size for smaller screens
+              priority
+            />
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex space-x-6 text-lg font-medium">
+            {desktopNavLinks}
+          </div>
+
+          {/* Icons */}
+          <div className="flex items-center space-x-4">
+            {city && (
+              <div className="flex flex-col items-center text-xs text-gray-700 mr-2">
+                <MapPin className="w-4 h-4 mb-0.5 text-gray-500" />
+                <span className="truncate max-w-[60px] sm:max-w-[80px] md:max-w-[100px] lg:max-w-[120px]">
+                  {city}
+                </span>
+              </div>
+            )}
+            <Search className="w-6 h-6 cursor-pointer" />
+            <CartBtn />
+            <ProfileBtn />
+            {/* Improved tappable area for Menu icon */}
+            <button
+              onClick={() => setMobileMenuOpen(true)}
+              className="p-2 md:hidden -mr-2" // Added padding, negative margin to maintain alignment
+              aria-label="Open mobile menu"
+            >
+              <Menu className="w-6 h-6 cursor-pointer" />
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile Menu */}
+        <MobileNavMenu
+          menuOpen={mobileMenuOpen}
+          setMenuOpen={setMobileMenuOpen}
+          isRepairSection={isRepairSection} // Pass the flag here
+        />
+      </header>
+    </>
   );
 }
