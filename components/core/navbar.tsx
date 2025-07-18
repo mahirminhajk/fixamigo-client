@@ -57,7 +57,7 @@ export default function Navbar({ city }: NavbarProps) {
   return (
     <>
       {/* Testing Phase Banner */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 text-white relative overflow-hidden">
+      <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10"></div>
         <div className="relative z-10">
           <Link
@@ -68,7 +68,7 @@ export default function Navbar({ city }: NavbarProps) {
               {/* Mobile Layout */}
               <div className="flex flex-col sm:hidden text-center gap-1">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="w-2 h-2 bg-[#D2691E] rounded-full animate-pulse"></div>
                   <div className="text-sm font-semibold">
                     We&apos;re Just Getting Started!
                   </div>
@@ -81,7 +81,7 @@ export default function Navbar({ city }: NavbarProps) {
               {/* Desktop Layout */}
               <div className="hidden sm:flex items-center justify-center text-center gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                  <div className="w-3 h-3 bg-[#D2691E] rounded-full animate-pulse"></div>
                   <div className="text-base font-semibold">
                     We&apos;re Just Getting Started!
                   </div>

@@ -9,8 +9,8 @@ const AvailableServices = () => {
       description:
         "Professional mobile phone repair services for all brands and models.",
       href: "/repair/mobile-phone",
-      gradient: "from-blue-600 to-purple-600",
-      hoverGradient: "hover:from-blue-700 hover:to-purple-700",
+      gradient: "from-[#121212] to-[#D2691E]",
+      hoverGradient: "hover:from-[#D2691E] hover:to-[#121212]",
     },
     {
       imgSrc: "/icons/laptop.png",
@@ -18,8 +18,8 @@ const AvailableServices = () => {
       description:
         "Expert laptop repair services for hardware and software issues.",
       href: "/repair/laptop",
-      gradient: "from-green-600 to-teal-600",
-      hoverGradient: "hover:from-green-700 hover:to-teal-700",
+      gradient: "from-[#D2691E] to-[#121212]",
+      hoverGradient: "hover:from-[#121212] hover:to-[#D2691E]",
     },
   ];
 
@@ -47,7 +47,7 @@ const AvailableServices = () => {
                        rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 
                        transition-all duration-300 ease-in-out 
                        hover:scale-105 hover:-translate-y-2
-                       focus:outline-none focus:ring-4 focus:ring-blue-300
+                       focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                        flex-1 min-h-[220px] md:min-h-[280px] overflow-hidden"
           >
             {/* Background gradient overlay */}

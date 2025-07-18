@@ -45,14 +45,14 @@ const ListRepairCategory = () => {
               key={index}
               className="group relative w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 
                          flex flex-col items-center justify-center
-                         bg-gradient-to-br from-gray-900 via-gray-800 to-black
-                         hover:from-blue-600 hover:via-blue-700 hover:to-blue-800
+                         bg-gradient-to-br from-[#121212] via-gray-800 to-black
+                         hover:from-[#D2691E] hover:via-orange-600 hover:to-orange-800
                          rounded-2xl md:rounded-3xl text-white 
                          shadow-lg hover:shadow-2xl
                          transform transition-all duration-300 ease-in-out 
                          hover:scale-110 hover:-translate-y-1
-                         focus:outline-none focus:ring-4 focus:ring-blue-300
-                         border border-gray-700 hover:border-blue-400"
+                         focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
+                         border border-gray-700 hover:border-[#D2691E]"
             >
               {/* Gradient overlay for extra depth */}
               <div

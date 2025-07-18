@@ -15,8 +15,8 @@ import { formatDate } from "@/lib/utils";
 const GreenCircle = () => (
   <div className="w-5 h-5 rounded-full bg-green-500"></div>
 );
-const BlueCircle = () => (
-  <div className="w-5 h-5 rounded-full border-3 bg-blue-500"></div>
+const OrangeCircle = () => (
+  <div className="w-5 h-5 rounded-full border-3 bg-[#D2691E]"></div>
 );
 const RedCircle = () => (
   <div className="w-5 h-5 rounded-full border-4 border-red-500"></div>
@@ -132,11 +132,14 @@ export default function Page() {
                     <Skeleton className="h-4 w-32 mb-2" /> {/* Date */}
                     <div className="grid grid-cols-2 gap-y-3 text-gray-600 text-sm">
                       <Skeleton className="h-4 w-20" /> {/* Label */}
-                      <Skeleton className="h-4 w-28 justify-self-end" /> {/* Value */}
+                      <Skeleton className="h-4 w-28 justify-self-end" />{" "}
+                      {/* Value */}
                       <Skeleton className="h-4 w-16" /> {/* Label */}
-                      <Skeleton className="h-4 w-24 justify-self-end" /> {/* Value */}
+                      <Skeleton className="h-4 w-24 justify-self-end" />{" "}
+                      {/* Value */}
                       <Skeleton className="h-4 w-12" /> {/* Label */}
-                      <Skeleton className="h-4 w-20 justify-self-end" /> {/* Value */}
+                      <Skeleton className="h-4 w-20 justify-self-end" />{" "}
+                      {/* Value */}
                     </div>
                   </div>
                 ))}
@@ -185,7 +188,7 @@ export default function Page() {
                           service.status === OrderStatus.REJECTED ? (
                           <RedCircle />
                         ) : (
-                          <BlueCircle />
+                          <OrangeCircle />
                         )}
                         <h2 className="text-gray-900 font-bold">
                           {service.status}

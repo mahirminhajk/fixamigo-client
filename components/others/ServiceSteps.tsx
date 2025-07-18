@@ -7,35 +7,35 @@ const ServiceSteps = () => {
       imgSrc: "/steps-icons/rupee.png",
       title: "Check Price",
       description: "Choose your device for repair and get the best price.",
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
+      color: "from-[#D2691E] to-orange-600",
+      bgColor: "bg-orange-50",
+      borderColor: "border-orange-200",
     },
     {
       imgSrc: "/steps-icons/calender.png",
       title: "Schedule Service",
       description: "Schedule your repair at a convenient date.",
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200",
+      color: "from-[#121212] to-gray-700",
+      bgColor: "bg-gray-50",
+      borderColor: "border-gray-200",
     },
     {
       imgSrc: "/steps-icons/spannertool.png",
       title: "Diagnosis & Fix",
       description:
         "Identify the issue and get it fixed quickly by our experts.",
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-200",
+      color: "from-[#D2691E] to-orange-600",
+      bgColor: "bg-orange-50",
+      borderColor: "border-orange-200",
     },
     {
       imgSrc: "/steps-icons/handbox.png",
       title: "Delivered to You",
       description:
         "Get your repaired device safely delivered to your doorstep.",
-      color: "from-orange-500 to-orange-600",
-      bgColor: "bg-orange-50",
-      borderColor: "border-orange-200",
+      color: "from-[#121212] to-gray-700",
+      bgColor: "bg-gray-50",
+      borderColor: "border-gray-200",
     },
   ];
 
@@ -62,7 +62,7 @@ const ServiceSteps = () => {
                        rounded-xl md:rounded-2xl p-3 md:p-6 lg:p-8 
                        transition-all duration-300 ease-in-out 
                        hover:scale-105 hover:-translate-y-2
-                       focus:outline-none focus:ring-4 focus:ring-blue-300
+                       focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                        min-h-[200px] md:min-h-[240px] lg:min-h-[280px] overflow-hidden`}
             tabIndex={0}
           >
@@ -149,20 +149,20 @@ const ServiceSteps = () => {
         <div className="relative inline-block">
           {/* Animated background */}
           <div
-            className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 
+            className="absolute inset-0 bg-gradient-to-r from-[#D2691E] via-[#121212] to-[#D2691E] 
                           rounded-2xl blur-sm opacity-75 animate-pulse"
           ></div>
 
           <Link
             href="/repair"
             className="relative inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 
-                       bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 
-                       hover:from-blue-700 hover:via-purple-700 hover:to-blue-700
+                       bg-gradient-to-r from-[#D2691E] via-[#121212] to-[#D2691E] 
+                       hover:from-[#121212] hover:via-[#D2691E] hover:to-[#121212]
                        text-white font-bold rounded-2xl
                        shadow-xl hover:shadow-2xl
                        transform transition-all duration-300
                        hover:scale-105 hover:-translate-y-1
-                       focus:outline-none focus:ring-4 focus:ring-blue-300
+                       focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                        text-sm md:text-base
                        before:absolute before:inset-0 before:bg-gradient-to-r 
                        before:from-white/20 before:to-transparent before:rounded-2xl

@@ -55,7 +55,7 @@ const BrandsList = ({
             <div className="relative group">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                 <svg
-                  className="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-200"
+                  className="h-5 w-5 text-gray-400 group-focus-within:text-[#D2691E] transition-colors duration-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -75,12 +75,12 @@ const BrandsList = ({
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200 
                            rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
-                           focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100
+                           focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
                            placeholder-gray-400 transition-all duration-300 ease-in-out"
               />
               {/* Focus ring effect */}
               <div
-                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-400 to-purple-400 
+                className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#D2691E] to-[#121212] 
                               opacity-0 group-focus-within:opacity-20 transition-opacity duration-300 -z-10 blur-xl"
               ></div>
             </div>
@@ -118,7 +118,7 @@ const BrandsList = ({
             )}
             <button
               onClick={() => setSearchTerm("")}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium 
+              className="px-6 py-3 bg-[#D2691E] hover:bg-[#121212] text-white font-medium 
                          rounded-xl transition-colors duration-200"
             >
               Clear Search
@@ -138,14 +138,14 @@ const BrandsList = ({
                            flex flex-col items-center justify-center text-center p-4 md:p-6
                            transition-all duration-300 ease-in-out 
                            hover:shadow-2xl hover:scale-105 hover:-translate-y-1
-                           hover:border-blue-300 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50
-                           focus:outline-none focus:ring-4 focus:ring-blue-300 focus:ring-opacity-50 
+                           hover:border-[#D2691E] hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
+                           focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 focus:ring-opacity-50 
                            aspect-[4/3] min-h-[120px] relative overflow-hidden"
               >
                 {/* Background gradient overlay */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-br from-blue-600/0 to-purple-600/0 
-                                group-hover:from-blue-600/5 group-hover:to-purple-600/5 
+                  className="absolute inset-0 bg-gradient-to-br from-[#D2691E]/0 to-[#121212]/0 
+                                group-hover:from-[#D2691E]/5 group-hover:to-[#121212]/5 
                                 transition-all duration-300 rounded-2xl"
                 ></div>
 
@@ -177,7 +177,7 @@ const BrandsList = ({
                 {/* Brand name */}
                 <p
                   className="relative z-10 text-sm md:text-base font-semibold text-gray-800 
-                               group-hover:text-blue-700 transition-colors duration-300
+                               group-hover:text-[#D2691E] transition-colors duration-300
                                leading-tight"
                 >
                   {brand.name}
@@ -185,12 +185,12 @@ const BrandsList = ({
 
                 {/* Hover indicator */}
                 <div
-                  className="absolute bottom-2 right-2 w-6 h-6 bg-blue-100 rounded-full 
+                  className="absolute bottom-2 right-2 w-6 h-6 bg-orange-100 rounded-full 
                                 flex items-center justify-center opacity-0 
                                 group-hover:opacity-100 transition-opacity duration-300"
                 >
                   <svg
-                    className="w-3 h-3 text-blue-600"
+                    className="w-3 h-3 text-[#D2691E]"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth="2"
@@ -214,20 +214,20 @@ const BrandsList = ({
             <div className="relative inline-block">
               {/* Glowing background effect */}
               <div
-                className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 
+                className="absolute inset-0 bg-gradient-to-r from-[#D2691E] to-[#121212] 
                               rounded-2xl blur-lg opacity-30 animate-pulse scale-105"
               ></div>
 
               <Link href={`/repair/${category}`} legacyBehavior>
                 <a
                   className="relative inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 py-3 md:py-4 
-                             bg-gradient-to-r from-blue-600 to-purple-600 
-                             hover:from-blue-700 hover:to-purple-700
+                             bg-gradient-to-r from-[#D2691E] to-[#121212] 
+                             hover:from-[#121212] hover:to-[#D2691E]
                              text-white font-bold rounded-2xl text-sm md:text-base
                              shadow-xl hover:shadow-2xl
                              transform transition-all duration-300
                              hover:scale-105 hover:-translate-y-1
-                             focus:outline-none focus:ring-4 focus:ring-blue-300
+                             focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                              overflow-hidden group
                              before:absolute before:inset-0 before:bg-gradient-to-r 
                              before:from-white/0 before:via-white/20 before:to-white/0
@@ -279,19 +279,19 @@ const BrandsList = ({
               href="/support-request?type=brand"
               className="group flex items-center w-full max-w-lg 
                          bg-white border-2 border-gray-200 rounded-2xl shadow-lg 
-                         p-6 md:p-8 hover:shadow-2xl hover:border-blue-300
-                         hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50
+                         p-6 md:p-8 hover:shadow-2xl hover:border-[#D2691E]
+                         hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
                          transition-all duration-300 hover:scale-105
-                         focus:outline-none focus:ring-4 focus:ring-blue-300"
+                         focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50"
             >
               <div
-                className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-2xl 
+                className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-2xl 
                               flex items-center justify-center
-                              group-hover:bg-blue-200 transition-colors duration-300"
+                              group-hover:bg-orange-200 transition-colors duration-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 text-blue-600"
+                  className="w-6 h-6 text-[#D2691E]"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -307,7 +307,7 @@ const BrandsList = ({
               <div className="ml-6 text-left flex-1">
                 <h3
                   className="text-lg md:text-xl font-semibold text-gray-900 mb-1
-                               group-hover:text-blue-700 transition-colors duration-300"
+                               group-hover:text-[#D2691E] transition-colors duration-300"
                 >
                   Your brand not listed?
                 </h3>
@@ -317,7 +317,7 @@ const BrandsList = ({
               </div>
               <div className="ml-4">
                 <svg
-                  className="w-6 h-6 text-gray-400 group-hover:text-blue-600 
+                  className="w-6 h-6 text-gray-400 group-hover:text-[#D2691E] 
                                 transform transition-all duration-300 group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
