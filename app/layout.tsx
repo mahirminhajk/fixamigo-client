@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Head from "next/head";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 
 const tahoma = localFont({
   src: [
@@ -19,9 +19,55 @@ const tahoma = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Fixamigo",
+  title:
+    "FixAmigo - Mobile Phone Repair Services in Kerala | 24/7 Doorstep Service",
   description:
-    "Need to repair your mobile phone or laptop? FixAmigo has you covered! We offer hassle-free pickup, expert repair, and secure delivery—bringing your device back to life with full protection guaranteed!",
+    "Professional mobile phone repair services across Kerala. Expert technicians, genuine parts, doorstep service. iPhone, Samsung, OnePlus repairs with warranty.",
+  keywords:
+    "mobile repair Kerala, phone repair doorstep, iPhone repair, Samsung repair, OnePlus repair, smartphone repair service",
+  metadataBase: new URL("https://fixamigo.com"),
+  alternates: {
+    canonical: "https://fixamigo.com",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: "https://fixamigo.com",
+    siteName: "FixAmigo",
+    title: "FixAmigo - Mobile Phone Repair Services in Kerala",
+    description:
+      "Professional mobile phone repair services across Kerala. Expert technicians, genuine parts, doorstep service.",
+    images: [
+      {
+        url: "/logos/logo.png",
+        width: 800,
+        height: 600,
+        alt: "FixAmigo Mobile Repair Service",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FixAmigo - Mobile Phone Repair Services in Kerala",
+    description:
+      "Professional mobile phone repair services across Kerala. Expert technicians, genuine parts, doorstep service.",
+    images: ["/logos/logo.png"],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+  },
+  manifest: "/site.webmanifest",
+  other: {
+    "google-site-verification": "VGa8ZI1Xv3dCNJBd9PjcGJNnmQQz9wTNZCVSMQ3QKOk",
+  },
+  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({
@@ -31,31 +77,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Head>
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
+      <GoogleAnalytics />
+      <body className={`${tahoma.className} antialiased`}>
+        {children}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3163056550133556"
+          crossOrigin="anonymous"
         />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-        {/* Optional meta tags */}
-        <meta name="theme-color" content="#121212" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <body className={`${tahoma.className} antialiased`}>{children}</body>
+      </body>
     </html>
   );
 }
