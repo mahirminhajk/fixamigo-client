@@ -2,7 +2,7 @@
 
 ## Quick Route Reference
 
-### 🌐 Public Routes (In Sitemap)
+### 🌐 Public Routes (In Sitemap & Robots.txt)
 
 #### Static Routes
 
@@ -19,7 +19,7 @@
 /repair/mobile-phone/{brand}/{device}      # Device pages (Priority: 0.6)
 ```
 
-### 🔒 Private Routes (Excluded from Sitemap)
+### 🔒 Private Routes (Excluded from Sitemap & Blocked in Robots.txt)
 
 #### User-Specific Pages
 
@@ -27,6 +27,38 @@
 - `/my-services` - User's services (Client-side)
 - `/my-services/summary` - Order summary (Client-side)
 - `/repair/checkout` - Checkout process (Client-side)
+
+## Robots.txt Configuration
+
+### 🤖 **Allowed Routes**
+
+- **Homepage**: `/`
+- **City Pages**: `/malappuram`, `/kottakkal`, `/kondotty`, `/tirur`, `/ponnani`, `/perinthalmanna`
+- **Repair Categories**: `/repair/mobile-phone`, `/repair/display`, `/repair/ports`, `/repair/battery`, `/repair/camera`, `/repair/speaker`
+- **Brand & Device Pages**: `/repair/mobile-phone/*`
+- **Support**: `/support-request`
+- **Static Assets**: `/*.png`, `/*.jpg`, `/*.jpeg`, `/*.webp`, `/*.svg`, `/brands/*`, `/fonts/*`, `/icons/*`
+
+### 🚫 **Blocked Routes**
+
+- **API Endpoints**: `/api/*`
+- **User Pages**: `/cart`, `/my-services`, `/my-services/*`, `/repair/checkout`
+- **System Files**: `/_next/*`, `/admin/*`, `/*.json$`, `/private/*`
+- **Tracking URLs**: `/*?utm_*`, `/*?fbclid=*`, `/*?gclid=*`, `/*?ref=*`
+- **Development**: `/temp/*`, `/backup/*`, `/.env*`, `/node_modules/*`
+
+### 🔒 **Subdomain Blocking**
+
+- **API Subdomain**: `api.fixamigo.com` - Completely blocked
+- **Provider Subdomain**: `provider.fixamigo.com` - Completely blocked
+- **Admin Subdomain**: `admin.fixamigo.com` - Completely blocked
+- **Staging/Dev**: `staging.fixamigo.com`, `dev.fixamigo.com` - Completely blocked
+
+### 🕷️ **Bot-Specific Rules**
+
+- **Googlebot**: 0.5 second crawl delay, priority access
+- **Bingbot**: 1 second crawl delay, standard access
+- **Aggressive Scrapers**: Blocked (SemrushBot, AhrefsBot, MJ12bot, DotBot, etc.)
 
 ## Sitemap Generation Details
 
