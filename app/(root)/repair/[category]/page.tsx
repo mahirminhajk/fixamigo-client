@@ -1,8 +1,12 @@
 import { brands, repairCategory } from "@/constants";
 import { Metadata } from "next";
-import { getCategoryMetadata } from "@/lib/seo/categoryMetadata";
+import {
+  getCategoryMetadata,
+  getCategoryStructuredData,
+} from "@/lib/seo/categoryMetadata";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 
 // Static Generation
 export async function generateStaticParams() {
@@ -32,47 +36,62 @@ export default async function Page({
   const { category } = await params;
   const categoryName =
     repairCategory.find((cat) => cat.slug === category)?.name || "Repair";
+  const structuredData = getCategoryStructuredData(category);
 
   return (
-    <section className="max-w-5xl mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-4 capitalize">
-        {categoryName} Repair - Choose Your Brand
-      </h1>
-      <p className="text-gray-600 mb-6">
-        Fix your phone&apos;s {categoryName.toLowerCase()} with trusted service
-        providers. Select your brand below to find compatible devices we support
-        for this repair type.
-      </p>
+    <>
+      {/* JSON-LD Structured Data for Category */}
+      <Script
+        id="category-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-        {brands.map((brand) => (
-          <Link
-            key={brand.slug}
-            href={`/repair/mobile-phone/${brand.slug}`}
-            className="border rounded-xl shadow-sm hover:shadow-lg transition flex flex-col items-center p-4"
-          >
-            <Image
-              src={brand.image}
-              alt={brand.name}
-              width={80}
-              height={80}
-              className="mb-2"
-            />
-            <span className="font-medium text-center">{brand.name}</span>
-          </Link>
-        ))}
-      </div>
-
-      <div className="mt-10 text-sm text-gray-500">
-        <p>
-          Can&apos;t find your brand?{" "}
-          <Link href="/repair/mobile-phone" className="text-blue-600 underline">
-            View all supported brands
-          </Link>
-          .
+      <section className="max-w-5xl mx-auto py-10 px-4">
+        <h1 className="text-3xl font-bold mb-4 capitalize">
+          {categoryName} Repair - Choose Your Brand
+        </h1>
+        <p className="text-gray-600 mb-6">
+          Fix your phone&apos;s {categoryName.toLowerCase()} with trusted
+          service providers. Select your brand below to find compatible devices
+          we support for this repair type.
         </p>
-      </div>
-    </section>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+          {brands.map((brand) => (
+            <Link
+              key={brand.slug}
+              href={`/repair/mobile-phone/${brand.slug}`}
+              className="border rounded-xl shadow-sm hover:shadow-lg transition flex flex-col items-center p-4"
+            >
+              <Image
+                src={brand.image}
+                alt={brand.name}
+                width={80}
+                height={80}
+                className="mb-2"
+              />
+              <span className="font-medium text-center">{brand.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-10 text-sm text-gray-500">
+          <p>
+            Can&apos;t find your brand?{" "}
+            <Link
+              href="/repair/mobile-phone"
+              className="text-blue-600 underline"
+            >
+              View all supported brands
+            </Link>
+            .
+          </p>
+        </div>
+      </section>
+    </>
   );
 }
 

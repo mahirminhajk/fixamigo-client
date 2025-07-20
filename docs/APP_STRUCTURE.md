@@ -196,6 +196,33 @@ INFO: {phone, email, address, social links, etc.}
 - **Device Routes**: Medium priority (0.6)
 - **Dynamic Content**: Fetched at build time via API
 
+### SEO Metadata (`lib/seo/`)
+
+- `homepageMetadata.ts` - Homepage SEO and structured data
+- `cityMetadata.ts` - City-specific SEO
+- `categoryMetadata.ts` - Category SEO
+- `deviceMetadata.ts` - Device SEO
+- `listBrandMetadata.ts` - Brand SEO
+
+## SEO Strategy
+
+### Homepage Metadata (`lib/seo/homepageMetadata.ts`)
+
+- **Comprehensive SEO**: Title, description, keywords, Open Graph, Twitter cards
+- **Local SEO**: Geographic metadata, business information, service areas
+- **Structured Data**: JSON-LD for LocalBusiness, Website, and Organization schemas
+- **Technical SEO**: Robots directives, canonical URLs, verification codes
+- **Performance**: Theme colors, viewport settings, application metadata
+
+### Structured Data Implementation
+
+```typescript
+// LocalBusiness schema for local SEO
+// Website schema for search functionality
+// Organization schema for brand recognition
+// Service offerings with detailed descriptions
+```
+
 ### Metadata Generation
 
 - City-specific metadata for local SEO

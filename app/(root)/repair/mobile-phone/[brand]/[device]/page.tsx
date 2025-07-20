@@ -1,11 +1,15 @@
 import DeviceDetailsContent from "@/components/contents/DeviceDetailsContent";
 import { brands } from "@/constants";
-import { getDeviceMetadata } from "@/lib/seo/deviceMetadata";
+import {
+  getDeviceMetadata,
+  getDeviceStructuredData,
+} from "@/lib/seo/deviceMetadata";
 import { IDevice } from "@/types/device";
 import { Metadata } from "next";
 import { fetchDeviceBySlug, fetchDevicesByBrand } from "@/lib/apiService";
 import React from "react";
 import DeviceCartBarClient from "@/components/pageSpecific/DeviceCartBarClient";
+import Script from "next/script";
 
 // Static Generation
 export const revalidate = false;
@@ -56,9 +60,9 @@ const getData = async (deviceSlug: string) => {
 export default async function Page({
   params,
 }: {
-  params: Promise<{ device: string }>;
+  params: Promise<{ device: string; brand: string }>;
 }) {
-  const { device } = await params;
+  const { device, brand } = await params;
   const deviceData: IDevice | null = await getData(device);
 
   if (!deviceData) {
@@ -69,13 +73,27 @@ export default async function Page({
     );
   }
 
+  // Generate structured data for this device
+  const structuredData = getDeviceStructuredData(deviceData, brand, device);
+
   return (
-    <main className="relative min-h-screen bg-gray-50 lg:bg-white">
-      <section className="lg:py-8">
-        <DeviceDetailsContent deviceData={deviceData} />
-      </section>
-      {/* --- Cart Bar Client Component --- */}
-      <DeviceCartBarClient />
-    </main>
+    <>
+      {/* JSON-LD Structured Data for Device */}
+      <Script
+        id="device-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+
+      <main className="relative min-h-screen bg-gray-50 lg:bg-white">
+        <section className="lg:py-8">
+          <DeviceDetailsContent deviceData={deviceData} />
+        </section>
+        {/* --- Cart Bar Client Component --- */}
+        <DeviceCartBarClient />
+      </main>
+    </>
   );
 }

@@ -2,7 +2,8 @@ import Carousel from "@/components/others/carousel";
 import ListRepairCategory from "@/components/list/listRepairCategory";
 import BrandsList from "@/components/list/brandsList";
 import { supportCities } from "@/constants";
-import { getCityMetadata } from "@/lib/seo/cityMetadata";
+import { getCityMetadata, getCityStructuredData } from "@/lib/seo/cityMetadata";
+import Script from "next/script";
 
 // Static Generation
 export const dynamicParams = false;
@@ -23,13 +24,27 @@ export async function generateMetadata({
   return getCityMetadata(city);
 }
 
-const CityHome = () => {
+const CityHome = async ({ params }: { params: Promise<{ city: string }> }) => {
+  const { city } = await params;
+  const structuredData = getCityStructuredData(city);
+
   return (
-    <section>
-      <Carousel />
-      <ListRepairCategory />
-      <BrandsList variant="min" />
-    </section>
+    <>
+      {/* JSON-LD Structured Data for City */}
+      <Script
+        id="city-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData),
+        }}
+      />
+
+      <section>
+        <Carousel />
+        <ListRepairCategory />
+        <BrandsList variant="min" />
+      </section>
+    </>
   );
 };
 
