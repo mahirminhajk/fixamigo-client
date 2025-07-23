@@ -3,6 +3,7 @@ import AddToCartBtn from "../buttons/addToCartBtn";
 import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { ICartDevice, ISparePart } from "@/types";
 import Link from "next/link";
+import PriceRangeInfo from "./PriceRangeInfo";
 
 interface ListSparePartsProps {
   spareParts: ISparePart[];
@@ -10,10 +11,18 @@ interface ListSparePartsProps {
 }
 
 function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
+  // Check if any spare part has price range
+  const hasPriceRange = spareParts.some(
+    (item) => item.price.range && item.price.startPrice && item.price.endPrice
+  );
+
   return (
     <>
       <div className="w-full max-w-md mx-auto lg:max-w-none p-4">
-        <h2 className="text-lg font-bold mb-2">SPARE PARTS</h2>
+        <div className="flex items-center justify-between mb-2">
+          <h2 className="text-lg font-bold">SPARE PARTS</h2>
+          <PriceRangeInfo hasPriceRange={hasPriceRange} />
+        </div>
         <hr className="bg-black mb-4" />
 
         {/* Mobile Layout - Single Column */}
@@ -43,11 +52,31 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                         )}
                         %
                       </span>
-                      <span className="line-through text-gray-500">
-                        ₹{item.price.total}
-                      </span>
-                      <span className="text-black font-bold">
-                        ₹{item.price.final}
+                      {!(
+                        item.price.range &&
+                        item.price.startPrice &&
+                        item.price.endPrice
+                      ) && (
+                        <span className="line-through text-gray-500">
+                          ₹{item.price.total}
+                        </span>
+                      )}
+                      <span
+                        className="font-bold"
+                        style={{
+                          color:
+                            item.price.range &&
+                            item.price.startPrice &&
+                            item.price.endPrice
+                              ? "#D2691E"
+                              : "black",
+                        }}
+                      >
+                        {item.price.range &&
+                        item.price.startPrice &&
+                        item.price.endPrice
+                          ? `₹${item.price.startPrice} - ₹${item.price.endPrice}`
+                          : `₹${item.price.final}`}
                       </span>
                     </div>
                   </div>
@@ -92,12 +121,32 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                         )}
                         %
                       </span>
-                      <span className="line-through text-gray-500">
-                        ₹{item.price.total}
-                      </span>
+                      {!(
+                        item.price.range &&
+                        item.price.startPrice &&
+                        item.price.endPrice
+                      ) && (
+                        <span className="line-through text-gray-500">
+                          ₹{item.price.total}
+                        </span>
+                      )}
                     </div>
-                    <span className="text-black font-bold">
-                      ₹{item.price.final}
+                    <span
+                      className="font-bold"
+                      style={{
+                        color:
+                          item.price.range &&
+                          item.price.startPrice &&
+                          item.price.endPrice
+                            ? "#D2691E"
+                            : "black",
+                      }}
+                    >
+                      {item.price.range &&
+                      item.price.startPrice &&
+                      item.price.endPrice
+                        ? `₹${item.price.startPrice} - ₹${item.price.endPrice}`
+                        : `₹${item.price.final}`}
                     </span>
                   </div>
                   <AddToCartBtn sparePart={item} cartDevice={cartDevice} />

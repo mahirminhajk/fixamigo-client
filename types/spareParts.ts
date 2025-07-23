@@ -7,5 +7,8 @@ export interface ISparePart {
     total: number;
     repair: number;
     final: number;
+    range?: boolean;
+    startPrice?: number;
+    endPrice?: number;
   };
 }
