@@ -18,6 +18,7 @@ interface CartState {
   isInCart: (deviceId: string, sparePartId: string) => boolean;
   isCartEmpty: () => boolean;
   getTotalPrice: (deviceId?: string) => number;
+  hasRangeItems: (deviceId?: string) => boolean;
   clearCart: () => void;
 }
 
@@ -101,16 +102,50 @@ export const useCartStore = create<CartState>()(
           // Return total for a specific device
           const item = cart.items.find((item) => item.device._id === deviceId);
           if (!item || !Array.isArray(item.spareParts)) return 0;
-          return item.spareParts.reduce((sum, sp) => sum + sp.price.final, 0);
+          return item.spareParts.reduce((sum, sp) => {
+            // Use endPrice if it's a range, otherwise use final price
+            const price =
+              sp.price.range && sp.price.endPrice
+                ? sp.price.endPrice
+                : sp.price.final;
+            return sum + price;
+          }, 0);
         }
         // Return total for all devices (fallback)
         return cart.items.reduce(
           (acc, item) =>
             acc +
             (Array.isArray(item.spareParts)
-              ? item.spareParts.reduce((sum, sp) => sum + sp.price.final, 0)
+              ? item.spareParts.reduce((sum, sp) => {
+                  // Use endPrice if it's a range, otherwise use final price
+                  const price =
+                    sp.price.range && sp.price.endPrice
+                      ? sp.price.endPrice
+                      : sp.price.final;
+                  return sum + price;
+                }, 0)
               : 0),
           0
+        );
+      },
+
+      hasRangeItems: (deviceId?: string) => {
+        const cart = get().cart;
+        if (!cart || !Array.isArray(cart.items) || cart.items.length === 0)
+          return false;
+        if (deviceId) {
+          // Check for a specific device
+          const item = cart.items.find((item) => item.device._id === deviceId);
+          if (!item || !Array.isArray(item.spareParts)) return false;
+          return item.spareParts.some(
+            (sp) => sp.price.range && sp.price.endPrice
+          );
+        }
+        // Check for all devices (fallback)
+        return cart.items.some(
+          (item) =>
+            Array.isArray(item.spareParts) &&
+            item.spareParts.some((sp) => sp.price.range && sp.price.endPrice)
         );
       },
 

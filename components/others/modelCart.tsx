@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 function ModelCart() {
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
+  const hasRangeItems = useCartStore((state) => state.hasRangeItems);
   const pathname = usePathname();
 
   // Extract deviceSlug from the URL (assuming /repair/mobile-phone/[brand]/[deviceSlug])
@@ -24,6 +25,9 @@ function ModelCart() {
   const cartItem = cart.items?.find((item) => item.device.slug === deviceSlug);
   if (!cartItem) return null;
 
+  const hasRangeItemsForDevice = hasRangeItems(cartItem.device._id);
+  const totalPrice = getTotalPrice(cartItem.device._id);
+
   return (
     <div className="p-6 bg-white rounded-[6px] shadow-sm max-w-md mx-auto lg:max-w-none lg:shadow-md">
       <h2 className="text-lg font-semibold mt-6 lg:mt-0 mb-3">Price Summary</h2>
@@ -37,7 +41,9 @@ function ModelCart() {
                 <div key={item._id} className="flex justify-between text-sm">
                   <span className="text-gray-700">{item.label}</span>
                   <span className="text-gray-900 font-medium">
-                    ₹{item.price.final}
+                    {item.price.range && item.price.endPrice
+                      ? `₹${item.price.endPrice}*`
+                      : `₹${item.price.final}`}
                   </span>
                 </div>
               ))}
@@ -52,7 +58,11 @@ function ModelCart() {
                 className="flex justify-between text-gray-600 mb-2"
               >
                 <span>{item.label}</span>
-                <span className="text-gray-900">₹{item.price.final}</span>
+                <span className="text-gray-900">
+                  {item.price.range && item.price.endPrice
+                    ? `₹${item.price.endPrice}*`
+                    : `₹${item.price.final}`}
+                </span>
               </div>
             ))}
           </div>
@@ -65,10 +75,25 @@ function ModelCart() {
 
       <div className="flex justify-between font-semibold text-lg">
         <span>Total Price</span>
-        <span className="text-blue-600">
-          ₹{getTotalPrice(cartItem.device._id)}
+        <span
+          className={hasRangeItemsForDevice ? "font-semibold" : "text-blue-600"}
+          style={{
+            color: hasRangeItemsForDevice ? "#D2691E" : undefined,
+          }}
+        >
+          ₹{totalPrice}
+          {hasRangeItemsForDevice ? "*" : ""}
         </span>
       </div>
+
+      {hasRangeItemsForDevice && (
+        <div className="mt-2 text-xs" style={{ color: "#D2691E" }}>
+          <p>
+            * Maximum estimated price. Final price will be confirmed by service
+            partner.
+          </p>
+        </div>
+      )}
 
       {/* Desktop: Add some additional info */}
       <div className="hidden lg:block mt-4 text-xs text-gray-500">

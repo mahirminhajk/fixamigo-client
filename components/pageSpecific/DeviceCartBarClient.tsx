@@ -9,6 +9,7 @@ export default function DeviceCartBarClient() {
   // Hydrate cart state for SSR/CSR safety
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
+  const hasRangeItems = useCartStore((state) => state.hasRangeItems);
   const isCartEmpty = useCartStore((state) => state.isCartEmpty);
   const pathname = usePathname();
 
@@ -30,6 +31,7 @@ export default function DeviceCartBarClient() {
   if (!cartItem) return null;
 
   const total = getTotalPrice(cartItem.device._id);
+  const hasRangeItemsForDevice = hasRangeItems(cartItem.device._id);
   if (total === 0) return null;
 
   return (
@@ -44,7 +46,20 @@ export default function DeviceCartBarClient() {
       {/* Mobile Layout - Full width bottom bar */}
       <div className="lg:hidden w-full max-w-[500px] bg-white py-3 px-4 border shadow-md flex justify-between items-center rounded-t-[12px] pointer-events-auto">
         <div className="flex flex-col justify-between h-full">
-          <p className="text-black font-bold text-xl mb-1">₹{total}</p>
+          <p
+            className="font-bold text-xl mb-1"
+            style={{
+              color: hasRangeItemsForDevice ? "#D2691E" : "black",
+            }}
+          >
+            ₹{total}
+            {hasRangeItemsForDevice ? "*" : ""}
+          </p>
+          {hasRangeItemsForDevice && (
+            <p className="text-xs mb-1" style={{ color: "#D2691E" }}>
+              Max estimated price
+            </p>
+          )}
           <p className="text-gray-600 text-xs mt-2">
             By clicking <span className="font-semibold">Book now</span>, you
             agree with our{" "}
@@ -75,7 +90,20 @@ export default function DeviceCartBarClient() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm text-gray-600">Total Amount</p>
-              <p className="text-black font-bold text-2xl">₹{total}</p>
+              <p
+                className="font-bold text-2xl"
+                style={{
+                  color: hasRangeItemsForDevice ? "#D2691E" : "black",
+                }}
+              >
+                ₹{total}
+                {hasRangeItemsForDevice ? "*" : ""}
+              </p>
+              {hasRangeItemsForDevice && (
+                <p className="text-xs" style={{ color: "#D2691E" }}>
+                  Max estimated price
+                </p>
+              )}
             </div>
             <div className="text-right">
               <p className="text-xs text-gray-500 mb-1">
