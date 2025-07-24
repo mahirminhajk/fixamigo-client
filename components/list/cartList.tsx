@@ -3,15 +3,18 @@ import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { useCartStore } from "@/stores/cartStore";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "../ui/button";
 import { MdDelete } from "react-icons/md";
 import BookNowCartBtn from "../buttons/bookNowCartBtn";
+import PriceRangeInfo from "./PriceRangeInfo";
 
 const CartList = () => {
   const cart = useHydratedStore(useCartStore, (state) => state.cart);
   const clearCart = useCartStore((state) => state.clearCart);
   const removeFromCart = useCartStore((state) => state.removeFromCart);
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
+  const hasRangeItems = useCartStore((state) => state.hasRangeItems);
 
   if (!cart || !Array.isArray(cart.items) || cart.items.length === 0)
     return null;
@@ -33,9 +36,21 @@ const CartList = () => {
                   height={40}
                   className="rounded-md border bg-white object-contain"
                 />
-                <h3 className="font-semibold text-lg text-black">
-                  {cartItem.device.name}
-                </h3>
+                <div className="flex flex-col">
+                  <Link
+                    href={`/repair/mobile-phone/${cartItem.device.company.toLowerCase()}/${
+                      cartItem.device.slug
+                    }`}
+                    className="font-semibold text-lg text-black hover:text-blue-600 transition-colors"
+                  >
+                    {cartItem.device.name}
+                  </Link>
+                  {hasRangeItems(cartItem.device._id) && (
+                    <PriceRangeInfo
+                      hasPriceRange={hasRangeItems(cartItem.device._id)}
+                    />
+                  )}
+                </div>
               </div>
               <Button
                 variant="ghost"
@@ -68,19 +83,41 @@ const CartList = () => {
                     <div className="flex-1 text-sm">
                       <p className="text-gray-800 font-medium">{item.label}</p>
                       <div className="flex items-center space-x-2">
-                        <span className="text-blue-600 font-semibold">
-                          -
-                          {getDiscountPercentage(
-                            item.price.total,
-                            item.price.final
-                          )}
-                          %
-                        </span>
-                        <span className="text-gray-400 line-through">
-                          ₹{item.price.total}
-                        </span>
-                        <span className="text-black font-bold">
-                          ₹{item.price.final}
+                        {!(
+                          item.price.range &&
+                          item.price.startPrice &&
+                          item.price.endPrice
+                        ) && (
+                          <>
+                            <span className="text-blue-600 font-semibold">
+                              -
+                              {getDiscountPercentage(
+                                item.price.total,
+                                item.price.final
+                              )}
+                              %
+                            </span>
+                            <span className="text-gray-400 line-through">
+                              ₹{item.price.total}
+                            </span>
+                          </>
+                        )}
+                        <span
+                          className="font-bold"
+                          style={{
+                            color:
+                              item.price.range &&
+                              item.price.startPrice &&
+                              item.price.endPrice
+                                ? "#D2691E"
+                                : "black",
+                          }}
+                        >
+                          {item.price.range &&
+                          item.price.startPrice &&
+                          item.price.endPrice
+                            ? `₹${item.price.startPrice} - ₹${item.price.endPrice}*`
+                            : `₹${item.price.final}`}
                         </span>
                       </div>
                     </div>
@@ -108,32 +145,61 @@ const CartList = () => {
                     key={item._id}
                     className="flex justify-between text-gray-600 text-sm mb-1"
                   >
-                    <span>{item.name.toLowerCase()}</span>
-                    <span className="font-medium">₹{item.price.final}</span>
+                    <span>{item.label.toLowerCase()}</span>
+                    <span className="font-medium">
+                      {item.price.range &&
+                      item.price.startPrice &&
+                      item.price.endPrice
+                        ? `₹${item.price.startPrice} - ₹${item.price.endPrice}*`
+                        : `₹${item.price.final}`}
+                    </span>
                   </div>
                 ))}
               </div>
               <hr className="border-dashed my-2" />
               <div className="flex justify-between font-bold text-black text-base">
                 <span>Total Price</span>
-                <span className="text-blue-600">
+                <span
+                  style={{
+                    color: hasRangeItems(cartItem.device._id)
+                      ? "#D2691E"
+                      : "#2563eb",
+                  }}
+                >
                   ₹{getTotalPrice(cartItem.device._id).toLocaleString()}
+                  {hasRangeItems(cartItem.device._id) ? "*" : ""}
                 </span>
               </div>
+              {hasRangeItems(cartItem.device._id) && (
+                <div className="mt-2 text-xs" style={{ color: "#D2691E" }}>
+                  <p>
+                    * Maximum estimated price. Final price will be confirmed by
+                    service partner.
+                  </p>
+                </div>
+              )}
             </div>
             <div className="mt-4 flex justify-end">
               <BookNowCartBtn deviceId={cartItem.device._id} />
             </div>
           </div>
         ))}
-        <div className="flex justify-end mt-4">
+        <div className="mt-4">
           <Button
             variant="destructive"
             size="lg"
             onClick={clearCart}
-            className="bg-gradient-to-r from-red-500 to-pink-500 text-white font-bold shadow-md hover:from-red-600 hover:to-pink-600 transition-all duration-200 px-6 py-2 rounded-lg border-0"
+            className="relative inline-flex items-center justify-center gap-3 w-full px-6 md:px-8 py-3 md:py-4
+                       bg-gradient-to-r from-[#D2691E] to-[#121212]
+                       hover:from-[#121212] hover:to-[#D2691E]
+                       text-white font-bold rounded-2xl
+                       shadow-xl hover:shadow-2xl
+                       transform transition-all duration-300
+                       hover:scale-105 hover:-translate-y-1
+                       focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
+                       border-0"
           >
-            <MdDelete className="inline-block mr-2 mb-1 text-lg" />
+            <MdDelete className="text-lg" />
             Clear Entire Cart
           </Button>
         </div>
