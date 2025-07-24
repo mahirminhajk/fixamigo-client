@@ -33,7 +33,13 @@ export const useUserStore = create<UserState>()(
         set({ user: INITAL_STATE });
       },
       isLogged() {
-        return get().user !== null;
+        return (
+          get().user._id !== null &&
+          get().user._id !== undefined &&
+          get().user._id !== "" &&
+          get().user._id !== "null" &&
+          get().user._id !== "undefined"
+        );
       },
     }),
     {

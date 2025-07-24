@@ -2,8 +2,11 @@
 import Link from "next/link";
 import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
-import React from "react";
-import { usePathname } from "next/navigation";
+import { useUserStore } from "@/stores/userStore";
+import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { Sheet } from "@/components/ui/sheet";
+import UserRegSheet from "@/components/sheets/userRegSheet";
 
 export default function DeviceCartBarClient() {
   // Hydrate cart state for SSR/CSR safety
@@ -11,7 +14,32 @@ export default function DeviceCartBarClient() {
   const getTotalPrice = useCartStore((state) => state.getTotalPrice);
   const hasRangeItems = useCartStore((state) => state.hasRangeItems);
   const isCartEmpty = useCartStore((state) => state.isCartEmpty);
+
+  // User authentication
+  const user = useHydratedStore(useUserStore, (state) => state.user);
+  const isLogged = useUserStore((state) => state.isLogged);
+
   const pathname = usePathname();
+  const router = useRouter();
+
+  // User registration sheet
+  const [open, setOpen] = useState(false);
+  const onOpenChange = () => setOpen(!open);
+
+  const onCompleted = () => {
+    setOpen(false);
+    router.push("/repair/checkout");
+  };
+
+  // Book now button click handler
+  const handleBookNow = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!isLogged()) {
+      setOpen(true);
+    } else {
+      router.push("/repair/checkout");
+    }
+  };
 
   // Extract deviceSlug from the URL (assuming /repair/mobile-phone/[brand]/[deviceSlug])
   let deviceSlug: string | undefined = undefined;
@@ -23,8 +51,8 @@ export default function DeviceCartBarClient() {
     }
   }
 
-  // Only show if cart is hydrated, not empty, and deviceSlug is present
-  if (!cart || isCartEmpty() || !deviceSlug) return null;
+  // Only show if cart is hydrated, not empty, deviceSlug is present, and user is hydrated
+  if (!cart || isCartEmpty() || !deviceSlug || !user) return null;
 
   // Find the cart item for this device by slug
   const cartItem = cart.items?.find((item) => item.device.slug === deviceSlug);
@@ -71,8 +99,8 @@ export default function DeviceCartBarClient() {
             </Link>
           </p>
         </div>
-        <Link
-          href="/repair/checkout"
+        <button
+          onClick={handleBookNow}
           className="flex items-center gap-2 bg-black text-white py-3 px-5 rounded-[6px] font-semibold ml-4"
         >
           Book Now
@@ -81,7 +109,7 @@ export default function DeviceCartBarClient() {
           >
             &rarr;
           </span>
-        </Link>
+        </button>
       </div>
 
       {/* Desktop Layout - Floating action button */}
@@ -109,13 +137,13 @@ export default function DeviceCartBarClient() {
               <p className="text-xs text-gray-500 mb-1">
                 {cartItem.spareParts.length} item(s)
               </p>
-              <Link
-                href="/repair/checkout"
+              <button
+                onClick={handleBookNow}
                 className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-[6px] font-semibold transition-colors duration-200 inline-flex items-center gap-2"
               >
                 Book Now
                 <span>&rarr;</span>
-              </Link>
+              </button>
             </div>
           </div>
           <p className="text-xs text-gray-500">
@@ -129,6 +157,11 @@ export default function DeviceCartBarClient() {
           </p>
         </div>
       </div>
+
+      {/* User Registration Sheet */}
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <UserRegSheet onCompleted={onCompleted} />
+      </Sheet>
     </div>
   );
 }
