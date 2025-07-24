@@ -7,6 +7,13 @@ interface OrderInvoiceProps {
 }
 
 const OrderInvoice = ({ order }: OrderInvoiceProps) => {
+  // Check if any spare part has range pricing
+  const hasRangeItems =
+    order.sparePartsDetails?.some(
+      (spare) =>
+        spare.price.range && spare.price.startPrice && spare.price.endPrice
+    ) || false;
+
   return (
     <div className="max-w-md mx-auto p-4 space-y-4">
       {order.agent && (
@@ -81,7 +88,23 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
                 <span className="font-semibold">{spare.category}</span>
               </p>
             </div>
-            <p className="font-semibold">₹{spare.price.final}</p>
+            <p
+              className="font-semibold"
+              style={{
+                color:
+                  spare.price.range &&
+                  spare.price.startPrice &&
+                  spare.price.endPrice
+                    ? "#D2691E"
+                    : "black",
+              }}
+            >
+              {spare.price.range &&
+              spare.price.startPrice &&
+              spare.price.endPrice
+                ? `₹${spare.price.startPrice} - ₹${spare.price.endPrice}*`
+                : `₹${spare.price.final}`}
+            </p>
           </div>
         ))}
       </div>
@@ -113,7 +136,15 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
         <div className="text-sm space-y-1">
           <p>
             <span className="text-gray-500">Items (1)</span>
-            <span className="float-right">₹{order.price.final}</span>
+            <span
+              className="float-right"
+              style={{
+                color: hasRangeItems ? "#D2691E" : "black",
+              }}
+            >
+              ₹{order.price.final}
+              {hasRangeItems ? "*" : ""}
+            </span>
           </p>
           <p>
             <span className="text-gray-500">Delivery cost</span>
@@ -122,8 +153,24 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
           <hr className="my-2" />
           <p className="font-semibold">
             <span>Total Price</span>
-            <span className="float-right">₹{order.price.final}</span>
+            <span
+              className="float-right"
+              style={{
+                color: hasRangeItems ? "#D2691E" : "black",
+              }}
+            >
+              ₹{order.price.final}
+              {hasRangeItems ? "*" : ""}
+            </span>
           </p>
+          {hasRangeItems && (
+            <div className="mt-2 text-xs" style={{ color: "#D2691E" }}>
+              <p>
+                * Maximum estimated price. Final price will be confirmed by
+                service partner.
+              </p>
+            </div>
+          )}
         </div>
         <button className="w-full mt-4 py-2 border rounded-[6px] font-semibold hover:bg-gray-200">
           View invoice

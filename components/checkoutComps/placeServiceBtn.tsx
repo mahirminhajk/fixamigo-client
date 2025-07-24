@@ -3,21 +3,37 @@ import { useState } from "react";
 // import { CiDiscount1 } from "react-icons/ci";
 import { IOrder } from "@/types/order";
 import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/stores/cartStore";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
 
 interface PlaceServiceBtnProps {
   order: IOrder | null;
   bookOrder: () => Promise<void>;
   loading: boolean;
+  deviceSlug: string | null;
 }
 
 const PlaceServiceBtn = ({
   order,
   bookOrder,
   loading,
+  deviceSlug,
 }: PlaceServiceBtnProps) => {
   // const [couponCode, setCouponCode] = useState<string>("");
   // const [discount, setDiscount] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
+
+  // Cart store hooks for range pricing
+  const cart = useHydratedStore(useCartStore, (state) => state.cart);
+  const getTotalPrice = useCartStore((state) => state.getTotalPrice);
+  const hasRangeItems = useCartStore((state) => state.hasRangeItems);
+
+  // Find the cart item for the selected device
+  const cartItem = cart?.items?.find((item) => item.device.slug === deviceSlug);
+  const hasRangeItemsForDevice = cartItem
+    ? hasRangeItems(cartItem.device._id)
+    : false;
+  const totalCartPrice = cartItem ? getTotalPrice(cartItem.device._id) : 0;
 
   // const handleCouponFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
   //   e.preventDefault();
@@ -83,11 +99,21 @@ const PlaceServiceBtn = ({
           <div className="text-sm space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span className="font-semibold">₹{order?.price?.total}</span>
+              <span
+                className="font-semibold"
+                style={{
+                  color: hasRangeItemsForDevice ? "#D2691E" : "black",
+                }}
+              >
+                ₹{totalCartPrice.toLocaleString()}
+                {hasRangeItemsForDevice ? "*" : ""}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Delivery Cost</span>
-              <span className="font-semibold">₹{order?.price?.delivery}</span>
+              <span className="font-semibold">
+                ₹{order?.price?.delivery || 0}
+              </span>
             </div>
             {/* {discount > 0 && (
               <div className="flex justify-between text-green-500">
@@ -100,8 +126,26 @@ const PlaceServiceBtn = ({
             <hr />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>₹{order?.price?.final}</span>
+              <span
+                style={{
+                  color: hasRangeItemsForDevice ? "#D2691E" : "black",
+                }}
+              >
+                ₹
+                {(
+                  totalCartPrice + (order?.price?.delivery || 0)
+                ).toLocaleString()}
+                {hasRangeItemsForDevice ? "*" : ""}
+              </span>
             </div>
+            {hasRangeItemsForDevice && (
+              <div className="mt-2 text-xs" style={{ color: "#D2691E" }}>
+                <p>
+                  * Maximum estimated price. Final price will be confirmed by
+                  service partner.
+                </p>
+              </div>
+            )}
           </div>
           {/* Place Service Button */}
           <div>

@@ -21,6 +21,9 @@ export interface IOrder {
       total: number;
       final: number;
       discountPercentage: number;
+      range?: boolean;
+      startPrice?: number;
+      endPrice?: number;
     };
   }[];
 

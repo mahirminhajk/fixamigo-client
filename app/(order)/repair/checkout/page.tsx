@@ -3,6 +3,7 @@ import CheckoutAddressCard from "@/components/checkoutComps/checkoutAddressCard"
 import CheckoutPaymentMethodCard from "@/components/checkoutComps/checkoutPaymentMethodCard";
 import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
 import CheckoutServiceMethodCard from "@/components/checkoutComps/checkoutServiceMethodCard";
+import CheckoutOrderSummary from "@/components/checkoutComps/checkoutOrderSummary";
 import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import Topbar from "@/components/core/topbar";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
@@ -33,11 +34,11 @@ function CheckoutPageContent() {
   const clearUser = useUserStore((state) => state.clearUser);
 
   //* get the device parm or set  default to first cart item device
-  const deviceId =
-    searchParams.get("device") || cart?.items?.[0]?.device?._id || null;
+  const deviceSlug =
+    searchParams.get("device") || cart?.items?.[0]?.device?.slug || null;
 
   // Find the cart item for the selected device
-  const cartItem = cart?.items?.find((item) => item.device._id === deviceId);
+  const cartItem = cart?.items?.find((item) => item.device.slug === deviceSlug);
 
   //* pre-checkout
   const sendCheckoutRequest = async () => {
@@ -203,7 +204,8 @@ function CheckoutPageContent() {
             <Topbar title="Checkout" />
             <PopupLoading show={loading} />
 
-            <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
+            <div className="p-4 space-y-4 flex flex-col items-center pb-48">
+              <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
               <CheckoutServiceMethodCard
                 onServiceMethodChange={onServiceMethodChange}
               />
@@ -234,6 +236,7 @@ function CheckoutPageContent() {
           order={order}
           bookOrder={handleBookOrder}
           loading={loading}
+          deviceSlug={deviceSlug}
         />
       </div>
     </section>
@@ -247,4 +250,3 @@ export default function Page() {
     </Suspense>
   );
 }
-//TODO: show order summary in is page.
