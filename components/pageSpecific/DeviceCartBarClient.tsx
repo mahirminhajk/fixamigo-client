@@ -37,7 +37,7 @@ export default function DeviceCartBarClient() {
     if (!isLogged()) {
       setOpen(true);
     } else {
-      router.push("/repair/checkout");
+      router.push(`/repair/checkout?device=${deviceSlug}`);
     }
   };
 

@@ -29,28 +29,30 @@ const CartList = () => {
           >
             <div className="flex justify-between items-center mb-4 pt-4 px-2">
               <div className="flex items-center gap-3">
-                <Image
-                  src={cartItem.device.images?.[0] || "/logos/logo.png"}
-                  alt={cartItem.device.name}
-                  width={40}
-                  height={40}
-                  className="rounded-md border bg-white object-contain"
-                />
-                <div className="flex flex-col">
-                  <Link
-                    href={`/repair/mobile-phone/${cartItem.device.company.toLowerCase()}/${
-                      cartItem.device.slug
-                    }`}
-                    className="font-semibold text-lg text-black hover:text-blue-600 transition-colors"
-                  >
-                    {cartItem.device.name}
-                  </Link>
-                  {hasRangeItems(cartItem.device._id) && (
-                    <PriceRangeInfo
-                      hasPriceRange={hasRangeItems(cartItem.device._id)}
-                    />
-                  )}
-                </div>
+                <Link
+                  href={`/repair/mobile-phone/${cartItem.device.company.toLowerCase()}/${
+                    cartItem.device.slug
+                  }`}
+                  className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                >
+                  <Image
+                    src={cartItem.device.images?.[0] || "/logos/logo.png"}
+                    alt={cartItem.device.name}
+                    width={40}
+                    height={40}
+                    className="rounded-md border bg-white object-contain"
+                  />
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-lg text-black hover:text-blue-600 transition-colors">
+                      {cartItem.device.name}
+                    </span>
+                    {hasRangeItems(cartItem.device._id) && (
+                      <PriceRangeInfo
+                        hasPriceRange={hasRangeItems(cartItem.device._id)}
+                      />
+                    )}
+                  </div>
+                </Link>
               </div>
               <Button
                 variant="ghost"
@@ -180,7 +182,7 @@ const CartList = () => {
               )}
             </div>
             <div className="mt-4 flex justify-end">
-              <BookNowCartBtn deviceId={cartItem.device._id} />
+              <BookNowCartBtn deviceSlug={cartItem.device.slug} />
             </div>
           </div>
         ))}

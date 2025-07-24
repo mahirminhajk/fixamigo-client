@@ -8,10 +8,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 interface BookNowCartBtnProps {
-  deviceId: string;
+  deviceSlug: string;
 }
 
-const BookNowCartBtn = ({ deviceId }: BookNowCartBtnProps) => {
+const BookNowCartBtn = ({ deviceSlug }: BookNowCartBtnProps) => {
   //* router
   const router = useRouter();
 
@@ -24,7 +24,7 @@ const BookNowCartBtn = ({ deviceId }: BookNowCartBtnProps) => {
 
   const onCompleted = () => {
     setOpen(false);
-    router.push(`/repair/checkout?device=${deviceId}`);
+    router.push(`/repair/checkout?device=${deviceSlug}`);
   };
 
   //* book-now btn
@@ -32,7 +32,7 @@ const BookNowCartBtn = ({ deviceId }: BookNowCartBtnProps) => {
     if (!user?._id) {
       setOpen(true);
     } else {
-      router.push(`/repair/checkout?device=${deviceId}`);
+      router.push(`/repair/checkout?device=${deviceSlug}`);
     }
   };
 
