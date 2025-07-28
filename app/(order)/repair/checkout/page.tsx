@@ -27,6 +27,7 @@ function CheckoutPageContent() {
   const [addressError, setAddressError] = useState<
     "NO_ZONES" | "BAD_REQUEST" | null
   >(null);
+  const [generalError, setGeneralError] = useState<string | null>(null);
   //* hooks
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -44,6 +45,7 @@ function CheckoutPageContent() {
   //* pre-checkout
   const sendCheckoutRequest = async () => {
     setLoading(true);
+    setGeneralError(null); // Clear any previous errors
     const data = {
       device: cartItem?.device._id,
       spareParts: cartItem?.spareParts.map((sp) => sp._id),
@@ -62,13 +64,19 @@ function CheckoutPageContent() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Checkout request failed:", err);
         //* if status code is 401
-        if (err.response.status === 401) {
+        if (err.response?.status === 401) {
           console.log("Unauthorized");
           clearUser();
           //* go back
           router.back();
+        } else {
+          // Show user-friendly error message
+          const errorMessage =
+            err.response?.data?.message ||
+            "Failed to load checkout information. Please try again.";
+          setGeneralError(errorMessage);
         }
       })
       .finally(() => {
@@ -88,6 +96,7 @@ function CheckoutPageContent() {
   //* onAddressSubmit
   const onAddressSubmit = async (address: IAddress | string) => {
     setAddressError(null);
+    setGeneralError(null); // Clear any previous errors
     setLoading(true);
     console.log("Address submitted", address);
     const data =
@@ -105,9 +114,9 @@ function CheckoutPageContent() {
         setPickupAvailableDates(res.data.data.pickupAvailableDates);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Address submission failed:", err);
         //? check error type:
-        if (err.response.data.type === "NO_ZONES") {
+        if (err.response?.data?.type === "NO_ZONES") {
           //? ERROR: No zones available
           setAddressError("NO_ZONES");
         } else {
@@ -128,6 +137,7 @@ function CheckoutPageContent() {
   //* onPickupDateChange
   const onPickupDateChange = async (date: string) => {
     setLoading(true);
+    setGeneralError(null); // Clear any previous errors
     console.log("Pickup date changed", date);
     await api
       .patch(`/order/${order?._id}/set-pickup`, { date })
@@ -139,7 +149,11 @@ function CheckoutPageContent() {
         setOrder(res.data.data.order);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Pickup date update failed:", err);
+        const errorMessage =
+          err.response?.data?.message ||
+          "Failed to update pickup date. Please try again.";
+        setGeneralError(errorMessage);
       })
       .finally(() => {
         setLoading(false);
@@ -172,6 +186,7 @@ function CheckoutPageContent() {
   //* handleBookOrder
   const handleBookOrder = async () => {
     setLoading(true);
+    setGeneralError(null); // Clear any previous errors
     await api
       .patch(`/order/${order?._id}/book`, {})
       .then((res) => {
@@ -179,7 +194,12 @@ function CheckoutPageContent() {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        console.error("Order booking failed:", err);
+        const errorMessage =
+          err.response?.data?.message ||
+          "Failed to place your order. Please try again.";
+        setGeneralError(errorMessage);
+        setLoading(false);
       });
   };
 
@@ -196,6 +216,53 @@ function CheckoutPageContent() {
           <div className="flex-1 overflow-auto p-4 w-full flex justify-center">
             <div className="w-full max-w-md">
               <Topbar title="Checkout" />
+
+              {/* General Error Message */}
+              {generalError && (
+                <div className="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        Error
+                      </h3>
+                      <p className="mt-1 text-sm text-red-700">
+                        {generalError}
+                      </p>
+                      <div className="mt-3 space-x-2">
+                        <button
+                          onClick={() => setGeneralError(null)}
+                          className="text-sm font-medium text-red-800 hover:text-red-900"
+                        >
+                          Dismiss
+                        </button>
+                        <button
+                          onClick={() => {
+                            setGeneralError(null);
+                            sendCheckoutRequest();
+                          }}
+                          className="text-sm font-medium bg-red-100 text-red-800 hover:bg-red-200 px-3 py-1 rounded"
+                        >
+                          Retry
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
                 <p className="text-center text-xl font-semibold">
                   {cart?.items?.length === 0
@@ -217,6 +284,48 @@ function CheckoutPageContent() {
           <div className="w-full max-w-md">
             <Topbar title="Checkout" />
             <PopupLoading show={loading} />
+
+            {/* General Error Message */}
+            {generalError && (
+              <div className="w-full max-w-md mx-auto p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-red-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">Error</h3>
+                    <p className="mt-1 text-sm text-red-700">{generalError}</p>
+                    <div className="mt-3">
+                      <button
+                        onClick={() => setGeneralError(null)}
+                        className="text-sm font-medium text-red-800 hover:text-red-900 mr-3"
+                      >
+                        Dismiss
+                      </button>
+                      <button
+                        onClick={() => {
+                          setGeneralError(null);
+                          sendCheckoutRequest();
+                        }}
+                        className="text-sm font-medium bg-red-100 text-red-800 hover:bg-red-200 px-3 py-1 rounded"
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="p-4 space-y-4 flex flex-col items-center pb-48">
               <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
