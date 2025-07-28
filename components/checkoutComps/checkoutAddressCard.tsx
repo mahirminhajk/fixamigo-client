@@ -148,7 +148,7 @@ const CheckoutAddressCard = ({
 
   return (
     <Sheet open={open} onOpenChange={toggleSheet}>
-      <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
+      <SheetTrigger className="w-full max-w-md lg:max-w-none bg-gray-100 p-4 lg:p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
         <div>
           <p className="text-gray-500 text-sm text-left">Shipping Address</p>
           <div className="flex justify-between items-center">

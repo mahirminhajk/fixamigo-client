@@ -211,15 +211,15 @@ function CheckoutPageContent() {
   //* empty cart
   if (!cartItem?.device || cartItem.spareParts.length === 0) {
     return (
-      <section>
+      <section className="min-h-screen bg-gray-50">
         <div className="flex flex-col items-center">
           <div className="flex-1 overflow-auto p-4 w-full flex justify-center">
-            <div className="w-full max-w-md">
+            <div className="w-full max-w-md lg:max-w-2xl xl:max-w-4xl">
               <Topbar title="Checkout" />
 
               {/* General Error Message */}
               {generalError && (
-                <div className="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="p-4 mb-4 bg-red-50 border border-red-200 rounded-lg max-w-md mx-auto lg:max-w-2xl">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
                       <svg
@@ -263,12 +263,40 @@ function CheckoutPageContent() {
                 </div>
               )}
 
-              <div className="p-4 space-y-4 min-h-screen flex flex-col items-center">
-                <p className="text-center text-xl font-semibold">
-                  {cart?.items?.length === 0
-                    ? "Your cart is empty"
-                    : "No device found for checkout. Please select a device from your cart."}
-                </p>
+              <div className="p-4 space-y-4 min-h-screen flex flex-col items-center justify-center">
+                <div className="max-w-md text-center">
+                  <div className="mb-8">
+                    <svg
+                      className="mx-auto h-16 w-16 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1}
+                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                      />
+                    </svg>
+                  </div>
+                  <h2 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-4">
+                    {cart?.items?.length === 0
+                      ? "Your cart is empty"
+                      : "No device found for checkout"}
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    {cart?.items?.length === 0
+                      ? "Add some items to your cart to continue with checkout."
+                      : "Please select a device from your cart to proceed."}
+                  </p>
+                  <button
+                    onClick={() => router.back()}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                  >
+                    Go Back
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -278,90 +306,122 @@ function CheckoutPageContent() {
   }
 
   return (
-    <section>
-      <div className="flex flex-col items-center">
-        <div className="flex-1 overflow-auto p-4 w-full flex justify-center">
-          <div className="w-full max-w-md">
-            <Topbar title="Checkout" />
-            <PopupLoading show={loading} />
+    <section className="min-h-screen bg-gray-50">
+      <div className="flex flex-col lg:flex-row items-start justify-center min-h-screen">
+        {/* Main Content */}
+        <div className="flex-1 overflow-auto p-4 w-full flex justify-center lg:max-w-4xl">
+          <div className="w-full max-w-md lg:max-w-none lg:grid lg:grid-cols-2 lg:gap-8 xl:gap-12">
+            {/* Left Column - Checkout Steps */}
+            <div className="lg:order-1">
+              <div className="lg:sticky lg:top-4">
+                <Topbar title="Checkout" />
+                <PopupLoading show={loading} />
 
-            {/* General Error Message */}
-            {generalError && (
-              <div className="w-full max-w-md mx-auto p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <svg
-                      className="h-5 w-5 text-red-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">Error</h3>
-                    <p className="mt-1 text-sm text-red-700">{generalError}</p>
-                    <div className="mt-3">
-                      <button
-                        onClick={() => setGeneralError(null)}
-                        className="text-sm font-medium text-red-800 hover:text-red-900 mr-3"
-                      >
-                        Dismiss
-                      </button>
-                      <button
-                        onClick={() => {
-                          setGeneralError(null);
-                          sendCheckoutRequest();
-                        }}
-                        className="text-sm font-medium bg-red-100 text-red-800 hover:bg-red-200 px-3 py-1 rounded"
-                      >
-                        Retry
-                      </button>
+                {/* General Error Message */}
+                {generalError && (
+                  <div className="w-full max-w-md mx-auto lg:max-w-none p-4 mb-4 bg-red-50 border border-red-200 rounded-lg">
+                    <div className="flex items-start">
+                      <div className="flex-shrink-0">
+                        <svg
+                          className="h-5 w-5 text-red-400"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <h3 className="text-sm font-medium text-red-800">
+                          Error
+                        </h3>
+                        <p className="mt-1 text-sm text-red-700">
+                          {generalError}
+                        </p>
+                        <div className="mt-3">
+                          <button
+                            onClick={() => setGeneralError(null)}
+                            className="text-sm font-medium text-red-800 hover:text-red-900 mr-3"
+                          >
+                            Dismiss
+                          </button>
+                          <button
+                            onClick={() => {
+                              setGeneralError(null);
+                              sendCheckoutRequest();
+                            }}
+                            className="text-sm font-medium bg-red-100 text-red-800 hover:bg-red-200 px-3 py-1 rounded"
+                          >
+                            Retry
+                          </button>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                )}
+
+                <div className="p-4 space-y-4 lg:space-y-6 flex flex-col items-center lg:items-stretch pb-48 lg:pb-8">
+                  <CheckoutServiceMethodCard
+                    onServiceMethodChange={onServiceMethodChange}
+                  />
+                  <CheckoutAddressCard
+                    address={selectedAddress || order?.address}
+                    onAddressSubmit={onAddressSubmit}
+                    onAddressSelect={onAddressSelect}
+                    loading={loading}
+                    error={addressError}
+                  />
+                  <CheckoutPickupDateCard
+                    pickupAvailableDates={pickupAvailableDates}
+                    pickupDate={
+                      order?.schedules?.pickupDate
+                        ? order.schedules.pickupDate
+                        : null
+                    }
+                    onPickupDateChange={onPickupDateChange}
+                    loading={loading}
+                  />
+                  <CheckoutPaymentMethodCard
+                    onPaymentMethodChange={onPaymentMethodChange}
+                  />
+
+                  {/* Desktop Place Order Button */}
+                  <div className="hidden lg:block mt-8">
+                    <PlaceServiceBtn
+                      order={order}
+                      bookOrder={handleBookOrder}
+                      loading={loading}
+                      deviceSlug={deviceSlug}
+                    />
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
-            <div className="p-4 space-y-4 flex flex-col items-center pb-48">
+            {/* Right Column - Order Summary */}
+            <div className="lg:order-2 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-6 lg:h-fit lg:sticky lg:top-4">
+              <div className="lg:border-b lg:border-gray-200 lg:pb-4 lg:mb-6">
+                <h2 className="hidden lg:block text-lg font-semibold text-gray-900 mb-4">
+                  Order Summary
+                </h2>
+              </div>
               <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
-              <CheckoutServiceMethodCard
-                onServiceMethodChange={onServiceMethodChange}
-              />
-              <CheckoutAddressCard
-                address={selectedAddress || order?.address}
-                onAddressSubmit={onAddressSubmit}
-                onAddressSelect={onAddressSelect}
-                loading={loading}
-                error={addressError}
-              />
-              <CheckoutPickupDateCard
-                pickupAvailableDates={pickupAvailableDates}
-                pickupDate={
-                  order?.schedules?.pickupDate
-                    ? order.schedules.pickupDate
-                    : null
-                }
-                onPickupDateChange={onPickupDateChange}
-                loading={loading}
-              />
-              <CheckoutPaymentMethodCard
-                onPaymentMethodChange={onPaymentMethodChange}
-              />
             </div>
           </div>
         </div>
 
-        <PlaceServiceBtn
-          order={order}
-          bookOrder={handleBookOrder}
-          loading={loading}
-          deviceSlug={deviceSlug}
-        />
+        {/* Mobile Sticky Bottom Button */}
+        <div className="lg:hidden">
+          <PlaceServiceBtn
+            order={order}
+            bookOrder={handleBookOrder}
+            loading={loading}
+            deviceSlug={deviceSlug}
+          />
+        </div>
       </div>
     </section>
   );

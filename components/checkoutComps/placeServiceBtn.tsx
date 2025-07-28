@@ -65,38 +65,11 @@ const PlaceServiceBtn = ({
   };
 
   return (
-    <div className="w-full fixed bottom-0 px-2 bg-white flex justify-center">
-      <div className="w-full max-w-md">
-        <div className="w-full max-w-md p-4 bg-white rounded-[6px] space-y-4">
-          {/* Coupon Section */}
-          {/* <form
-            onSubmit={handleCouponFormSubmit}
-            className="flex items-center justify-between p-3 bg-gray-100 rounded-[6px]"
-          >
-            <div className="flex items-center space-x-2 flex-grow"> */}{" "}
-          {/* Added flex-grow here */}
-          {/* <CiDiscount1 className="size-7 shrink-0" />{" "} */}
-          {/* Use size-* and shrink-0 */}
-          {/* <input
-                type="text"
-                placeholder="Enter Coupon Code"
-                className="bg-transparent outline-none text-sm w-full" // Use w-full for input to take space
-                onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                value={couponCode}
-              />
-            </div> */}
-          {/* <Button
-              variant="default" // Assuming default is black or primary color
-              size="icon"
-              type="submit"
-              className="rounded-full shrink-0" // Keep rounded-full, ensure it doesn't shrink
-              aria-label="Apply coupon"
-            >
-              <FaChevronRight className="size-4" />
-            </Button>
-          </form> */}
-          {/* Pricing Summary */}
-          <div className="text-sm space-y-2">
+    <div className="w-full fixed bottom-0 px-2 bg-white flex justify-center lg:relative lg:px-0 lg:bg-transparent">
+      <div className="w-full max-w-md lg:max-w-none">
+        <div className="w-full max-w-md lg:max-w-none p-4 lg:p-0 bg-white lg:bg-transparent rounded-[6px] lg:rounded-none space-y-4 lg:space-y-6">
+          {/* Pricing Summary - Hidden on desktop as it's shown in the order summary */}
+          <div className="text-sm lg:hidden space-y-2">
             <div className="flex justify-between">
               <span>Subtotal</span>
               <span
@@ -115,14 +88,6 @@ const PlaceServiceBtn = ({
                 ₹{order?.price?.delivery || 0}
               </span>
             </div>
-            {/* {discount > 0 && (
-              <div className="flex justify-between text-green-500">
-                <span>Coupon</span>
-                <span className="font-semibold">
-                  -₹{discount.toLocaleString()}
-                </span>
-              </div>
-            )} */}
             <hr />
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
@@ -147,16 +112,17 @@ const PlaceServiceBtn = ({
               </div>
             )}
           </div>
+
           {/* Place Service Button */}
           <div>
             {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
             <Button
-              size="lg" // Use large size for primary actions
-              className="w-full font-medium" // bg-black text-white is default variant or can be added if primary is different
+              size="lg"
+              className="w-full font-medium text-lg lg:text-xl lg:py-4"
               onClick={handleBookOrder}
               disabled={loading}
             >
-              Place service
+              {loading ? "Placing order..." : "Place service"}
             </Button>
           </div>
         </div>

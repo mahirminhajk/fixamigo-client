@@ -115,24 +115,24 @@ const CheckoutPickupDateCard = ({
   return (
     <>
       <Sheet open={open} onOpenChange={toggleSheet}>
-        <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
+        <SheetTrigger className="w-full max-w-md lg:max-w-none bg-gray-100 p-4 lg:p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
           <div>
             <p className="text-gray-500 text-sm text-left">Pickup date</p>
             <div className="flex justify-between items-center">
               {selectedDate ? (
-                <p className="text-lg font-semibold">
+                <p className="text-lg lg:text-xl font-semibold">
                   {selectedDate.weekday}, {selectedDate.day}{" "}
                   {selectedDate.month}
                 </p>
               ) : (
-                <p className="text-gray-500">Select a pickup date</p>
+                <p className="text-gray-500 lg:text-lg">Select a pickup date</p>
               )}
               <span>
                 <FaChevronRight />
               </span>
             </div>
             {errorMessage && (
-              <div className="mt-4 text-red-500 text-sm text-left">
+              <div className="mt-4 text-red-500 text-sm lg:text-base text-left">
                 {errorMessage}
               </div>
             )}

@@ -29,20 +29,22 @@ const CheckoutPaymentMethodCard = ({
 
   return (
     <Sheet open={open} onOpenChange={toggleSheet}>
-      <SheetTrigger className="w-full max-w-md bg-gray-100 p-4 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
+      <SheetTrigger className="w-full max-w-md lg:max-w-none bg-gray-100 p-4 lg:p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
         <div>
           <p className="text-gray-500 text-sm text-left">Payment Method</p>
           <div className="flex justify-between items-center">
             {selectedMethod ? (
               <>
-                <p className="text-lg font-semibold">
+                <p className="text-lg lg:text-xl font-semibold">
                   {selectedMethod === "onDelivery"
                     ? "On Delivery"
                     : "Online Payment"}
                 </p>
               </>
             ) : (
-              <p className="text-gray-500">Select a payment method</p>
+              <p className="text-gray-500 lg:text-lg">
+                Select a payment method
+              </p>
             )}
 
             <span className="">

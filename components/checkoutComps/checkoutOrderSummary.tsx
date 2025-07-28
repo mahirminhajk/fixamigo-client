@@ -29,9 +29,9 @@ const CheckoutOrderSummary = ({
   const totalCartPrice = getTotalPrice(cartItem.device._id);
 
   return (
-    <div className="bg-white p-4 rounded-xl shadow-md space-y-4">
+    <div className="bg-white p-4 lg:p-6 rounded-xl shadow-md space-y-4 w-full max-w-md lg:max-w-none mx-auto lg:mx-0">
       <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg">Order Summary</h3>
+        <h3 className="font-semibold text-lg lg:text-xl">Order Summary</h3>
         {hasRangeItemsForDevice && (
           <PriceRangeInfo hasPriceRange={hasRangeItemsForDevice} />
         )}
@@ -45,37 +45,43 @@ const CheckoutOrderSummary = ({
             alt={cartItem.device.name}
             width={48}
             height={48}
-            className="rounded-md border bg-white object-contain"
+            className="rounded-md border bg-white object-contain lg:w-12 lg:h-12"
           />
-          <div>
-            <p className="font-semibold text-gray-900">
+          <div className="flex-1">
+            <p className="font-semibold text-gray-900 lg:text-lg">
               {cartItem.device.name}
             </p>
-            <p className="text-sm text-gray-600">{cartItem.device.company}</p>
+            <p className="text-sm text-gray-600 lg:text-base">
+              {cartItem.device.company}
+            </p>
           </div>
         </div>
       </div>
 
       {/* Spare Parts List */}
       <div className="space-y-3">
-        <h4 className="font-medium text-gray-700">Selected Services</h4>
+        <h4 className="font-medium text-gray-700 lg:text-lg">
+          Selected Services
+        </h4>
         {cartItem.spareParts.map((item) => (
           <div
             key={item._id}
-            className="flex items-center justify-between py-2"
+            className="flex items-center justify-between py-2 gap-3"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-1 min-w-0">
               <Image
                 src={getSparePartsIcon(item.category)}
                 alt={item.label}
                 width={32}
                 height={32}
-                className="object-contain"
+                className="object-contain flex-shrink-0 lg:w-8 lg:h-8"
               />
-              <span className="text-sm text-gray-700">{item.label}</span>
+              <span className="text-sm lg:text-base text-gray-700 truncate">
+                {item.label}
+              </span>
             </div>
             <span
-              className="font-semibold text-sm"
+              className="font-semibold text-sm lg:text-base flex-shrink-0"
               style={{
                 color:
                   item.price.range &&
@@ -95,7 +101,7 @@ const CheckoutOrderSummary = ({
 
       {/* Price Summary */}
       <div className="border-t border-gray-200 pt-3 space-y-2">
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm lg:text-base">
           <span className="text-gray-600">Subtotal</span>
           <span
             className="font-semibold"
@@ -108,14 +114,14 @@ const CheckoutOrderSummary = ({
           </span>
         </div>
 
-        <div className="flex justify-between text-sm">
+        <div className="flex justify-between text-sm lg:text-base">
           <span className="text-gray-600">Delivery</span>
           <span className="font-semibold">₹{order?.price?.delivery || 0}</span>
         </div>
 
         <hr className="border-gray-300" />
 
-        <div className="flex justify-between font-bold text-base">
+        <div className="flex justify-between font-bold text-base lg:text-lg">
           <span>Total</span>
           <span
             style={{
@@ -128,7 +134,7 @@ const CheckoutOrderSummary = ({
         </div>
 
         {hasRangeItemsForDevice && (
-          <div className="mt-2 text-xs" style={{ color: "#D2691E" }}>
+          <div className="mt-2 text-xs lg:text-sm" style={{ color: "#D2691E" }}>
             <p>
               * Maximum estimated price. Final price will be confirmed by
               service partner.
