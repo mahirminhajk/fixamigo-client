@@ -2,6 +2,7 @@ import { IAddress } from "./address";
 
 export interface IOrder {
   _id: string;
+  code: string;
   user: string;
   address?: IAddress;
 
@@ -10,20 +11,22 @@ export interface IOrder {
     name: string;
     type: string;
     company?: string;
-    image: string;
+    images: string[];
   };
-  spareParts?: string[];
   sparePartsDetails?: {
     _id: string;
     name: string;
     category: string;
     price: {
+      repair: number;
       total: number;
       final: number;
-      discountPercentage: number;
+      rule: string;
       range?: boolean;
       startPrice?: number;
       endPrice?: number;
+      confirmedBy?: string;
+      confirmedAt?: Date;
     };
   }[];
 
@@ -39,13 +42,24 @@ export interface IOrder {
   };
 
   agent?: {
+    _id: string;
     name: string;
     phone: string;
   };
 
   status: OrderStatus;
 
-  timeline: ITimeline[];
+  alert?: {
+    isActive: boolean;
+    type: "INFO" | "WARNING" | "ERROR" | "SUCCESS";
+    title?: string;
+    message?: string;
+    createdBy?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+  };
+
+  stepper: IStepper[];
 
   schedules?: {
     pickupDate?: Date;
@@ -62,6 +76,7 @@ export enum PaymentMode {
 
 export enum OrderStatus {
   PENDING = "PENDING",
+  CONFIRMING_STOCK = "CONFIRMING_STOCK",
   ACCEPTED = "ACCEPTED",
 
   SCHEDULED_PICKUP = "SCHEDULED_PICKUP",
@@ -82,9 +97,9 @@ export enum OrderStatus {
   OTHERS = "OTHERS",
 }
 
-export interface ITimeline {
-  status: OrderStatus;
-  message: string;
-  createdAt: Date;
+export interface IStepper {
+  step: string;
+  status: "PENDING" | "COMPLETED" | "FAILED";
+  completedAt?: Date;
   data?: { [key: string]: string };
 }

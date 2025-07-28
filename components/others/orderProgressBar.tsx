@@ -1,245 +1,436 @@
 import React, { useMemo } from "react";
-import { FaCheck } from "react-icons/fa";
-import { ITimeline, OrderStatus } from "@/types/order"; // Assuming your types are in './types'
+import {
+  FaCheck,
+  FaClipboardCheck,
+  FaTruck,
+  FaTools,
+  FaHome,
+  FaClock,
+} from "react-icons/fa";
+import { IStepper } from "@/types/order";
 import { formatDate } from "@/lib/utils";
 
-// Define the order of progression for statuses (important for logic)
-const ORDER_PROGRESSION: OrderStatus[] = [
-  OrderStatus.PENDING,
-  OrderStatus.ACCEPTED,
-  OrderStatus.SCHEDULED_PICKUP,
-  OrderStatus.EN_ROUTE, // Often an intermediate status before PICKED_UP
-  OrderStatus.PICKED_UP,
-  OrderStatus.REACHED_STORE,
-  OrderStatus.REPAIRING,
-  OrderStatus.REPAIRED,
-  OrderStatus.SCHEDULED_DELIVERY, // Can be an alternative or precursor to OUT_FOR_DELIVERY
-  OrderStatus.OUT_FOR_DELIVERY,
-  OrderStatus.DELIVERED,
-  OrderStatus.COMPLETED,
-];
-
-// Configuration for the visual steps in the progress bar
-interface MappedStep {
-  id: string; // Unique key for React map
+// Configuration for the combined visual steps in the progress bar
+interface CombinedStep {
+  id: string;
   label: string;
-  /** The primary OrderStatus that signifies this step's core achievement. */
-  statusMarker: OrderStatus;
-  /** OrderStatuses that, if current, make THIS visual step the active focus. */
-  activeWhenStatusIs: OrderStatus[];
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  backendSteps: string[]; // Array of backend step names that belong to this UI step
+  progressiveLabels?: {
+    initial: string;
+    intermediate?: string[];
+    completed: string;
+  };
+  colors: {
+    pending: string;
+    active: string;
+    completed: string;
+  };
 }
 
-const MAPPED_STEPS: MappedStep[] = [
+const COMBINED_STEPS: CombinedStep[] = [
   {
-    id: "pickupScheduled",
-    label: "Pickup Scheduled",
-    statusMarker: OrderStatus.SCHEDULED_PICKUP,
-    activeWhenStatusIs: [OrderStatus.SCHEDULED_PICKUP],
+    id: "confirmation",
+    label: "Order & Price Confirmation",
+    icon: FaClipboardCheck,
+    backendSteps: ["Order Confirmation", "Price Confirmation"],
+    progressiveLabels: {
+      initial: "Confirming Order",
+      intermediate: ["Price Confirmation"],
+      completed: "Confirmed",
+    },
+    colors: {
+      pending: "bg-gray-300 border-gray-400 text-gray-500",
+      active: "bg-blue-100 border-blue-500 text-blue-600",
+      completed: "bg-green-500 border-green-500 text-white",
+    },
   },
   {
-    id: "pickedUp",
-    label: "Picked Up",
-    statusMarker: OrderStatus.PICKED_UP,
-    activeWhenStatusIs: [OrderStatus.EN_ROUTE, OrderStatus.PICKED_UP],
+    id: "pickup",
+    label: "Pickup & Collection",
+    icon: FaTruck,
+    backendSteps: ["Pickup Scheduled", "Agent En Route", "Device Picked Up"],
+    progressiveLabels: {
+      initial: "Scheduling Pickup",
+      intermediate: ["Agent En Route", "Collecting Device"],
+      completed: "Device Collected",
+    },
+    colors: {
+      pending: "bg-gray-300 border-gray-400 text-gray-500",
+      active: "bg-orange-100 border-orange-500 text-orange-600",
+      completed: "bg-green-500 border-green-500 text-white",
+    },
   },
   {
-    id: "atCenter",
-    label: "Arrived at Service Center",
-    statusMarker: OrderStatus.REACHED_STORE,
-    activeWhenStatusIs: [OrderStatus.REACHED_STORE],
+    id: "repair",
+    label: "Repair & Quality Check",
+    icon: FaTools,
+    backendSteps: ["Repair Assessment", "Repairing", "Quality Check"],
+    progressiveLabels: {
+      initial: "Assessing Device",
+      intermediate: ["Repairing", "Quality Check"],
+      completed: "Repair Completed",
+    },
+    colors: {
+      pending: "bg-gray-300 border-gray-400 text-gray-500",
+      active: "bg-purple-100 border-purple-500 text-purple-600",
+      completed: "bg-green-500 border-green-500 text-white",
+    },
   },
   {
-    id: "repairing",
-    label: "Repairing",
-    statusMarker: OrderStatus.REPAIRING,
-    activeWhenStatusIs: [OrderStatus.REPAIRING],
+    id: "delivery",
+    label: "Delivery",
+    icon: FaHome,
+    backendSteps: ["Delivery Scheduled", "On the Way"],
+    progressiveLabels: {
+      initial: "Scheduling Delivery",
+      intermediate: ["Out for Delivery"],
+      completed: "Delivered",
+    },
+    colors: {
+      pending: "bg-gray-300 border-gray-400 text-gray-500",
+      active: "bg-indigo-100 border-indigo-500 text-indigo-600",
+      completed: "bg-green-500 border-green-500 text-white",
+    },
   },
   {
-    id: "repaired",
-    label: "Repair Completed",
-    statusMarker: OrderStatus.REPAIRED,
-    activeWhenStatusIs: [OrderStatus.REPAIRED],
-  },
-  {
-    id: "outForDelivery",
-    label: "Out for Delivery",
-    statusMarker: OrderStatus.OUT_FOR_DELIVERY,
-    activeWhenStatusIs: [
-      OrderStatus.SCHEDULED_DELIVERY,
-      OrderStatus.OUT_FOR_DELIVERY,
-    ],
-  },
-  {
-    id: "delivered",
-    label: "Delivered",
-    statusMarker: OrderStatus.DELIVERED,
-    activeWhenStatusIs: [OrderStatus.DELIVERED, OrderStatus.COMPLETED],
+    id: "completed",
+    label: "Completed",
+    icon: FaCheck,
+    backendSteps: ["Completed"],
+    progressiveLabels: {
+      initial: "Finalizing",
+      completed: "Completed",
+    },
+    colors: {
+      pending: "bg-gray-300 border-gray-400 text-gray-500",
+      active: "bg-green-100 border-green-500 text-green-600",
+      completed: "bg-green-500 border-green-500 text-white",
+    },
   },
 ];
 
 interface OrderProgressBarProps {
-  timeline: ITimeline[];
+  stepper: IStepper[];
   estimatedDeliveryDate?: string; // e.g., "Sep 30, 2024" or a Date object
-  // Pass the whole order if reschedule links need more context or actions
-  // orderId?: string;
 }
 
-// Helper to determine if a step should get a checkmark
-const stepGetsCheck = (
-  stepConfig: MappedStep,
-  currentGlobalStatus: OrderStatus | undefined,
-  orderProgressionList: OrderStatus[]
-): boolean => {
-  if (!currentGlobalStatus) return false;
-
-  const markerIndex = orderProgressionList.indexOf(stepConfig.statusMarker);
-  const currentIndex = orderProgressionList.indexOf(currentGlobalStatus);
-
-  if (markerIndex === -1 || currentIndex === -1) return false;
-
-  // If current status is past this step's marker, it's definitely checked.
-  if (currentIndex > markerIndex) return true;
-
-  // If current status IS this step's marker.
-  if (currentIndex === markerIndex) {
-    // These statuses, when they are the marker AND the current status, mean the step is active but not "done" for checkmark.
-    if (
-      (stepConfig.statusMarker === OrderStatus.REPAIRING &&
-        currentGlobalStatus === OrderStatus.REPAIRING) ||
-      (stepConfig.statusMarker === OrderStatus.OUT_FOR_DELIVERY &&
-        currentGlobalStatus === OrderStatus.OUT_FOR_DELIVERY)
-    ) {
-      return false;
-    }
-    return true; // Otherwise, if current matches marker, it's checked.
+// Helper to get progressive label based on completed substeps
+const getProgressiveLabel = (
+  combinedStep: CombinedStep,
+  stepper: IStepper[]
+): { label: string; lastCompletedStep?: IStepper } => {
+  if (!combinedStep.progressiveLabels) {
+    return { label: combinedStep.label };
   }
-  return false; // Current status is before this step's marker.
+
+  const relatedSteps = stepper.filter((step) =>
+    combinedStep.backendSteps.some(
+      (backendStep) =>
+        step.step.toLowerCase().includes(backendStep.toLowerCase()) ||
+        backendStep.toLowerCase().includes(step.step.toLowerCase())
+    )
+  );
+
+  const completedSteps = relatedSteps.filter(
+    (step) => step.status === "COMPLETED"
+  );
+
+  // If no steps completed, show initial label
+  if (completedSteps.length === 0) {
+    return { label: combinedStep.progressiveLabels.initial };
+  }
+
+  // Find the last completed step
+  const lastCompleted = completedSteps.reduce((latest, current) => {
+    if (!latest.completedAt || !current.completedAt) return latest;
+    return new Date(current.completedAt) > new Date(latest.completedAt)
+      ? current
+      : latest;
+  });
+
+  // If all steps completed, show completed label with last completed step
+  if (
+    completedSteps.length === relatedSteps.length ||
+    completedSteps.length === combinedStep.backendSteps.length
+  ) {
+    return {
+      label: combinedStep.progressiveLabels.completed,
+      lastCompletedStep: lastCompleted,
+    };
+  }
+
+  // For partial completion, determine which intermediate label to show
+  const { intermediate } = combinedStep.progressiveLabels;
+  if (intermediate && intermediate.length > 0) {
+    // Special handling for confirmation step
+    if (combinedStep.id === "confirmation") {
+      // If Order Confirmation is done, show "Price Confirmation"
+      const orderConfirmationDone = completedSteps.some((step) =>
+        step.step.toLowerCase().includes("order confirmation")
+      );
+      const priceConfirmationDone = completedSteps.some((step) =>
+        step.step.toLowerCase().includes("price confirmation")
+      );
+
+      if (orderConfirmationDone && !priceConfirmationDone) {
+        // Order confirmed but price confirmation pending
+        return {
+          label: "Price Confirmation",
+          lastCompletedStep: undefined, // Don't show completion time for pending step
+        };
+      } else if (orderConfirmationDone) {
+        return {
+          label: "Price Confirmation",
+          lastCompletedStep: lastCompleted,
+        };
+      }
+    }
+
+    // For other steps, show appropriate intermediate label based on progress
+    const progressIndex = Math.min(
+      completedSteps.length - 1,
+      intermediate.length - 1
+    );
+    return {
+      label: intermediate[progressIndex],
+      lastCompletedStep: lastCompleted,
+    };
+  }
+
+  return { label: combinedStep.progressiveLabels.initial };
+};
+
+// Helper to determine step status based on stepper data
+const getStepStatus = (
+  combinedStep: CombinedStep,
+  stepper: IStepper[]
+): {
+  status: "pending" | "active" | "completed";
+  latestStep?: IStepper;
+  completedAt?: Date;
+} => {
+  const relatedSteps = stepper.filter((step) =>
+    combinedStep.backendSteps.some(
+      (backendStep) =>
+        step.step.toLowerCase().includes(backendStep.toLowerCase()) ||
+        backendStep.toLowerCase().includes(step.step.toLowerCase())
+    )
+  );
+
+  if (relatedSteps.length === 0) {
+    return { status: "pending" };
+  }
+
+  const completedSteps = relatedSteps.filter(
+    (step) => step.status === "COMPLETED"
+  );
+  const pendingSteps = relatedSteps.filter((step) => step.status === "PENDING");
+
+  // If all related steps are completed
+  if (completedSteps.length === relatedSteps.length) {
+    const latestCompleted = completedSteps.reduce((latest, current) => {
+      if (!latest.completedAt || !current.completedAt) return latest;
+      return new Date(current.completedAt) > new Date(latest.completedAt)
+        ? current
+        : latest;
+    });
+    return {
+      status: "completed",
+      latestStep: latestCompleted,
+      completedAt: latestCompleted.completedAt,
+    };
+  }
+
+  // If some steps are completed or there are pending steps
+  if (completedSteps.length > 0 || pendingSteps.length > 0) {
+    const latestStep = [...completedSteps, ...pendingSteps].reduce(
+      (latest, current) => {
+        if (!latest.completedAt && !current.completedAt) return latest;
+        if (!latest.completedAt) return current;
+        if (!current.completedAt) return latest;
+        return new Date(current.completedAt) > new Date(latest.completedAt)
+          ? current
+          : latest;
+      }
+    );
+    return { status: "active", latestStep };
+  }
+
+  return { status: "pending" };
 };
 
 const OrderProgressBar = ({
-  timeline,
+  stepper,
   estimatedDeliveryDate,
 }: OrderProgressBarProps) => {
-  // 1. Get the last event for each status type from the props.timeline
-  const lastEventByStatus = useMemo(() => {
-    const map = new Map<OrderStatus, ITimeline>();
-    if (timeline) {
-      for (const event of timeline) {
-        const createdAt = event.createdAt;
-        map.set(event.status, { ...event, createdAt });
-      }
+  // Calculate step statuses
+  const stepStatuses = useMemo(() => {
+    // If no stepper data, show first step as active, rest as pending
+    if (!stepper || stepper.length === 0) {
+      return COMBINED_STEPS.map((step, index) => ({
+        ...step,
+        status: index === 0 ? ("active" as const) : ("pending" as const),
+        latestStep: undefined,
+        completedAt: undefined,
+      }));
     }
-    return map;
-  }, [timeline]);
 
-  // 2. Determine the actual current (latest) status of the order
-  const latestTimelineEvent = useMemo(() => {
-    if (!timeline || timeline.length === 0) return null;
-    // Sort by createdAt to find the latest
-    const sortedTimeline = [...timeline].sort((a, b) => {
-      const dateA = new Date(a.createdAt);
-      const dateB = new Date(b.createdAt);
-      return dateA.getTime() - dateB.getTime();
-    });
-    const latestEvent = sortedTimeline[sortedTimeline.length - 1];
-    if (latestEvent) {
-      const createdAt = latestEvent.createdAt;
-      return { ...latestEvent, createdAt };
-    }
-    return null;
-  }, [timeline]);
+    return COMBINED_STEPS.map((step) => ({
+      ...step,
+      ...getStepStatus(step, stepper),
+    }));
+  }, [stepper]);
 
-  const currentGlobalStatus = latestTimelineEvent?.status;
-
-  // 3. Determine which visual step is the "current active" one to highlight its label
-  let currentActiveDisplayStepIndex = -1;
-  if (currentGlobalStatus) {
-    currentActiveDisplayStepIndex = MAPPED_STEPS.findIndex((step) =>
-      step.activeWhenStatusIs.includes(currentGlobalStatus)
+  // Find the current active step (first non-completed step)
+  const currentActiveStepIndex = useMemo(() => {
+    const activeIndex = stepStatuses.findIndex(
+      (step) => step.status === "active"
     );
-  }
-  // If completed, the last step "Delivered" should be active.
-  if (
-    currentGlobalStatus === OrderStatus.COMPLETED &&
-    MAPPED_STEPS[MAPPED_STEPS.length - 1].statusMarker === OrderStatus.DELIVERED
-  ) {
-    currentActiveDisplayStepIndex = MAPPED_STEPS.length - 1;
-  }
+    if (activeIndex !== -1) return activeIndex;
+
+    const firstPendingIndex = stepStatuses.findIndex(
+      (step) => step.status === "pending"
+    );
+    return firstPendingIndex !== -1
+      ? firstPendingIndex
+      : stepStatuses.length - 1;
+  }, [stepStatuses]);
 
   return (
     <div className="flex flex-col items-start w-full max-w-md mx-auto p-4">
       {estimatedDeliveryDate && (
-        <p className="text-gray-600 text-sm mb-2">
-          Estimated Date of Delivery:{" "}
-          <strong>{formatDate(estimatedDeliveryDate)}</strong>
+        <p className="text-gray-600 text-sm mb-4">
+          Estimated Date of Delivery: <strong>{estimatedDeliveryDate}</strong>
         </p>
       )}
 
       <div className="relative pl-4 w-full">
-        {" "}
-        {/* Ensure w-full for proper layout */}
-        {MAPPED_STEPS.map((stepConfig, index) => {
-          const eventForThisStepMarker = lastEventByStatus.get(
-            stepConfig.statusMarker
-          );
-          const displayMessage =
-            eventForThisStepMarker?.message || stepConfig.label;
-          const displayDate = eventForThisStepMarker
-            ? formatDate(eventForThisStepMarker.createdAt)
-            : "";
+        {stepStatuses.map((stepData, index) => {
+          const Icon = stepData.icon;
+          const isActive = index === currentActiveStepIndex;
+          const isCompleted = stepData.status === "completed";
 
-          const showCheck = stepGetsCheck(
-            stepConfig,
-            currentGlobalStatus,
-            ORDER_PROGRESSION
-          );
-          const isStepLabelActive = index === currentActiveDisplayStepIndex;
+          // Get progressive label and completion info
+          const progressiveInfo = getProgressiveLabel(stepData, stepper);
+
+          // Determine colors based on status
+          let colorClasses = stepData.colors.pending;
+          if (isCompleted) {
+            colorClasses = stepData.colors.completed;
+          } else if (isActive) {
+            colorClasses = stepData.colors.active;
+          }
+
+          // Show completion time or current step data
+          let timeDisplay = "";
+          let additionalData = "";
+
+          // For completed steps, show the last completed substep's time
+          // Special handling for confirmation step - don't show time if price confirmation is pending
+          if (
+            stepData.id === "confirmation" &&
+            progressiveInfo.label === "Price Confirmation"
+          ) {
+            // Don't show completion time when price confirmation is still pending/active
+            timeDisplay = "";
+          } else if (progressiveInfo.lastCompletedStep?.completedAt) {
+            timeDisplay = formatDate(
+              progressiveInfo.lastCompletedStep.completedAt
+            );
+          } else if (stepData.completedAt) {
+            timeDisplay = formatDate(stepData.completedAt);
+          }
+
+          if (
+            stepData.latestStep?.data &&
+            Object.keys(stepData.latestStep.data).length > 0
+          ) {
+            additionalData = Object.entries(stepData.latestStep.data)
+              .map(([key, value]) => `${key}: ${value}`)
+              .join(", ");
+          }
 
           return (
             <div
-              key={stepConfig.id}
-              className="relative mb-4 last:mb-0 flex items-start w-full" // items-start for better alignment if text wraps
+              key={stepData.id}
+              className="relative mb-6 last:mb-0 flex items-start w-full"
             >
-              {/* Vertical Line - ensure it spans correctly */}
-              {index !== MAPPED_STEPS.length - 1 && (
-                <div className="absolute left-[11px] top-6 w-[2px] h-full bg-gray-400"></div>
+              {/* Vertical Line */}
+              {index !== stepStatuses.length - 1 && (
+                <div className="absolute left-[15px] top-8 w-[2px] h-full bg-gray-300"></div>
               )}
-              {/* Conditional brighter line for completed parts */}
-              {showCheck && index !== MAPPED_STEPS.length - 1 && (
-                <div className="absolute left-[11px] top-6 w-[2px] h-full bg-gray-600"></div>
+              {/* Completed line section */}
+              {isCompleted && index !== stepStatuses.length - 1 && (
+                <div className="absolute left-[15px] top-8 w-[2px] h-full bg-green-400"></div>
               )}
 
-              {/* Step Indicator Circle */}
+              {/* Step Icon Circle */}
               <div
-                className={`relative w-6 h-6 flex items-center justify-center rounded-full border-2 z-10 ${
-                  // z-10 to be above line
-                  showCheck
-                    ? "bg-gray-600 text-white border-gray-600"
-                    : "bg-gray-300 border-gray-600"
-                }`}
+                className={`relative w-8 h-8 flex items-center justify-center rounded-full border-2 z-10 ${colorClasses}`}
               >
-                {showCheck && <FaCheck size={12} />}
+                {isCompleted ? (
+                  <FaCheck size={14} />
+                ) : isActive ? (
+                  <FaClock size={14} />
+                ) : (
+                  <Icon size={14} />
+                )}
               </div>
 
-              {/* Step Content with Flex Alignment */}
-              <div className="flex justify-between items-center w-full pl-4">
+              {/* Step Content */}
+              <div className="flex-1 pl-4">
                 <div>
                   <p
                     className={`text-sm font-semibold ${
-                      isStepLabelActive ? "text-blue-600" : "text-gray-800"
+                      isCompleted
+                        ? "text-green-700"
+                        : isActive
+                        ? "text-blue-600"
+                        : "text-gray-500"
                     }`}
                   >
-                    {stepConfig.label}
+                    {progressiveInfo.label}
                   </p>
-                  {eventForThisStepMarker && displayDate && (
-                    <p className="text-xs text-gray-500">
-                      {displayMessage} <br />{" "}
-                      {/* Show message from timeline if available */}
-                      {displayDate}
+
+                  {/* Show completion time with special handling for confirmation step */}
+                  {timeDisplay && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      {stepData.id === "confirmation" &&
+                      progressiveInfo.label === "Confirmed"
+                        ? `Price Confirmation completed: ${timeDisplay}`
+                        : `Completed: ${timeDisplay}`}
                     </p>
                   )}
-                  {!eventForThisStepMarker && isStepLabelActive && (
-                    <p className="text-xs text-gray-500 italic">Pending...</p>
+
+                  {/* Show current status for price confirmation when pending */}
+                  {stepData.id === "confirmation" &&
+                    progressiveInfo.label === "Price Confirmation" &&
+                    !timeDisplay && (
+                      <p className="text-xs text-blue-600 italic mt-1">
+                        Waiting for price confirmation...
+                      </p>
+                    )}
+
+                  {/* Show additional data if available and it's the current active step */}
+                  {additionalData && isActive && (
+                    <p className="text-xs text-blue-600 mt-1">
+                      {additionalData}
+                    </p>
+                  )}
+
+                  {/* Show pending status for non-completed, non-active steps */}
+                  {!isCompleted && !isActive && (
+                    <p className="text-xs text-gray-400 italic mt-1">
+                      Pending...
+                    </p>
+                  )}
+
+                  {/* Show current status for active step */}
+                  {isActive && !timeDisplay && (
+                    <p className="text-xs text-blue-600 italic mt-1">
+                      In Progress...
+                    </p>
                   )}
                 </div>
               </div>

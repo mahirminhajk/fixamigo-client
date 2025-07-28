@@ -49,7 +49,7 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
         <div className="flex items-center gap-4">
           <div className="w-12 h-16 rounded">
             <Image
-              src={order.device.image}
+              src={order.device.images[0]}
               alt={order.device.name}
               width={80} // Max width, object-contain will handle scaling within the div
               height={80} // Max height
@@ -113,6 +113,10 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
       <h2 className="font-semibold">Service Details</h2>
       <div className="bg-gray-100 p-4 rounded-[6px]">
         <div className="text-sm space-y-1">
+          <p>
+            <span className="text-gray-500">Order Code</span>{" "}
+            <span className="float-right font-semibold">{order.code}</span>
+          </p>
           <p>
             <span className="text-gray-500">Ordered date</span>{" "}
             <span className="float-right">{formatDate(order.createdAt)}</span>

@@ -39,6 +39,7 @@ export default function OrderSummaryContent() {
         if (res.status === 200) {
           clearCart();
           console.log("order: ", res.data.data.order);
+          console.log("stepper data: ", res.data.data.order.stepper);
           setOrder(res.data.data.order);
         } else {
           setError("Something went wrong");
@@ -128,11 +129,57 @@ export default function OrderSummaryContent() {
         <div className="flex-1 p-4 w-full flex justify-center">
           <div className="w-full max-w-md">
             <Topbar title="Service Details" />
+
+            {/* Alert Display */}
+            {order.alert?.isActive && (
+              <div
+                className={`mb-4 p-3 rounded-lg border ${
+                  order.alert.type === "ERROR"
+                    ? "bg-red-50 border-red-200 text-red-800"
+                    : order.alert.type === "WARNING"
+                    ? "bg-yellow-50 border-yellow-200 text-yellow-800"
+                    : order.alert.type === "SUCCESS"
+                    ? "bg-green-50 border-green-200 text-green-800"
+                    : "bg-blue-50 border-blue-200 text-blue-800"
+                }`}
+              >
+                {order.alert.title && (
+                  <h4 className="font-semibold text-sm mb-1">
+                    {order.alert.title}
+                  </h4>
+                )}
+                {order.alert.message && (
+                  <p className="text-sm">{order.alert.message}</p>
+                )}
+                {order.alert.createdAt && (
+                  <p className="text-xs opacity-75 mt-1">
+                    {new Date(order.alert.createdAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    )}
+                  </p>
+                )}
+              </div>
+            )}
+
             {/* PopupLoading for API calls is handled internally now,
                 but you might still want a loading indicator for the initial Suspense state */}
             <OrderProgressBar
-              timeline={order.timeline}
-              estimatedDeliveryDate="Sep 30, 2024" // Consider making this dynamic if possible
+              stepper={order.stepper}
+              estimatedDeliveryDate={
+                order.schedules?.deliveryDate
+                  ? new Date(order.schedules.deliveryDate).toLocaleDateString(
+                      "en-US",
+                      { month: "short", day: "numeric", year: "numeric" }
+                    )
+                  : undefined
+              }
             />
             <OrderInvoice order={order} />
           </div>
