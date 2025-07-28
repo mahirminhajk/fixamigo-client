@@ -1,4 +1,5 @@
 export interface IAddress {
+  _id?: string;
   user?: string;
   name?: string;
   phone: string;
@@ -9,4 +10,6 @@ export interface IAddress {
   city: string;
   state: string;
   pincode: string;
+  createdAt?: string;
+  updatedAt?: string;
 }

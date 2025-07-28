@@ -19,6 +19,7 @@ import { PopupLoading } from "@/components/others/popupLoading";
 function CheckoutPageContent() {
   //*state
   const [order, setOrder] = useState<IOrder | null>(null);
+  const [selectedAddress, setSelectedAddress] = useState<IAddress | null>(null);
   const [pickupAvailableDates, setPickupAvailableDates] = useState<string[]>(
     []
   );
@@ -51,6 +52,10 @@ function CheckoutPageContent() {
       .post("/order/checkout", data)
       .then((res) => {
         setOrder(res.data.data.order);
+        // Set the address from the order if it exists
+        if (res.data.data.order.address) {
+          setSelectedAddress(res.data.data.order.address);
+        }
         //? check pickupAvailableDates array length is greater than 0
         if (res.data.data.pickupAvailableDates.length > 0) {
           setPickupAvailableDates(res.data.data.pickupAvailableDates);
@@ -93,6 +98,10 @@ function CheckoutPageContent() {
       .patch(`/order/${order?._id}/set-address`, data)
       .then((res) => {
         setOrder(res.data.data.order);
+        // Update the selected address from the response
+        if (res.data.data.order.address) {
+          setSelectedAddress(res.data.data.order.address);
+        }
         setPickupAvailableDates(res.data.data.pickupAvailableDates);
       })
       .catch((err) => {
@@ -109,6 +118,11 @@ function CheckoutPageContent() {
       .finally(() => {
         setLoading(false);
       });
+  };
+
+  //* onAddressSelect - for updating local state when selecting existing address
+  const onAddressSelect = (address: IAddress) => {
+    setSelectedAddress(address);
   };
 
   //* onPickupDateChange
@@ -210,8 +224,9 @@ function CheckoutPageContent() {
                 onServiceMethodChange={onServiceMethodChange}
               />
               <CheckoutAddressCard
-                address={order?.address}
+                address={selectedAddress || order?.address}
                 onAddressSubmit={onAddressSubmit}
+                onAddressSelect={onAddressSelect}
                 loading={loading}
                 error={addressError}
               />
