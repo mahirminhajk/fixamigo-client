@@ -99,7 +99,19 @@ export enum OrderStatus {
 
 export interface IStepper {
   step: string;
-  status: "PENDING" | "COMPLETED" | "FAILED";
+  status: "PENDING" | "IN_PROGRESS" | "COMPLETED" | "FAILED";
+  substatus?: string; // For detailed status within a step
   completedAt?: Date;
+  startedAt?: Date;
   data?: { [key: string]: string };
+}
+
+// Dynamic stepper step types
+export enum StepperStepType {
+  ORDER_CONFIRMATION = "Order Confirmation",
+  PRICE_CONFIRMATION = "Price Confirmation",
+  PICKUP = "Pickup",
+  REPAIR = "Repair",
+  DELIVERY = "Delivery",
+  COMPLETION = "Completion",
 }
