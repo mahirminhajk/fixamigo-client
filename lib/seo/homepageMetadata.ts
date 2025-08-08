@@ -116,12 +116,6 @@ export function getHomepageMetadata(): Metadata {
 
     applicationName: INFO.name,
     referrer: "origin-when-cross-origin",
-    colorScheme: "light",
-    themeColor: [
-      { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-      { media: "(prefers-color-scheme: dark)", color: "#000000" },
-    ],
-    viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 
     // Structured data for local business (as other metadata)
     // This would ideally be in a separate JSON-LD script tag

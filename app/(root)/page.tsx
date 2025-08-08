@@ -13,6 +13,18 @@ import Script from "next/script";
 // Generate metadata for SEO
 export const metadata = getHomepageMetadata();
 
+// Export viewport and themeColor separately
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  colorScheme: "light",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
+
 const Home = () => {
   const structuredData = getHomepageStructuredData();
 
