@@ -9,14 +9,14 @@ const ServiceSteps = () => {
       description: "Choose your device for repair and get the best price.",
       color: "from-[#D2691E] to-orange-600",
       bgColor: "bg-orange-50",
-      borderColor: "border-orange-200",
+      borderColor: "border-gray-200", // match second card border style
     },
     {
       imgSrc: "/steps-icons/calender.png",
       title: "Schedule Service",
       description: "Schedule your repair at a convenient date.",
       color: "from-[#121212] to-gray-700",
-      bgColor: "bg-gray-50",
+      bgColor: "bg-orange-50", // use inside bg like cards 1 & 3
       borderColor: "border-gray-200",
     },
     {
@@ -26,7 +26,7 @@ const ServiceSteps = () => {
         "Identify the issue and get it fixed quickly by our experts.",
       color: "from-[#D2691E] to-orange-600",
       bgColor: "bg-orange-50",
-      borderColor: "border-orange-200",
+      borderColor: "border-gray-200", // match second card border style
     },
     {
       imgSrc: "/steps-icons/handbox.png",
@@ -34,7 +34,7 @@ const ServiceSteps = () => {
       description:
         "Get your repaired device safely delivered to your doorstep.",
       color: "from-[#121212] to-gray-700",
-      bgColor: "bg-gray-50",
+      bgColor: "bg-orange-50", // use inside bg like cards 1 & 3
       borderColor: "border-gray-200",
     },
   ];
@@ -74,10 +74,10 @@ const ServiceSteps = () => {
 
             {/* Step number */}
             <div
-              className={`absolute top-2 left-2 md:top-4 md:left-4 w-6 h-6 md:w-8 md:h-8 
-                             bg-gradient-to-br ${step.color}
+              className="absolute top-2 left-2 md:top-4 md:left-4 w-6 h-6 md:w-8 md:h-8 
+                             bg-[#121212]
                              rounded-full flex items-center justify-center
-                             text-white font-bold text-xs md:text-sm shadow-lg`}
+                             text-white font-bold text-xs md:text-sm shadow-lg"
             >
               {index + 1}
             </div>
@@ -169,19 +169,6 @@ const ServiceSteps = () => {
                        before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300"
           >
             <div className="flex items-center gap-3 relative z-10">
-              <svg
-                className="w-5 h-5 md:w-6 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
               <span>Start Your Repair Journey</span>
               <svg
                 className="w-4 h-4 md:w-5 md:h-5 transform transition-transform duration-300 group-hover:translate-x-1"
@@ -200,7 +187,7 @@ const ServiceSteps = () => {
           </Link>
         </div>
         <p className="text-xs md:text-sm text-gray-500 mt-4">
-          ⚡ Quick, reliable, and hassle-free device repairs
+          Quick, reliable, and hassle-free device repairs
         </p>
       </div>
     </section>
