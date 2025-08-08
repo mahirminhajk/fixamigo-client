@@ -115,68 +115,160 @@ const CheckoutPickupDateCard = ({
   return (
     <>
       <Sheet open={open} onOpenChange={toggleSheet}>
-        <SheetTrigger className="w-full max-w-md lg:max-w-none bg-gray-100 p-4 lg:p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
-          <div>
-            <p className="text-gray-500 text-sm text-left">Pickup date</p>
-            <div className="flex justify-between items-center">
-              {selectedDate ? (
-                <p className="text-lg lg:text-xl font-semibold">
-                  {selectedDate.weekday}, {selectedDate.day}{" "}
-                  {selectedDate.month}
-                </p>
-              ) : (
-                <p className="text-gray-500 lg:text-lg">Select a pickup date</p>
-              )}
-              <span>
-                <FaChevronRight />
-              </span>
-            </div>
-            {errorMessage && (
-              <div className="mt-4 text-red-500 text-sm lg:text-base text-left">
-                {errorMessage}
+        <SheetTrigger className="w-full max-w-md lg:max-w-none group">
+          <div className="bg-white p-6 lg:p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 cursor-pointer group-hover:scale-[1.02]">
+            <div className="flex items-center justify-between">
+              <div className="flex-1 text-left">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-3 h-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full"></div>
+                  <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                    Pickup Date
+                  </p>
+                </div>
+                {selectedDate ? (
+                  <div className="space-y-1">
+                    <p className="text-xl lg:text-2xl font-bold text-gray-900">
+                      {selectedDate.weekday}, {selectedDate.day}{" "}
+                      {selectedDate.month}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      We&apos;ll pick up your device on this date
+                    </p>
+                  </div>
+                ) : (
+                  <p className="text-lg lg:text-xl text-gray-400 font-medium">
+                    Choose your preferred pickup date
+                  </p>
+                )}
+                {errorMessage && (
+                  <div className="mt-3 p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                    <p className="text-sm text-amber-700 font-medium">
+                      {errorMessage}
+                    </p>
+                  </div>
+                )}
               </div>
-            )}
+              <div className="ml-4 flex items-center justify-center w-10 h-10 bg-gray-50 rounded-full group-hover:bg-purple-50 transition-colors">
+                <FaChevronRight className="text-gray-400 group-hover:text-purple-500 transition-colors" />
+              </div>
+            </div>
           </div>
         </SheetTrigger>
 
-        <SheetContent className="w-screen">
-          <SheetHeader>
-            <SheetTitle>Pickup Date</SheetTitle>
-            <SheetDescription>
-              Please select your preferred pickup date.
+        <SheetContent className="w-screen sm:max-w-lg">
+          <SheetHeader className="space-y-4">
+            <SheetTitle className="text-2xl font-bold text-gray-900">
+              Pickup Date
+            </SheetTitle>
+            <SheetDescription className="text-base text-gray-600">
+              Select your preferred date for device pickup. We&apos;ll arrive at
+              your scheduled time.
             </SheetDescription>
           </SheetHeader>
 
-          <div className="flex flex-col items-center w-full mt-4">
-            <div className="grid grid-cols-3 gap-3 mb-6" id="date-section">
+          <div className="flex flex-col items-center w-full mt-8">
+            <div
+              className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 w-full"
+              id="date-section"
+            >
               {dates.map((date, index) => (
                 <div
                   key={index}
-                  className={`bg-gray-100 border rounded-[8px] cursor-pointer w-20 h-20 lg:w-24 lg:h-24 flex flex-col justify-center items-center ${
+                  className={`relative bg-white border-2 rounded-2xl cursor-pointer transition-all duration-300 hover:shadow-lg ${
                     selectedDate?.fullDate === date.fullDate
-                      ? "border-blue-500 text-blue-500 border-dashed"
-                      : "text-black border-gray-300"
+                      ? "border-purple-500 bg-purple-50 shadow-lg scale-105"
+                      : "border-gray-200 hover:border-purple-300"
                   }`}
                   onClick={() => setDate(date)}
                 >
-                  {isToday(date) && (
-                    <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
-                      Today
-                    </p>
-                  )}
-                  {isTomorrow(date) && (
-                    <p className="text-sm font-medium bg-gray-300 w-full text-center rounded-t-[6px] text-black">
-                      Tomorrow
-                    </p>
+                  {(isToday(date) || isTomorrow(date)) && (
+                    <div
+                      className={`absolute -top-2 left-1/2 transform -translate-x-1/2 px-3 py-1 text-xs font-bold rounded-full ${
+                        isToday(date)
+                          ? "bg-green-500 text-white"
+                          : "bg-blue-500 text-white"
+                      }`}
+                    >
+                      {isToday(date) ? "Today" : "Tomorrow"}
+                    </div>
                   )}
 
-                  <div className="flex flex-col items-center justify-center text-center flex-1">
-                    <p className="text-2xl font-bold">{date.day}</p>
-                    <p className="text-sm">{date.weekday}</p>
+                  <div className="flex flex-col items-center justify-center p-4 h-24 text-center">
+                    <p
+                      className={`text-2xl font-bold mb-1 ${
+                        selectedDate?.fullDate === date.fullDate
+                          ? "text-purple-700"
+                          : "text-gray-900"
+                      }`}
+                    >
+                      {date.day}
+                    </p>
+                    <p
+                      className={`text-sm font-medium ${
+                        selectedDate?.fullDate === date.fullDate
+                          ? "text-purple-600"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      {date.weekday.slice(0, 3)}
+                    </p>
+                    <p
+                      className={`text-xs ${
+                        selectedDate?.fullDate === date.fullDate
+                          ? "text-purple-500"
+                          : "text-gray-500"
+                      }`}
+                    >
+                      {date.month.slice(0, 3)}
+                    </p>
                   </div>
+
+                  {selectedDate?.fullDate === date.fullDate && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-6 h-6 bg-purple-500 rounded-full flex items-center justify-center">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
+
+            {dates.length === 0 && (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-500">No available pickup dates</p>
+                <p className="text-sm text-gray-400 mt-1">
+                  Please add your address first
+                </p>
+              </div>
+            )}
           </div>
         </SheetContent>
       </Sheet>

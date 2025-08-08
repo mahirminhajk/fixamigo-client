@@ -16,7 +16,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
-import { INFO } from "@/constants";
 import api from "@/lib/axiosInstance";
 import { AxiosError } from "axios";
 
@@ -62,7 +61,7 @@ const CheckoutAddressCard = ({
   //* user
   const user = useUserStore((state) => state.user);
 
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues: {
       name: address?.name ?? user?.name ?? "",
       phone: address?.phone ?? user?.phoneNo ?? "",
@@ -148,74 +147,101 @@ const CheckoutAddressCard = ({
 
   return (
     <Sheet open={open} onOpenChange={toggleSheet}>
-      <SheetTrigger className="w-full max-w-md lg:max-w-none bg-gray-100 p-4 lg:p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
-        <div>
-          <p className="text-gray-500 text-sm text-left">Shipping Address</p>
-          <div className="flex justify-between items-center">
-            {address ? (
-              <div className="text-left">
-                <p className="text-lg font-medium">{address?.name}</p>
-                <p className="text-sm text-gray-600">{`${address.address}, ${address.city}, ${address.landmark}, ${address.pincode}`}</p>
-                <p className="text-sm text-gray-600">
-                  {address?.phone}{" "}
-                  {address.altPhone ? " - " + address.altPhone : null}
+      <SheetTrigger className="w-full max-w-md lg:max-w-none group">
+        <div className="bg-white p-6 lg:p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 cursor-pointer group-hover:scale-[1.02]">
+          <div className="flex items-start justify-between">
+            <div className="flex-1 text-left">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-3 h-3 bg-gradient-to-r from-red-500 to-pink-600 rounded-full"></div>
+                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                  Shipping Address
                 </p>
               </div>
-            ) : (
-              <p className="text-gray-500">Add Shipping Address</p>
-            )}
-            <span>
-              <FaChevronRight />
-            </span>
-          </div>
-          <div className="text-sm text-red-500 mt-2 text-left">
-            {error &&
-              (error === "NO_ZONES" ? (
-                <p className="">
-                  <span className="text-red-500 font-semibold">
-                    Delivery not available in your area. Please Contact us for
-                    more details.
-                  </span>{" "}
-                  <span className="text-green-500 font-semibold">
-                    <a
-                      href={INFO.waLink(
-                        `Hi, I am trying to book a service for the pin code ${watch(
-                          "pincode"
-                        )} Could you please assist me?`
+              {address ? (
+                <div className="space-y-2">
+                  <p className="text-xl lg:text-2xl font-bold text-gray-900">
+                    {address?.name}
+                  </p>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <p className="leading-relaxed">
+                      {address.address}, {address.city}
+                      {address.landmark && `, ${address.landmark}`}
+                    </p>
+                    <p className="font-medium">{address.pincode}</p>
+                    <p className="flex items-center gap-2">
+                      <span>{address?.phone}</span>
+                      {address.altPhone && (
+                        <span className="text-gray-400">
+                          • {address.altPhone}
+                        </span>
                       )}
-                    >
-                      {INFO.phoneLabel}
-                    </a>
-                  </span>
-                </p>
+                    </p>
+                  </div>
+                </div>
               ) : (
-                <p className="">
-                  <span className="text-red-500 font-semibold">
-                    Something went wrong!. Please Contact us for more details.
-                  </span>{" "}
-                  <span className="text-green-500 font-semibold">
-                    <a
-                      href={INFO.waLink(
-                        "Hi, I am unable to place an order. Please help me."
-                      )}
-                    >
-                      {INFO.phoneLabel}
-                    </a>
-                  </span>
+                <p className="text-lg lg:text-xl text-gray-400 font-medium">
+                  Add your shipping address
                 </p>
-              ))}
+              )}
+
+              {error && (
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 text-red-500 mt-0.5">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      {error === "NO_ZONES" ? (
+                        <div className="space-y-2">
+                          <p className="text-sm font-semibold text-red-700">
+                            Service not available in this area
+                          </p>
+                          <p className="text-xs text-red-600">
+                            We&apos;re working to expand our services. Contact
+                            us for assistance.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <p className="text-sm font-semibold text-red-700">
+                            Something went wrong
+                          </p>
+                          <p className="text-xs text-red-600">
+                            Please try again or contact us for help.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="ml-4 flex items-center justify-center w-10 h-10 bg-gray-50 rounded-full group-hover:bg-red-50 transition-colors">
+              <FaChevronRight className="text-gray-400 group-hover:text-red-500 transition-colors" />
+            </div>
           </div>
         </div>
       </SheetTrigger>
-      <SheetContent className="w-screen flex flex-col h-full">
-        <SheetHeader className="flex-shrink-0">
-          <SheetTitle>
+      <SheetContent className="w-screen sm:max-w-lg flex flex-col h-full">
+        <SheetHeader className="flex-shrink-0 space-y-4">
+          <SheetTitle className="text-2xl font-bold text-gray-900">
             {showAddNewForm ? "Add New Address" : "Select Address"}
           </SheetTitle>
-          <SheetDescription>
+          <SheetDescription className="text-base text-gray-600">
             {showAddNewForm
-              ? "This address will be used to pickup your device."
-              : "Choose from your existing addresses or add a new one."}
+              ? "This address will be used for device pickup and delivery."
+              : "Choose from your saved addresses or add a new one for convenience."}
           </SheetDescription>
         </SheetHeader>
 

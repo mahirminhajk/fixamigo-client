@@ -31,77 +31,138 @@ const CheckoutServiceMethodCard = ({
 
   return (
     <Sheet open={open} onOpenChange={toggleSheet}>
-      <SheetTrigger className="w-full max-w-md lg:max-w-none bg-gray-100 p-4 lg:p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-200">
-        <div>
-          <p className="text-gray-500 text-sm text-left">Service Method</p>
-          <div className="flex justify-between items-center">
-            {selectedMethod ? (
-              <>
-                <p className="text-lg lg:text-xl font-semibold">
-                  {selectedMethod === "pickupDelivery"
-                    ? "Pickup & Delivery Repair"
-                    : "On-Site Repair"}
+      <SheetTrigger className="w-full max-w-md lg:max-w-none group">
+        <div className="bg-white p-6 lg:p-8 rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg hover:border-gray-300 transition-all duration-300 cursor-pointer group-hover:scale-[1.02]">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 text-left">
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"></div>
+                <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+                  Service Method
                 </p>
-              </>
-            ) : (
-              <p className="text-gray-500 lg:text-lg">
-                Select a service method
-              </p>
-            )}
-
-            <span className="">
-              <FaChevronRight />
-            </span>
+              </div>
+              {selectedMethod ? (
+                <div className="space-y-1">
+                  <p className="text-xl lg:text-2xl font-bold text-gray-900">
+                    {selectedMethod === "pickupDelivery"
+                      ? "Pickup & Delivery"
+                      : "On-Site Repair"}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {selectedMethod === "pickupDelivery"
+                      ? "We'll collect and return your device"
+                      : "Our technician visits your location"}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-lg lg:text-xl text-gray-400 font-medium">
+                  Choose your preferred service method
+                </p>
+              )}
+            </div>
+            <div className="ml-4 flex items-center justify-center w-10 h-10 bg-gray-50 rounded-full group-hover:bg-blue-50 transition-colors">
+              <FaChevronRight className="text-gray-400 group-hover:text-blue-500 transition-colors" />
+            </div>
           </div>
         </div>
       </SheetTrigger>
-      <SheetContent className="w-screen">
-        <SheetHeader>
-          <SheetTitle>Service Method</SheetTitle>
-          <SheetDescription>Choose how we repair your device.</SheetDescription>
+      <SheetContent className="w-screen sm:max-w-lg">
+        <SheetHeader className="space-y-4">
+          <SheetTitle className="text-2xl font-bold text-gray-900">
+            Service Method
+          </SheetTitle>
+          <SheetDescription className="text-base text-gray-600">
+            Choose how we repair your device for the best experience.
+          </SheetDescription>
         </SheetHeader>
-        <div className="mt-4">
-          <div className="bg-white p-4 rounded-xl shadow-md mb-4">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="serviceMethod"
-                value="pickupDelivery"
-                checked={selectedMethod === "pickupDelivery"}
-                onChange={() => handleMethodChange("pickupDelivery")}
-                className="mr-2"
-              />
-              <div>
-                <p className="text-lg font-medium">Pickup & Delivery Repair</p>
-                <p className="text-sm text-gray-500">
-                  We pick up your device, repair it at our center, and deliver
-                  it back to you.
+        <div className="mt-8 space-y-4">
+          <div className="relative">
+            <input
+              type="radio"
+              name="serviceMethod"
+              value="pickupDelivery"
+              id="pickupDelivery"
+              checked={selectedMethod === "pickupDelivery"}
+              onChange={() => handleMethodChange("pickupDelivery")}
+              className="sr-only peer"
+            />
+            <label
+              htmlFor="pickupDelivery"
+              className="flex items-start p-6 bg-white border-2 border-gray-200 rounded-2xl cursor-pointer hover:border-blue-300 hover:shadow-lg transition-all duration-300 peer-checked:border-blue-500 peer-checked:bg-blue-50 peer-checked:shadow-lg"
+            >
+              <div className="flex items-center justify-center w-6 h-6 mr-4 mt-0.5">
+                <div className="w-4 h-4 border-2 border-gray-300 rounded-full peer-checked:border-blue-500 peer-checked:bg-blue-500 relative">
+                  <div className="absolute inset-0 hidden peer-checked:block">
+                    <div className="w-2 h-2 bg-white rounded-full m-auto mt-0.5"></div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Pickup & Delivery
+                  </h3>
+                  <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
+                    Recommended
+                  </span>
+                </div>
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  We pick up your device from your location, repair it at our
+                  certified service center with premium tools and expertise,
+                  then deliver it back to you once it&apos;s ready.
                 </p>
+                <div className="flex items-center gap-4 mt-3 text-xs text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                    Free pickup
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                    Professional repair
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <div className="w-1 h-1 bg-green-500 rounded-full"></div>
+                    Safe delivery
+                  </span>
+                </div>
               </div>
             </label>
           </div>
-          <div className="bg-gray-200 p-4 rounded-xl shadow-md">
-            <label className="flex items-center">
-              <input
-                type="radio"
-                name="serviceMethod"
-                value="onSite"
-                checked={selectedMethod === "onSite"}
-                onChange={() => handleMethodChange("onSite")}
-                disabled
-                className="mr-2"
-              />
-              <div>
-                <p className="text-lg font-medium text-gray-400">
-                  On-Site Repair
+
+          <div className="relative opacity-60">
+            <input
+              type="radio"
+              name="serviceMethod"
+              value="onSite"
+              id="onSite"
+              checked={selectedMethod === "onSite"}
+              onChange={() => handleMethodChange("onSite")}
+              disabled
+              className="sr-only peer"
+            />
+            <label
+              htmlFor="onSite"
+              className="flex items-start p-6 bg-gray-50 border-2 border-gray-200 rounded-2xl cursor-not-allowed"
+            >
+              <div className="flex items-center justify-center w-6 h-6 mr-4 mt-0.5">
+                <div className="w-4 h-4 border-2 border-gray-300 rounded-full"></div>
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-lg font-semibold text-gray-400">
+                    On-Site Repair
+                  </h3>
+                  <span className="px-2 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
+                    Coming Soon
+                  </span>
+                </div>
+                <p className="text-gray-500 text-sm leading-relaxed mb-2">
+                  Our certified technician visits your location and repairs the
+                  device on-site with portable professional equipment.
                 </p>
-                <p className="text-sm text-gray-500">
-                  Our technician comes to your location and repairs the device
-                  on the spot.
-                </p>
-                <p className="text-xs text-red-500 mt-1">
-                  This method is currently not available as we are expanding our
-                  on-site services.
+                <p className="text-xs text-orange-600 font-medium">
+                  We&apos;re expanding our on-site services to provide you with
+                  more convenient repair options.
                 </p>
               </div>
             </label>

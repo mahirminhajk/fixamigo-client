@@ -384,30 +384,32 @@ function CheckoutPageContent() {
                   </div>
                 )}
 
-                <div className="p-4 space-y-4 lg:space-y-6 flex flex-col items-center lg:items-stretch pb-48 lg:pb-8">
-                  <CheckoutServiceMethodCard
-                    onServiceMethodChange={onServiceMethodChange}
-                  />
-                  <CheckoutAddressCard
-                    address={selectedAddress || order?.address}
-                    onAddressSubmit={onAddressSubmit}
-                    onAddressSelect={onAddressSelect}
-                    loading={loading}
-                    error={addressError}
-                  />
-                  <CheckoutPickupDateCard
-                    pickupAvailableDates={pickupAvailableDates}
-                    pickupDate={
-                      order?.schedules?.pickupDate
-                        ? order.schedules.pickupDate
-                        : null
-                    }
-                    onPickupDateChange={onPickupDateChange}
-                    loading={loading}
-                  />
-                  <CheckoutPaymentMethodCard
-                    onPaymentMethodChange={onPaymentMethodChange}
-                  />
+                <div className="p-4 lg:p-6 space-y-6 lg:space-y-8 flex flex-col items-center lg:items-stretch pb-48 lg:pb-8">
+                  <div className="w-full space-y-4 lg:space-y-6">
+                    <CheckoutServiceMethodCard
+                      onServiceMethodChange={onServiceMethodChange}
+                    />
+                    <CheckoutAddressCard
+                      address={selectedAddress || order?.address}
+                      onAddressSubmit={onAddressSubmit}
+                      onAddressSelect={onAddressSelect}
+                      loading={loading}
+                      error={addressError}
+                    />
+                    <CheckoutPickupDateCard
+                      pickupAvailableDates={pickupAvailableDates}
+                      pickupDate={
+                        order?.schedules?.pickupDate
+                          ? order.schedules.pickupDate
+                          : null
+                      }
+                      onPickupDateChange={onPickupDateChange}
+                      loading={loading}
+                    />
+                    <CheckoutPaymentMethodCard
+                      onPaymentMethodChange={onPaymentMethodChange}
+                    />
+                  </div>
 
                   {/* Desktop Place Order Button */}
                   <div className="hidden lg:block mt-8">
