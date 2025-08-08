@@ -6,7 +6,7 @@ import Select from "react-select";
 import { useUserStore } from "@/stores/userStore";
 
 type SupportRequestFormProps = {
-  type: string; // "brand" | "device" | "service"
+  type: string; // "brand" | "device" | "service" | "can-not-find" | "support" | "feedback"
   value: string;
 };
 
@@ -42,7 +42,11 @@ export default function SupportRequestForm({
     setStatus(null);
     try {
       const data: SupportRequestData = {
-        type: type as "brand" | "device" | "service",
+        type: (type === "can-not-find" ||
+        type === "support" ||
+        type === "feedback"
+          ? "service"
+          : type) as "brand" | "device" | "service",
         details: { description },
         user: user?._id || "",
       };
@@ -53,6 +57,17 @@ export default function SupportRequestForm({
         data.details.device = value;
         data.details.service = serviceType;
         data.phone = phoneNo;
+      } else if (type === "can-not-find") {
+        // General help request
+        data.details.service = "General Help";
+        data.phone = phoneNo;
+      } else if (type === "support") {
+        // General support request
+        data.details.service = "General Support";
+        data.phone = phoneNo;
+      } else if (type === "feedback") {
+        // Feedback request - no phone number needed
+        data.details.service = "Feedback";
       } else {
         // device request
         data.details.brand = value;
@@ -69,6 +84,7 @@ export default function SupportRequestForm({
       setDeviceName("");
       setServiceType("");
       setDescription("");
+      if (type !== "brand") setPhoneNo("");
     } catch {
       setStatus("Error submitting request. Please try again.");
     } finally {
@@ -77,18 +93,23 @@ export default function SupportRequestForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       {/* Brand input */}
       {type === "brand" && (
         <div>
-          <label className="block font-medium mb-1">Enter Brand Name</label>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
+            Enter Brand Name
+          </label>
           <input
             type="text"
             value={brandName}
             onChange={(e) => setBrandName(e.target.value)}
-            placeholder="e.g., Apple"
+            placeholder="e.g., Apple, Samsung, OnePlus"
             required
-            className="w-full border rounded px-3 py-2"
+            className="w-full pl-4 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200
+                       rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
+                       focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
+                       placeholder-gray-400 transition-all duration-300 ease-in-out"
           />
         </div>
       )}
@@ -96,28 +117,36 @@ export default function SupportRequestForm({
       {type === "device" && (
         <>
           <div>
-            <label className="block font-medium mb-1">Brand</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Brand
+            </label>
             <input
               type="text"
               value={value}
               disabled
-              className="w-full border rounded px-3 py-2 bg-gray-100"
+              className="w-full pl-4 pr-4 py-4 text-gray-700 bg-gray-100 border-2 border-gray-200
+                         rounded-2xl shadow-lg cursor-not-allowed"
             />
           </div>
           <div>
-            <label className="block font-medium mb-1">Device Model/Name</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Device Model/Name
+            </label>
             <input
               type="text"
               value={deviceName}
               onChange={(e) => setDeviceName(e.target.value)}
               placeholder="Enter your device model or name"
               required
-              className="w-full border rounded px-3 py-2"
+              className="w-full pl-4 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200
+                         rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
+                         focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
+                         placeholder-gray-400 transition-all duration-300 ease-in-out"
             />
           </div>
           <div>
-            <label className="block font-medium mb-1">
-              What kind of service are you looking for
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              What kind of service are you looking for?
             </label>
             <Select
               options={serviceCategoryOptions}
@@ -131,6 +160,22 @@ export default function SupportRequestForm({
               isClearable
               isSearchable
               required
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderRadius: "1rem",
+                  borderWidth: "2px",
+                  borderColor: state.isFocused ? "#D2691E" : "#E5E7EB",
+                  boxShadow: state.isFocused
+                    ? "0 0 0 4px rgba(210, 105, 30, 0.2)"
+                    : "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                  padding: "8px",
+                  "&:hover": {
+                    borderColor: "#D2691E",
+                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+                  },
+                }),
+              }}
             />
           </div>
         </>
@@ -139,16 +184,21 @@ export default function SupportRequestForm({
       {type === "service" && (
         <>
           <div>
-            <label className="block font-medium mb-1">Service Category</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Service Category
+            </label>
             <input
               type="text"
               value={value}
               disabled
-              className="w-full border rounded px-3 py-2 bg-gray-100"
+              className="w-full pl-4 pr-4 py-4 text-gray-700 bg-gray-100 border-2 border-gray-200
+                         rounded-2xl shadow-lg cursor-not-allowed"
             />
           </div>
           <div>
-            <label className="block font-medium mb-1">Service Needed</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">
+              Service Needed
+            </label>
             <Select
               options={serviceCategoryOptions}
               value={
@@ -161,16 +211,77 @@ export default function SupportRequestForm({
               isClearable
               isSearchable
               required
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  borderRadius: "1rem",
+                  borderWidth: "2px",
+                  borderColor: state.isFocused ? "#D2691E" : "#E5E7EB",
+                  boxShadow: state.isFocused
+                    ? "0 0 0 4px rgba(210, 105, 30, 0.2)"
+                    : "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+                  padding: "8px",
+                  "&:hover": {
+                    borderColor: "#D2691E",
+                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+                  },
+                }),
+              }}
             />
           </div>
         </>
       )}
 
+      {/* General help request for "can-not-find" type */}
+      {type === "can-not-find" && (
+        <div>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
+            Phone Number{" "}
+            <span className="text-sm text-gray-500 font-normal">
+              (We&apos;ll use this number to contact you for assistance)
+            </span>
+          </label>
+          <input
+            type="text"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
+            placeholder="e.g., +1234567890"
+            required
+            className="w-full pl-4 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200
+                       rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
+                       focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
+                       placeholder-gray-400 transition-all duration-300 ease-in-out"
+          />
+        </div>
+      )}
+
+      {/* General support request for "support" type */}
+      {type === "support" && (
+        <div>
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
+            Phone Number{" "}
+            <span className="text-sm text-gray-500 font-normal">
+              (Optional - We&apos;ll use this number to contact you if needed)
+            </span>
+          </label>
+          <input
+            type="text"
+            value={phoneNo}
+            onChange={(e) => setPhoneNo(e.target.value)}
+            placeholder="e.g., +1234567890"
+            className="w-full pl-4 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200
+                       rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
+                       focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
+                       placeholder-gray-400 transition-all duration-300 ease-in-out"
+          />
+        </div>
+      )}
+
       {(type === "device" || type === "service") && (
         <div>
-          <label className="block font-medium mb-1">
+          <label className="block text-sm font-semibold text-gray-900 mb-2">
             Phone Number{" "}
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-gray-500 font-normal">
               (We&apos;ll use this number to contact you for more information)
             </span>
           </label>
@@ -180,31 +291,72 @@ export default function SupportRequestForm({
             onChange={(e) => setPhoneNo(e.target.value)}
             placeholder="e.g., +1234567890"
             required
-            className="w-full border rounded px-3 py-2"
+            className="w-full pl-4 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200
+                       rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
+                       focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
+                       placeholder-gray-400 transition-all duration-300 ease-in-out"
           />
         </div>
       )}
 
       {/* Common description */}
       <div>
-        <label className="block font-medium mb-1">Additional Comments</label>
+        <label className="block text-sm font-semibold text-gray-900 mb-2">
+          {type === "feedback" ? "Your Feedback" : "Additional Comments"}
+        </label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded px-3 py-2"
-          placeholder="Any other feedback or details"
+          className="w-full pl-4 pr-4 py-4 text-gray-700 bg-white border-2 border-gray-200
+                     rounded-2xl shadow-lg hover:shadow-xl focus:shadow-xl
+                     focus:outline-none focus:border-[#D2691E] focus:ring-4 focus:ring-[#D2691E]/20
+                     placeholder-gray-400 transition-all duration-300 ease-in-out
+                     resize-none h-32"
+          placeholder={
+            type === "feedback"
+              ? "Share your experience, suggestions, or feedback about our services..."
+              : "Any other feedback or details..."
+          }
+          required={type === "feedback"}
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-blue-600 text-white px-4 py-2 rounded"
+        className="w-full relative inline-flex items-center justify-center gap-3 px-6 md:px-8 py-4 md:py-5
+                   bg-gradient-to-r from-[#D2691E] to-[#121212]
+                   hover:from-[#121212] hover:to-[#D2691E]
+                   disabled:from-gray-400 disabled:to-gray-500
+                   text-white font-bold rounded-2xl text-lg
+                   shadow-xl hover:shadow-2xl
+                   transform transition-all duration-300
+                   hover:scale-105 hover:-translate-y-1
+                   disabled:hover:scale-100 disabled:hover:translate-y-0
+                   focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
+                   disabled:cursor-not-allowed"
       >
-        {loading ? "Submitting..." : "Submit Request"}
+        {loading ? (
+          <>
+            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            Submitting...
+          </>
+        ) : (
+          "Submit Request"
+        )}
       </button>
 
-      {status && <p className="mt-4">{status}</p>}
+      {status && (
+        <div
+          className={`mt-4 p-4 rounded-2xl text-center font-medium ${
+            status.includes("Success")
+              ? "bg-green-50 text-green-800 border-2 border-green-200"
+              : "bg-red-50 text-red-800 border-2 border-red-200"
+          }`}
+        >
+          {status}
+        </div>
+      )}
     </form>
   );
 }

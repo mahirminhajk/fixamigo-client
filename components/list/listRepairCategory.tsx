@@ -48,24 +48,15 @@ const ListRepairCategory = () => {
                          bg-gradient-to-br from-[#121212] via-gray-800 to-black
                          hover:from-[#D2691E] hover:via-orange-600 hover:to-orange-800
                          rounded-2xl md:rounded-3xl text-white 
-                         shadow-lg hover:shadow-2xl
-                         transform transition-all duration-300 ease-in-out 
-                         hover:scale-110 hover:-translate-y-1
+                         shadow-lg hover:shadow-xl
+                         transition-all duration-200 ease-in-out 
+                         hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
-                         border border-gray-700 hover:border-[#D2691E]"
+                         border border-gray-700 hover:border-[#D2691E]
+                         cursor-pointer"
             >
-              {/* Gradient overlay for extra depth */}
-              <div
-                className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent 
-                              rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 
-                              transition-opacity duration-300"
-              ></div>
-
               {/* Icon */}
-              <div
-                className="relative z-10 mb-1 transform transition-transform duration-300 
-                              group-hover:scale-110"
-              >
+              <div className="mb-1 pointer-events-none">
                 {iconMap[category.slug] || (
                   <MoreHorizontal
                     size={24}
@@ -76,20 +67,13 @@ const ListRepairCategory = () => {
 
               {/* Category name */}
               <span
-                className="relative z-10 text-xs md:text-sm font-medium 
-                               text-center leading-tight px-1 
-                               group-hover:text-blue-100 transition-colors duration-300"
+                className="text-xs md:text-sm font-medium 
+                           text-center leading-tight px-1 
+                           group-hover:text-orange-100 transition-colors duration-200
+                           pointer-events-none"
               >
                 {category.name}
               </span>
-
-              {/* Shine effect */}
-              <div
-                className="absolute inset-0 rounded-2xl md:rounded-3xl 
-                              bg-gradient-to-r from-transparent via-white/20 to-transparent
-                              transform -skew-x-12 translate-x-[-100%] 
-                              group-hover:translate-x-[100%] transition-transform duration-700 ease-out"
-              ></div>
             </Link>
           ))}
         </div>
@@ -100,7 +84,7 @@ const ListRepairCategory = () => {
         <p className="text-sm text-gray-500">
           Can&apos;t find what you&apos;re looking for?
           <Link
-            href="/support-request"
+            href="/support-request?type=can-not-find"
             className="text-blue-600 hover:text-blue-700 font-medium ml-1"
           >
             Contact support
