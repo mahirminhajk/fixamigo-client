@@ -292,6 +292,24 @@ const ProductSearch: React.FC = () => {
     };
   }, []);
 
+  // Listen for search focus event from navbar
+  useEffect(() => {
+    const handleFocusSearch = () => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        inputRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    };
+
+    window.addEventListener("focusProductSearch", handleFocusSearch);
+    return () => {
+      window.removeEventListener("focusProductSearch", handleFocusSearch);
+    };
+  }, []);
+
   const clearSearch = () => {
     setSearchQuery("");
     setIsOpen(false);

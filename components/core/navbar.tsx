@@ -16,6 +16,12 @@ export default function Navbar({ city }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Function to handle search icon click
+  const handleSearchClick = () => {
+    // Dispatch a custom event to focus the search input
+    window.dispatchEvent(new CustomEvent("focusProductSearch"));
+  };
+
   // Determine if the current page is in the repair section
   // Assuming URLs for repair section start with /repair/
   const isRepairSection = pathname.startsWith("/repair");
@@ -122,14 +128,16 @@ export default function Navbar({ city }: NavbarProps) {
         <nav className="container mx-auto flex items-center justify-between px-6 py-4">
           {/* Logo */}
           <div>
-            <Image
-              src="/logos/text.png"
-              alt="Logo"
-              width={100}
-              height={40}
-              className="h-8 sm:h-10 w-auto" // Adjusted logo size for smaller screens
-              priority
-            />
+            <Link href="/">
+              <Image
+                src="/logos/text.png"
+                alt="Logo"
+                width={100}
+                height={40}
+                className="h-8 sm:h-10 w-auto cursor-pointer" // Added cursor-pointer
+                priority
+              />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
@@ -147,7 +155,10 @@ export default function Navbar({ city }: NavbarProps) {
                 </span>
               </div>
             )}
-            <Search className="w-6 h-6 cursor-pointer" />
+            <Search
+              className="w-6 h-6 cursor-pointer"
+              onClick={handleSearchClick}
+            />
             <CartBtn />
             <ProfileBtn />
             {/* Improved tappable area for Menu icon */}
