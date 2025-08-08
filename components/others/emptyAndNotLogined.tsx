@@ -38,16 +38,22 @@ const EmptyAndNotLogined = ({
   const router = useRouter();
 
   return (
-    <div className="flex flex-col justify-center items-center h-[80vh] w-full">
-      <div className="flex flex-col items-center justify-center space-y-4 text-center h-full">
-        <div className="text-7xl text-black">{icon}</div>
-        <h2 className="text-xl font-semibold">{title}</h2>
-        <p className="text-gray-500 text-sm px-6">{description}</p>
-        <div className="space-y-2 w-full max-w-xs">
+    <div className="flex flex-col justify-center items-center h-[70vh] lg:h-[60vh] w-full">
+      <div className="flex flex-col items-center justify-center space-y-6 text-center h-full max-w-lg mx-auto px-6">
+        <div className="text-6xl lg:text-8xl text-gray-700">{icon}</div>
+        <div className="space-y-3">
+          <h2 className="text-xl lg:text-2xl font-semibold text-gray-900">
+            {title}
+          </h2>
+          <p className="text-gray-500 text-sm lg:text-base leading-relaxed max-w-md">
+            {description}
+          </p>
+        </div>
+        <div className="space-y-3 w-full max-w-sm">
           {showAuth && !isLogged() && (
             <Sheet open={open} onOpenChange={onOpenChange}>
               <SheetTrigger asChild>
-                <Button className="w-full bg-black text-white rounded-[6px]">
+                <Button className="w-full bg-black text-white rounded-lg py-3 lg:py-4 text-sm lg:text-base font-medium hover:bg-gray-800 transition-colors">
                   Sign in
                 </Button>
               </SheetTrigger>
@@ -57,7 +63,7 @@ const EmptyAndNotLogined = ({
           {showAction && (
             <Button
               variant="outline"
-              className="w-full rounded-[6px] hover:bg-gray-100"
+              className="w-full rounded-lg py-3 lg:py-4 text-sm lg:text-base font-medium hover:bg-gray-50 transition-colors border-gray-300"
               onClick={() => router.push(actionLink)}
             >
               {actionText}
