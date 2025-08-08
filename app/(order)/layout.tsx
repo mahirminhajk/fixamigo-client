@@ -1,10 +1,12 @@
 "use client";
 import { ReactNode } from "react";
+import UserNavbar from "@/components/core/userNavbar";
 
 function Layout({ children }: Readonly<{ children?: ReactNode }>) {
   return (
     <>
-      <main>{children}</main>
+      <UserNavbar />
+      <main className="min-h-screen bg-gray-50">{children}</main>
     </>
   );
 }

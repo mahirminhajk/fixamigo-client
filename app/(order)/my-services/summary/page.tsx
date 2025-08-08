@@ -1,21 +1,22 @@
 import { Suspense } from "react";
 import OrderSummaryContent from "@/components/contents/orderSummaryContent";
-import Topbar from "@/components/core/topbar"; // If Topbar is static and outside Suspense
 import { PopupLoading } from "@/components/others/popupLoading"; // For Suspense fallback
 
 // A simple fallback component for Suspense
 function LoadingFallback() {
   return (
-    <section>
-      <div className="flex flex-col items-center">
-        <div className="flex-1 p-4 w-full flex justify-center">
-          <div className="w-full max-w-md">
-            {/* You can keep a static Topbar here if it doesn't depend on useSearchParams */}
-            <Topbar title="Service Details" />
-            <PopupLoading show={true} />
-            <div className="text-center mt-4">
-              Loading your order summary...
-            </div>
+    <section className="py-6">
+      <div className="container mx-auto px-4 max-w-4xl">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            Order Summary
+          </h1>
+          <p className="text-gray-600">Loading your order details</p>
+        </div>
+        <PopupLoading show={true} />
+        <div className="text-center mt-8">
+          <div className="animate-pulse text-gray-500">
+            Loading your order summary...
           </div>
         </div>
       </div>
