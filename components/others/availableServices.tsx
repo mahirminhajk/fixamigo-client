@@ -9,8 +9,9 @@ const AvailableServices = () => {
       description:
         "Professional mobile phone repair services for all brands and models.",
       href: "/repair/mobile-phone",
-      gradient: "from-[#121212] to-[#D2691E]",
-      hoverGradient: "hover:from-[#D2691E] hover:to-[#121212]",
+      gradient: "from-[#121212] to-[#121212]", // default black
+      hoverGradient: "hover:from-[#D2691E] hover:to-[#121212]", // orange on hover
+      overlayGradient: "from-[#D2691E] to-[#121212]", // hover-only overlays
     },
     {
       imgSrc: "/icons/laptop.png",
@@ -18,8 +19,9 @@ const AvailableServices = () => {
       description:
         "Expert laptop repair services for hardware and software issues.",
       href: "/repair/laptop",
-      gradient: "from-[#D2691E] to-[#121212]",
-      hoverGradient: "hover:from-[#121212] hover:to-[#D2691E]",
+      gradient: "from-[#121212] to-[#121212]", // default black
+      hoverGradient: "hover:from-[#D2691E] hover:to-[#121212]", // orange on hover
+      overlayGradient: "from-[#D2691E] to-[#121212]", // hover-only overlays
     },
   ];
 
@@ -50,9 +52,11 @@ const AvailableServices = () => {
                        focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                        flex-1 min-h-[220px] md:min-h-[280px] overflow-hidden"
           >
-            {/* Background gradient overlay */}
+            {/* Background gradient overlay - shows brand orange on hover only */}
             <div
-              className={`absolute inset-0 bg-gradient-to-br ${service.gradient} 
+              className={`absolute inset-0 bg-gradient-to-br ${
+                service.overlayGradient ?? service.gradient
+              } 
                              opacity-0 group-hover:opacity-10 transition-opacity duration-300 rounded-xl md:rounded-2xl`}
             ></div>
 
@@ -128,9 +132,11 @@ const AvailableServices = () => {
               </div>
             </div>
 
-            {/* Border gradient effect */}
+            {/* Border gradient effect - visible on hover */}
             <div
-              className={`absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-br ${service.gradient} 
+              className={`absolute inset-0 rounded-xl md:rounded-2xl bg-gradient-to-br ${
+                service.overlayGradient ?? service.gradient
+              } 
                              opacity-0 group-hover:opacity-20 transition-opacity duration-300 -z-10`}
             ></div>
           </Link>
@@ -142,7 +148,7 @@ const AvailableServices = () => {
         <p className="text-sm text-gray-500">
           Need help choosing?
           <Link
-            href="/support-request"
+            href="/support-request?type=can-not-find"
             className="text-blue-600 hover:text-blue-700 font-medium ml-1"
           >
             Talk to our experts
