@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { brands } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,25 @@ const BrandsList = ({
   category = "mobile-phone",
 }: BrandsListProps) => {
   const [searchTerm, setSearchTerm] = useState("");
+  // Track current grid columns based on Tailwind breakpoints to ensure full rows in "min" variant
+  const [cols, setCols] = useState<number>(2);
+
+  useEffect(() => {
+    const getColsForWidth = (w: number) => {
+      if (w >= 1280) return 6; // xl
+      if (w >= 1024) return 5; // lg
+      if (w >= 768) return 4; // md
+      if (w >= 640) return 3; // sm
+      return 2; // base
+    };
+
+    const updateCols = () => setCols(getColsForWidth(window.innerWidth));
+    // Initialize on mount
+    updateCols();
+    // Update on resize
+    window.addEventListener("resize", updateCols);
+    return () => window.removeEventListener("resize", updateCols);
+  }, []);
 
   const allBrands = useMemo(() => {
     return brands;
@@ -28,10 +47,19 @@ const BrandsList = ({
 
   const displayedBrands = useMemo(() => {
     if (variant === "min") {
-      return filteredBrands.slice(0, 10); //TODO: Adjust this number as needed for smaller view (less), and big view higher.
+      // Show up to N full rows (cap), based on current column count; if less than a row exists, show what's available
+      const rowsCap = 2; // number of rows to show in mini variant
+      const maxItemsByRows = cols * rowsCap;
+      const capped = Math.min(filteredBrands.length, maxItemsByRows);
+      const fullRowsCount = Math.floor(capped / cols) * cols;
+      const count =
+        fullRowsCount === 0
+          ? Math.min(filteredBrands.length, cols)
+          : fullRowsCount;
+      return filteredBrands.slice(0, count);
     }
     return filteredBrands;
-  }, [filteredBrands, variant]);
+  }, [filteredBrands, variant, cols]);
 
   return (
     <section className="w-full py-8 md:py-12">
@@ -151,7 +179,7 @@ const BrandsList = ({
 
                 {/* Image container */}
                 <div
-                  className="relative z-10 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 
+                  className="relative z-10 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 
                                 flex items-center justify-center mb-2 md:mb-3
                                 transform transition-all duration-300 
                                 group-hover:scale-110 group-hover:rotate-3"
@@ -159,8 +187,8 @@ const BrandsList = ({
                   <Image
                     src={brand.image}
                     alt={`${brand.name} logo`}
-                    width={80}
-                    height={80}
+                    width={160}
+                    height={160}
                     className="object-contain max-w-full max-h-full drop-shadow-sm
                                group-hover:drop-shadow-md transition-all duration-300"
                   />
@@ -209,20 +237,21 @@ const BrandsList = ({
         )}
 
         {/* View All Button - Enhanced */}
-        {variant === "min" && displayedBrands.length > 0 && (
-          <div className="text-center mt-8 md:mt-12">
-            <div className="relative inline-block">
-              {/* Glowing background effect */}
-              <div
-                className="absolute inset-0 bg-gradient-to-r from-[#D2691E] to-[#121212] 
-                              rounded-2xl blur-lg opacity-30 animate-pulse scale-105"
-              ></div>
+        {variant === "min" &&
+          displayedBrands.length > 0 &&
+          displayedBrands.length < filteredBrands.length && (
+            <div className="text-center mt-8 md:mt-12">
+              <div className="relative inline-block group">
+                {/* Glowing background effect (hover only) */}
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-[#D2691E] to-[#121212] 
+                              rounded-2xl blur-lg opacity-0 group-hover:opacity-30 group-hover:animate-pulse scale-105 transition-opacity"
+                ></div>
 
-              <Link href={`/repair/${category}`} legacyBehavior>
-                <a
-                  className="relative inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 py-3 md:py-4 
-                             bg-gradient-to-r from-[#D2691E] to-[#121212] 
-                             hover:from-[#121212] hover:to-[#D2691E]
+                <Link href={`/repair/${category}`} legacyBehavior>
+                  <a
+                    className="relative inline-flex items-center px-6 md:px-8 py-3 md:py-4 
+                             bg-[#121212] hover:bg-gradient-to-r hover:from-[#D2691E] hover:to-[#121212]
                              text-white font-bold rounded-2xl text-sm md:text-base
                              shadow-xl hover:shadow-2xl
                              transform transition-all duration-300
@@ -233,78 +262,32 @@ const BrandsList = ({
                              before:from-white/0 before:via-white/20 before:to-white/0
                              before:translate-x-[-100%] hover:before:translate-x-[100%] 
                              before:transition-transform before:duration-700"
-                >
-                  <div className="flex items-center gap-2 md:gap-3 relative z-10">
-                    <svg
-                      className="w-4 h-4 md:w-5 md:h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                    <span>View All Brands</span>
-                    <svg
-                      className="w-4 h-4 md:w-5 md:h-5 transform transition-transform duration-300 group-hover:translate-x-1"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </div>
-                </a>
-              </Link>
+                  >
+                    <div className="relative z-10">
+                      <span>View All Brands</span>
+                    </div>
+                  </a>
+                </Link>
+              </div>
+              <p className="text-xs md:text-sm text-gray-500 mt-3">
+                Discover all supported brands and models
+              </p>
             </div>
-            <p className="text-xs md:text-sm text-gray-500 mt-3">
-              🏆 Discover all supported brands and models
-            </p>
-          </div>
-        )}
+          )}
 
         {/* Support Card - Enhanced */}
         {variant === "all" && (
           <div className="flex justify-center mt-12">
             <Link
               href="/support-request?type=brand"
-              className="group flex items-center w-full max-w-lg 
+              className="group flex w-full max-w-lg 
                          bg-white border-2 border-gray-200 rounded-2xl shadow-lg 
                          p-6 md:p-8 hover:shadow-2xl hover:border-[#D2691E]
                          hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
                          transition-all duration-300 hover:scale-105
-                         focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50"
+                         focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 justify-center text-center"
             >
-              <div
-                className="flex-shrink-0 w-12 h-12 bg-orange-100 rounded-2xl 
-                              flex items-center justify-center
-                              group-hover:bg-orange-200 transition-colors duration-300"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6 text-[#D2691E]"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
-                  />
-                </svg>
-              </div>
-              <div className="ml-6 text-left flex-1">
+              <div>
                 <h3
                   className="text-lg md:text-xl font-semibold text-gray-900 mb-1
                                group-hover:text-[#D2691E] transition-colors duration-300"
@@ -314,22 +297,6 @@ const BrandsList = ({
                 <p className="text-gray-600 group-hover:text-gray-700 transition-colors duration-300">
                   Let us know and we&apos;ll get it added for you.
                 </p>
-              </div>
-              <div className="ml-4">
-                <svg
-                  className="w-6 h-6 text-gray-400 group-hover:text-[#D2691E] 
-                                transform transition-all duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
               </div>
             </Link>
           </div>
