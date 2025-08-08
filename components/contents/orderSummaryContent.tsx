@@ -1,12 +1,10 @@
 "use client";
 
-import Topbar from "@/components/core/topbar";
 import OrderInvoice from "@/components/others/orderInvoice";
 import OrderProgressBar from "@/components/others/orderProgressBar";
-import { PopupLoading } from "@/components/others/popupLoading";
 import api from "@/lib/axiosInstance";
 import { useCartStore } from "@/stores/cartStore";
-import { IOrder } from "@/types/order"; // Make sure this path is correct
+import { IOrder } from "@/types/order";
 import { AxiosError } from "axios";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -60,14 +58,37 @@ export default function OrderSummaryContent() {
 
   if (!orderId) {
     return (
-      <section>
-        <div className="flex flex-col items-center">
-          <div className="flex-1 p-4 w-full flex justify-center">
-            <div className="w-full max-w-md">
-              <Topbar title="Service Details" />
-              <div className="text-center">
-                Order ID not found, please try again.
+      <section className="py-6">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Order Summary
+            </h1>
+            <p className="text-gray-600">Track your service progress</p>
+          </div>
+          <div className="flex justify-center">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center max-w-md">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-red-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Order ID Not Found
+              </h3>
+              <p className="text-gray-600">
+                Please check your order ID and try again.
+              </p>
             </div>
           </div>
         </div>
@@ -76,16 +97,28 @@ export default function OrderSummaryContent() {
   }
 
   if (loading) {
-    // You might want a more specific loading state here for the Suspense fallback
-    // For now, PopupLoading can be used, or a simpler spinner
     return (
-      <section>
-        <div className="flex flex-col items-center">
-          <div className="flex-1 p-4 w-full flex justify-center">
-            <div className="w-full max-w-md">
-              <Topbar title="Service Details" />
-              <PopupLoading show={true} /> {/* Or a dedicated loader */}
-              <div className="text-center mt-4">Loading order details...</div>
+      <section className="py-6">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Order Summary
+            </h1>
+            <p className="text-gray-600">Loading your order details...</p>
+          </div>
+          <div className="flex justify-center">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+              <div className="animate-pulse space-y-6">
+                <div className="space-y-3">
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-16 bg-gray-200 rounded"></div>
+                  <div className="h-16 bg-gray-200 rounded"></div>
+                  <div className="h-16 bg-gray-200 rounded"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -95,12 +128,35 @@ export default function OrderSummaryContent() {
 
   if (error) {
     return (
-      <section>
-        <div className="flex flex-col items-center">
-          <div className="flex-1 p-4 w-full flex justify-center">
-            <div className="w-full max-w-md">
-              <Topbar title="Service Details" />
-              <div className="text-center">{error}</div>
+      <section className="py-6">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Order Summary
+            </h1>
+            <p className="text-gray-600">Unable to load order details</p>
+          </div>
+          <div className="flex justify-center">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center max-w-md">
+              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-red-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Error Loading Order
+              </h3>
+              <p className="text-gray-600">{error}</p>
             </div>
           </div>
         </div>
@@ -110,12 +166,37 @@ export default function OrderSummaryContent() {
 
   if (!order) {
     return (
-      <section>
-        <div className="flex flex-col items-center">
-          <div className="flex-1 p-4 w-full flex justify-center">
-            <div className="w-full max-w-md">
-              <Topbar title="Service Details" />
-              <div className="text-center">Order not found</div>
+      <section className="py-6">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="mb-6">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Order Summary
+            </h1>
+            <p className="text-gray-600">Order information not available</p>
+          </div>
+          <div className="flex justify-center">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center max-w-md">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg
+                  className="w-8 h-8 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Order Not Found
+              </h3>
+              <p className="text-gray-600">
+                The requested order could not be located.
+              </p>
             </div>
           </div>
         </div>
@@ -124,63 +205,104 @@ export default function OrderSummaryContent() {
   }
 
   return (
-    <section>
-      <div className="flex flex-col items-center">
-        <div className="flex-1 p-4 w-full flex justify-center">
-          <div className="w-full max-w-md">
-            <Topbar title="Service Details" />
+    <section className="py-6 min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 max-w-6xl">
+        <div className="mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            Order Summary
+          </h1>
+          <p className="text-gray-600">
+            Track your service progress and details
+          </p>
+        </div>
 
-            {/* Alert Display */}
-            {order.alert?.isActive && (
-              <div
-                className={`mb-4 p-3 rounded-lg border ${
-                  order.alert.type === "ERROR"
-                    ? "bg-red-50 border-red-200 text-red-800"
-                    : order.alert.type === "WARNING"
-                    ? "bg-yellow-50 border-yellow-200 text-yellow-800"
-                    : order.alert.type === "SUCCESS"
-                    ? "bg-green-50 border-green-200 text-green-800"
-                    : "bg-blue-50 border-blue-200 text-blue-800"
-                }`}
-              >
-                {order.alert.title && (
-                  <h4 className="font-semibold text-sm mb-1">
-                    {order.alert.title}
-                  </h4>
-                )}
-                {order.alert.message && (
-                  <p className="text-sm">{order.alert.message}</p>
-                )}
-                {order.alert.createdAt && (
-                  <p className="text-xs opacity-75 mt-1">
-                    {new Date(order.alert.createdAt).toLocaleDateString(
-                      "en-US",
-                      {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      }
-                    )}
-                  </p>
-                )}
+        {/* Alert Display */}
+        {order.alert?.isActive && (
+          <div className="mb-6 max-w-4xl mx-auto">
+            <div
+              className={`p-4 lg:p-6 rounded-2xl border-2 shadow-sm ${
+                order.alert.type === "ERROR"
+                  ? "bg-red-50 border-red-200 text-red-800"
+                  : order.alert.type === "WARNING"
+                  ? "bg-yellow-50 border-yellow-200 text-yellow-800"
+                  : order.alert.type === "SUCCESS"
+                  ? "bg-green-50 border-green-200 text-green-800"
+                  : "bg-blue-50 border-blue-200 text-blue-800"
+              }`}
+            >
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-6 h-6 rounded-full bg-white/50 flex items-center justify-center">
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div className="flex-1">
+                  {order.alert.title && (
+                    <h4 className="font-bold text-lg mb-2">
+                      {order.alert.title}
+                    </h4>
+                  )}
+                  {order.alert.message && (
+                    <p className="text-base leading-relaxed mb-2">
+                      {order.alert.message}
+                    </p>
+                  )}
+                  {order.alert.createdAt && (
+                    <p className="text-sm opacity-75">
+                      {new Date(order.alert.createdAt).toLocaleDateString(
+                        "en-US",
+                        {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}
+                    </p>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
+          </div>
+        )}
 
-            {/* PopupLoading for API calls is handled internally now,
-                but you might still want a loading indicator for the initial Suspense state */}
-            <OrderProgressBar
-              stepper={order.stepper}
-              estimatedDeliveryDate={
-                order.schedules?.deliveryDate
-                  ? new Date(order.schedules.deliveryDate).toLocaleDateString(
-                      "en-US",
-                      { month: "short", day: "numeric", year: "numeric" }
-                    )
-                  : undefined
-              }
-            />
+        {/* Main Content - Responsive Layout */}
+        <div className="lg:grid lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0">
+          {/* Progress Bar - Mobile: Full width, Desktop: Left 2 columns */}
+          <div className="lg:col-span-2 order-1 lg:order-1">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8">
+              <h2 className="text-xl font-bold text-gray-900 mb-6">
+                Service Progress
+              </h2>
+              <OrderProgressBar
+                stepper={order.stepper}
+                estimatedDeliveryDate={
+                  order.schedules?.deliveryDate
+                    ? new Date(order.schedules.deliveryDate).toLocaleDateString(
+                        "en-US",
+                        { month: "short", day: "numeric", year: "numeric" }
+                      )
+                    : undefined
+                }
+              />
+            </div>
+          </div>
+
+          {/* Order Details - Mobile: Full width, Desktop: Right 3 columns */}
+          <div className="lg:col-span-3 order-2 lg:order-2">
             <OrderInvoice order={order} />
           </div>
         </div>

@@ -281,14 +281,38 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
   }
 
   return (
-    <div className="flex flex-col items-start w-full max-w-sm mx-auto p-2">
+    <div className="flex flex-col items-start w-full">
       {estimatedDeliveryDate && (
-        <p className="text-gray-600 text-xs mb-2">
-          Estimated Date of Delivery: <strong>{estimatedDeliveryDate}</strong>
-        </p>
+        <div className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200 w-full">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <svg
+                className="w-4 h-4 text-blue-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <p className="text-blue-800 text-sm font-medium">
+                Estimated Delivery
+              </p>
+              <p className="text-blue-900 text-lg font-bold">
+                {estimatedDeliveryDate}
+              </p>
+            </div>
+          </div>
+        </div>
       )}
 
-      <div className="relative pl-3 w-full">
+      <div className="relative pl-4 lg:pl-6 w-full">
         {completeSteps.map((step, index) => {
           const displayConfig = getStepDisplayConfig(step.step);
           const Icon = displayConfig.icon;
@@ -311,7 +335,6 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
           } else if (isActive || isInProgress) {
             colorClasses = displayConfig.colors.active;
           } else if (isPlaceholder) {
-            // Make placeholder steps more subdued
             colorClasses = "bg-gray-200 border-gray-300 text-gray-400";
           }
 
@@ -325,7 +348,6 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
             Object.keys(step.data).length > 0 &&
             !isPlaceholder
           ) {
-            // Filter out reason from additional data as it's shown in status
             const filteredData = Object.entries(step.data)
               .filter(([key]) => key !== "reason")
               .map(([key, value]) => `${key}: ${value}`)
@@ -336,12 +358,12 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
           return (
             <div
               key={`${step.step}-${index}`}
-              className="relative mb-4 last:mb-0 flex items-start w-full"
+              className="relative mb-6 last:mb-0 flex items-start w-full"
             >
               {/* Vertical Line */}
               {index !== completeSteps.length - 1 && (
                 <div
-                  className={`absolute left-[11px] top-6 w-[1px] h-full ${
+                  className={`absolute left-[15px] lg:left-[19px] top-12 w-[2px] h-[calc(100%+8px)] ${
                     isCompleted ? "bg-green-400" : "bg-gray-300"
                   }`}
                 ></div>
@@ -349,60 +371,94 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
 
               {/* Step Icon Circle */}
               <div
-                className={`relative w-6 h-6 flex items-center justify-center rounded-full border-2 z-10 ${colorClasses}`}
+                className={`relative w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-full border-2 z-10 transition-all duration-300 shadow-sm ${colorClasses} ${
+                  isActive ? "shadow-lg scale-110" : ""
+                }`}
               >
                 {isCompleted ? (
-                  <FaCheck size={10} />
+                  <FaCheck size={14} />
                 ) : isFailed ? (
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  <div className="w-3 h-3 bg-red-500 rounded-full"></div>
                 ) : isActive || isInProgress ? (
-                  <FaClock size={10} />
+                  <FaClock size={14} className="animate-pulse" />
                 ) : (
-                  <Icon size={10} />
+                  <Icon size={14} />
                 )}
               </div>
 
               {/* Step Content */}
-              <div className="flex-1 pl-3">
-                <div>
+              <div className="flex-1 pl-4 lg:pl-6">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-bold text-gray-900 text-base lg:text-lg">
+                      {displayLabel}
+                    </h3>
+                    {/* Status Badge */}
+                    {isCompleted && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Done
+                      </span>
+                    )}
+                    {isFailed && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                        <svg
+                          className="w-3 h-3 mr-1"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Failed
+                      </span>
+                    )}
+                    {(isActive || isInProgress) && (
+                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <div className="w-3 h-3 mr-1">
+                          <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
+                        </div>
+                        Active
+                      </span>
+                    )}
+                  </div>
+
                   <p
-                    className={`text-xs font-semibold ${
-                      isFailed
-                        ? "text-red-700"
-                        : isCompleted
-                        ? "text-green-700"
+                    className={`text-sm lg:text-base ${
+                      isCompleted
+                        ? "text-green-600 font-medium"
+                        : isFailed
+                        ? "text-red-600 font-medium"
                         : isActive || isInProgress
-                        ? "text-blue-600"
+                        ? "text-blue-600 font-medium"
                         : isPlaceholder
-                        ? "text-gray-400"
-                        : "text-gray-500"
+                        ? "text-gray-400 italic"
+                        : "text-gray-600"
                     }`}
                   >
-                    {displayLabel}
+                    {statusText}
                   </p>
 
-                  {/* Status display */}
-                  {!isPlaceholder && (
-                    <p
-                      className={`text-xs mt-0.5 ${
-                        isFailed
-                          ? "text-red-600"
-                          : isCompleted
-                          ? "text-gray-500"
-                          : isActive || isInProgress
-                          ? "text-blue-600 italic"
-                          : "text-gray-400 italic"
-                      }`}
-                    >
-                      {statusText}
-                    </p>
-                  )}
-
-                  {/* Show additional data if available */}
-                  {additionalData && !isPlaceholder && (
-                    <p className="text-xs text-blue-600 mt-0.5">
-                      {additionalData}
-                    </p>
+                  {additionalData && (
+                    <div className="bg-gray-50 rounded-lg p-3 border border-gray-200">
+                      <p className="text-sm text-gray-700">
+                        <span className="font-medium">Details:</span>{" "}
+                        {additionalData}
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>
