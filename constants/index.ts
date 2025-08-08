@@ -74,12 +74,12 @@ export const repairCategory = [
 ];
 
 export const INFO = {
-  phone: "+918086009808",
+  phone: "+918078160942",
   phoneLink(): string {
     return `tel:${this.phone}`;
   },
-  phoneLabel: "+91 80860 09808",
-  waPhone: "918086009808",
+  phoneLabel: "+91 80781 60942",
+  waPhone: "918078160942",
   waLink(message = "hi"): string {
     return `https://wa.me/${this.waPhone}?text=${encodeURIComponent(message)}`;
   },
@@ -93,7 +93,7 @@ export const INFO = {
   address: "Malappuram, Kerala, India",
   addressLink: "https://maps.app.goo.gl/E69gN8PF1PR3uQDW8",
   website: "https://fixamigo.com",
-  instagram: "https://instagram.com/fixamigo.in",
+  instagram: "https://instagram.com/fixamigo",
 };
 
 export const supportCities = [
