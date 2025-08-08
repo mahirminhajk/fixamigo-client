@@ -324,7 +324,7 @@ const ProductSearch: React.FC = () => {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
           Find Your Device
         </h2>
-        <p className="text-gray-600 text-lg">
+        <p className="text-gray-600 text-base md:text-lg">
           Search for your device to get repair parts and services
         </p>
       </div>

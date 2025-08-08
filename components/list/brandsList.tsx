@@ -71,7 +71,7 @@ const BrandsList = ({
               ? "Select Your Phone Brand"
               : `Select Your Brand for ${category} Repair`}
           </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
             Find the brand of your device to get started with our repair
             services. We support a wide range of manufacturers.
           </p>

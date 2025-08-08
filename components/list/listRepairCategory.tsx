@@ -24,13 +24,13 @@ const ListRepairCategory = () => {
     <section className="w-full max-w-5xl mx-auto px-4 md:px-6 py-8 md:py-12">
       {/* Header Section */}
       <div className="text-center mb-8">
-        <p className="text-gray-600 text-lg mb-3">
+        <p className="text-gray-600 text-base md:text-lg mb-3">
           Got a broken device? Let us fix it for you!
         </p>
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
           Choose Your Repair Category
         </h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+        <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
           Select the component that needs repair and get instant quotes for
           parts and services
         </p>

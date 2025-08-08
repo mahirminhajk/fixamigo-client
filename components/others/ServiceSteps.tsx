@@ -46,7 +46,7 @@ const ServiceSteps = () => {
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
           How Our Service Works
         </h2>
-        <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+        <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
           Simple, transparent process from diagnosis to delivery
         </p>
       </div>
