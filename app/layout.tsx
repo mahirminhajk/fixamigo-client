@@ -20,7 +20,7 @@ const tahoma = localFont({
 
 export const metadata: Metadata = {
   title:
-    "FixAmigo - Mobile Phone Repair Services in Kerala | 24/7 Doorstep Service",
+    "Fixamigo - Mobile Phone Repair Services in Kerala | 24/7 Doorstep Service",
   description:
     "Professional mobile phone repair services across Kerala. Expert technicians, genuine parts, doorstep service. iPhone, Samsung, OnePlus repairs with warranty.",
   keywords:
@@ -33,8 +33,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     url: "https://fixamigo.com",
-    siteName: "FixAmigo",
-    title: "FixAmigo - Mobile Phone Repair Services in Kerala",
+    siteName: "Fixamigo",
+    title: "Fixamigo - Mobile Phone Repair Services in Kerala",
     description:
       "Professional mobile phone repair services across Kerala. Expert technicians, genuine parts, doorstep service.",
     images: [
@@ -42,13 +42,13 @@ export const metadata: Metadata = {
         url: "/logos/logo.png",
         width: 800,
         height: 600,
-        alt: "FixAmigo Mobile Repair Service",
+        alt: "Fixamigo Mobile Repair Service",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FixAmigo - Mobile Phone Repair Services in Kerala",
+    title: "Fixamigo - Mobile Phone Repair Services in Kerala",
     description:
       "Professional mobile phone repair services across Kerala. Expert technicians, genuine parts, doorstep service.",
     images: ["/logos/logo.png"],

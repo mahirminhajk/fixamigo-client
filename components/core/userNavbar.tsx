@@ -55,7 +55,7 @@ export default function UserNavbar({
               <Link href="/" className="flex-shrink-0">
                 <Image
                   src="/logos/text.png"
-                  alt="FixAmigo"
+                  alt="Fixamigo"
                   width={80}
                   height={32}
                   className="h-8 w-auto"
@@ -88,7 +88,7 @@ export default function UserNavbar({
               <Link href="/" className="flex-shrink-0">
                 <Image
                   src="/logos/text.png"
-                  alt="FixAmigo"
+                  alt="Fixamigo"
                   width={120}
                   height={48}
                   className="h-10 w-auto"
@@ -169,7 +169,7 @@ export default function UserNavbar({
                 <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                   <Image
                     src="/logos/text.png"
-                    alt="FixAmigo"
+                    alt="Fixamigo"
                     width={100}
                     height={40}
                     className="h-8 w-auto"

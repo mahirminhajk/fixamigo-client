@@ -12,11 +12,11 @@ import { INFO } from "@/constants";
 // SEO Metadata
 export const metadata: Metadata = {
   title:
-    "Support Request - FixAmigo | Request New Brands, Devices & Custom Services",
+    "Support Request - Fixamigo | Request New Brands, Devices & Custom Services",
   description:
-    "Submit support requests to FixAmigo for new device brands, custom repair services, or general assistance. Our expert team responds within 24 hours to help with your mobile repair needs in Kerala.",
+    "Submit support requests to Fixamigo for new device brands, custom repair services, or general assistance. Our expert team responds within 24 hours to help with your mobile repair needs in Kerala.",
   keywords: [
-    "FixAmigo support",
+    "Fixamigo support",
     "mobile repair request",
     "device brand request",
     "custom repair service",
@@ -27,9 +27,9 @@ export const metadata: Metadata = {
     "mobile service center support",
   ],
   openGraph: {
-    title: "Support Request - FixAmigo Mobile Repair Services",
+    title: "Support Request - Fixamigo Mobile Repair Services",
     description:
-      "Need help with your mobile repair? Submit a support request to FixAmigo. Request new brands, devices, or custom services. Expert assistance available.",
+      "Need help with your mobile repair? Submit a support request to Fixamigo. Request new brands, devices, or custom services. Expert assistance available.",
     type: "website",
     url: `${INFO.website}/support-request`,
     siteName: INFO.name,
@@ -38,15 +38,15 @@ export const metadata: Metadata = {
         url: "/logos/logo.png",
         width: 800,
         height: 600,
-        alt: "FixAmigo Support - Mobile Repair Service Center",
+        alt: "Fixamigo Support - Mobile Repair Service Center",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Support Request - FixAmigo Mobile Repair Services",
+    title: "Support Request - Fixamigo Mobile Repair Services",
     description:
-      "Submit support requests for mobile repair services. Request new brands, devices, or get custom assistance from FixAmigo experts in Kerala.",
+      "Submit support requests for mobile repair services. Request new brands, devices, or get custom assistance from Fixamigo experts in Kerala.",
     images: ["/logos/logo.png"],
   },
   alternates: {

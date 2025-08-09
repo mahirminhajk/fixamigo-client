@@ -16,14 +16,14 @@ const Footer = () => {
               <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
                 <Image
                   src="/logos/circle-logo.png"
-                  alt="FixAmigo Logo"
+                  alt="Fixamigo Logo"
                   width={32}
                   height={32}
                   className="w-6 h-6 md:w-8 md:h-8"
                 />
                 <Image
                   src="/logos/text.png"
-                  alt="FixAmigo"
+                  alt="Fixamigo"
                   width={100}
                   height={24}
                   className="h-4 md:h-6 w-auto"
