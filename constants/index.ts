@@ -94,6 +94,10 @@ export const INFO = {
   addressLink: "https://maps.app.goo.gl/E69gN8PF1PR3uQDW8",
   website: "https://fixamigo.com",
   instagram: "https://instagram.com/fixamigo",
+  facebook: "https://www.facebook.com/people/Fixamigo/61578749623696/",
+  x: "https://x.com/fixamigo",
+  googleBusiness: "https://g.page/fixamigo",
+  linkedin: "https://www.linkedin.com/company/fixamigo",
 };
 
 export const supportCities = [

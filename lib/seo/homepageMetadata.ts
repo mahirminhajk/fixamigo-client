@@ -1,34 +1,24 @@
 import { Metadata } from "next";
-import { INFO, supportCities, brands } from "@/constants";
+import { INFO, supportCities } from "@/constants";
 
 export function getHomepageMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
-
-  // Generate dynamic city list for keywords
-  const cityNames = supportCities.map((city) => city.name).join(", ");
-  const brandNames = brands
-    .slice(0, 8)
-    .map((brand) => brand.name)
-    .join(", ");
-
   return {
-    title: `${INFO.name} – ${INFO.tagline2} | Mobile Phone Repair Services Kerala`,
-    description: `${INFO.name} is your trusted online service center for mobile phone repairs in Kerala. We offer professional repair services for ${brandNames} and more. Free pickup & delivery in ${cityNames}. Book online now!`,
+    title: `${INFO.name} – ${INFO.tagline2}`,
+    description: `Fixamigo offers trusted mobile phone repairs across Kerala. All brands, all issues, with free pickup & delivery by expert technicians.`,
 
     keywords: [
       "mobile phone repair Kerala",
       "smartphone repair services",
       "online mobile service center",
       "phone screen repair",
-      "battery replacement",
-      "camera repair",
-      "charging port repair",
-      "Fixamigo mobile repair",
-      "doorstep mobile repair",
-      "Kerala mobile repair",
-      `mobile repair ${cityNames.replace(/,/g, "")}`,
-      `${brandNames.replace(/,/g, "")} repair`,
-      "free pickup delivery mobile repair",
+      "battery replacement service",
+      "camera repair service",
+      "charging port repair service",
+      "Fixamigo mobile repair service",
+      "doorstep mobile repair service",
+      "Kerala mobile repair service",
+      "free pickup delivery mobile service",
       "trusted mobile technicians",
       "warranty mobile repair",
     ],
@@ -58,18 +48,18 @@ export function getHomepageMetadata(): Metadata {
       locale: "en_US",
       url: baseUrl,
       siteName: INFO.name,
-      title: `${INFO.name} – Professional Mobile Repair Services in Kerala`,
-      description: `Get your smartphone fixed by certified technicians. We repair all major brands with free pickup & delivery across ${cityNames}. ${INFO.tagline}`,
+      title: `${INFO.name} – Fast & Trusted Mobile & Laptop Service in Malappuram`,
+      description: `Pickup & delivery mobile repairs for all brands in Malappuram. Phones, laptops & gadgets fixed by certified technicians with warranty.`,
       images: [
         {
-          url: `${baseUrl}/og-homepage.jpg`, // You'll need to add this image
+          url: `${baseUrl}/og-fixamigo.jpg`,
           width: 1200,
           height: 630,
           alt: `${INFO.name} - Mobile Phone Repair Services`,
           type: "image/jpeg",
         },
         {
-          url: `${baseUrl}/logos/fixamigo-logo.png`,
+          url: `${baseUrl}/logos/circle-logo.png`,
           width: 512,
           height: 512,
           alt: `${INFO.name} Logo`,
@@ -82,15 +72,9 @@ export function getHomepageMetadata(): Metadata {
       card: "summary_large_image",
       site: "@fixamigo", // Add your Twitter handle if you have one
       creator: "@fixamigo",
-      title: `${INFO.name} – Professional Mobile Repair Services`,
-      description: `Trusted mobile phone repair services in Kerala. Free pickup & delivery. All major brands supported. ${INFO.tagline}`,
-      images: [`${baseUrl}/og-homepage.jpg`],
-    },
-
-    verification: {
-      google: "your-google-verification-code", // Add your Google Search Console verification
-      // yandex: "your-yandex-verification",
-      // bing: "your-bing-verification",
+      title: `${INFO.name} – Fast & Trusted Mobile & Laptop Service in Malappuram`,
+      description: `Trusted mobile phone repair services in Malappuram. Free pickup & delivery. All major brands supported. ${INFO.tagline}`,
+      images: [`${baseUrl}/og-fixamigo.jpg`],
     },
 
     category: "Technology",
@@ -100,7 +84,7 @@ export function getHomepageMetadata(): Metadata {
       "geo.placename": "Kerala, India",
       "geo.position": "10.8739;76.2733", // Approximate coordinates for Kerala
       ICBM: "10.8739, 76.2733",
-      "DC.title": `${INFO.name} - Mobile Phone Repair Services`,
+      "DC.title": `${INFO.name} - Fast & Trusted Mobile & Laptop Service in Malappuram`,
       "DC.creator": INFO.name,
       "DC.subject": "Mobile Phone Repair, Smartphone Service, Kerala",
       "DC.description": `Professional mobile phone repair services in Kerala by ${INFO.name}`,
@@ -132,8 +116,9 @@ export function getHomepageStructuredData() {
       {
         "@type": "LocalBusiness",
         "@id": `${baseUrl}/#business`,
+        image: `${baseUrl}/og-fixamigo.jpg`,
         name: INFO.name,
-        alternateName: INFO.tagline2,
+        alternateName: INFO.tagline,
         description: `${INFO.name} provides professional mobile phone repair services across Kerala with free pickup and delivery.`,
         url: baseUrl,
         telephone: INFO.phone,
@@ -151,7 +136,22 @@ export function getHomepageStructuredData() {
           latitude: "10.8739",
           longitude: "76.2733",
         },
-        openingHours: "Mo-Su 09:00-21:00",
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+              "Sunday",
+            ],
+            opens: "00:00",
+            closes: "23:59",
+          },
+        ],
         priceRange: "₹₹",
         serviceArea: {
           "@type": "State",
@@ -194,7 +194,14 @@ export function getHomepageStructuredData() {
             },
           ],
         },
-        sameAs: [INFO.instagram, INFO.website],
+        sameAs: [
+          INFO.instagram,
+          INFO.website,
+          INFO.x,
+          INFO.facebook,
+          INFO.googleBusiness,
+          INFO.linkedin,
+        ],
       },
       {
         "@type": "Website",
@@ -218,7 +225,12 @@ export function getHomepageStructuredData() {
         "@id": `${baseUrl}/#organization`,
         name: INFO.name,
         url: baseUrl,
-        logo: `${baseUrl}/logos/fixamigo-logo.png`,
+        logo: `${baseUrl}/logos/circle-logo.png`,
+        foundingDate: "2024",
+        founder: {
+          "@type": "Person",
+          name: "Mahir Minhaj K",
+        },
         contactPoint: {
           "@type": "ContactPoint",
           telephone: INFO.phone,
