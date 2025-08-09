@@ -9,7 +9,7 @@ interface DeviceDetailsContentProps {
   deviceData: IDevice;
 }
 
-export default function DeviceDetailsContent({
+export default async function DeviceDetailsContent({
   deviceData,
 }: DeviceDetailsContentProps) {
   return (
@@ -73,6 +73,7 @@ export default function DeviceDetailsContent({
               currentDevice={{
                 company: deviceData.company,
                 slug: deviceData.slug,
+                name: deviceData.name,
               }}
             />
           </div>
