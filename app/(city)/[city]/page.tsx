@@ -4,6 +4,9 @@ import BrandsList from "@/components/list/brandsList";
 import { supportCities } from "@/constants";
 import { getCityMetadata, getCityStructuredData } from "@/lib/seo/cityMetadata";
 import Script from "next/script";
+import ProductSearch from "@/components/search/ProductSearch";
+import AvailableServices from "@/components/others/availableServices";
+import ServiceSteps from "@/components/others/ServiceSteps";
 
 // Static Generation
 export const dynamicParams = false;
@@ -41,8 +44,11 @@ const CityHome = async ({ params }: { params: Promise<{ city: string }> }) => {
 
       <section>
         <Carousel />
+        <ProductSearch />
         <ListRepairCategory />
+        <AvailableServices />
         <BrandsList variant="min" />
+        <ServiceSteps />
       </section>
     </>
   );
