@@ -19,7 +19,16 @@ export const metadata: Metadata = {
     // Brand-specific keywords
     "mobile phone repair all brands",
     "smartphone repair services Kerala",
-    "iPhone Samsung OnePlus repair",
+    "OnePlus mobile repair malappuram",
+    "iPhone mobile repair malappuram",
+    "Samsung mobile repair malappuram",
+    "Xiaomi mobile repair malappuram",
+    "Vivo mobile repair malappuram",
+    "OPPO mobile repair malappuram",
+    "realme mobile repair malappuram",
+    "Nokia mobile repair malappuram",
+    "Motorola mobile repair malappuram",
+    "Google Pixel mobile repair malappuram",
     "mobile phone brands repair",
     "all brand mobile repair",
 
@@ -29,6 +38,7 @@ export const metadata: Metadata = {
     "mobile service center",
     "phone repair near me",
     "mobile repair online booking",
+    "near mobile shop malappuram",
 
     // Brand-specific repair keywords
     "iPhone repair Kerala",
