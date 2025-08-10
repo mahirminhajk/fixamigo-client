@@ -155,7 +155,7 @@ const ServiceSteps = () => {
           ></div>
 
           <Link
-            href="/repair"
+            href="/repair/mobile-phone"
             className="relative inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 
                        bg-gradient-to-r from-[#D2691E] via-[#121212] to-[#D2691E] 
                        hover:from-[#121212] hover:via-[#D2691E] hover:to-[#121212]
