@@ -11,7 +11,7 @@ import { fetchDevicesByBrand } from "@/lib/apiService";
 import Script from "next/script";
 
 // Static Generation - Enhanced for better SEO
-export const revalidate = 86400; // Revalidate daily for fresh data
+export const revalidate = false;
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -40,103 +40,14 @@ export async function generateStaticParams() {
   return paths;
 }
 
-// Enhanced Metadata (SEO) - Use the enhanced metadata function with additional optimizations
+// Metadata (SEO) - Use the enhanced metadata function directly
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ brand: string }>;
 }): Promise<Metadata> {
   const { brand } = await params;
-  const baseMetadata = getBrandMetadata(brand);
-
-  // Get brand info for enhanced metadata
-  const brandInfo = brands.find(
-    (b) => b.slug.toLowerCase() === brand.toLowerCase()
-  );
-  const brandName = brandInfo?.name || brand;
-
-  // Enhanced metadata with additional SEO features
-  const enhancedMetadata: Metadata = {
-    ...baseMetadata,
-
-    // Enhanced keywords with more comprehensive coverage
-    keywords: [
-      ...((baseMetadata.keywords as string[]) || []),
-
-      // Service-specific keywords
-      `${brandName} mobile service center`,
-      `${brandName} phone screen replacement`,
-      `${brandName} battery change`,
-      `${brandName} camera repair service`,
-      `${brandName} charging port fix`,
-      `${brandName} water damage repair`,
-      `${brandName} software repair`,
-      `${brandName} unlocking service`,
-
-      // Location + service combinations
-      `${brandName} repair Kerala`,
-      `${brandName} service center Kerala`,
-      `${brandName} repair Malappuram`,
-      `${brandName} repair Kochi`,
-      `${brandName} repair Trivandrum`,
-      `${brandName} repair Kozhikode`,
-
-      // Problem-specific searches
-      `${brandName} phone not working`,
-      `${brandName} screen cracked`,
-      `${brandName} battery draining fast`,
-      `${brandName} phone overheating`,
-      `${brandName} touch not working`,
-      `${brandName} speaker problem`,
-      `${brandName} microphone issue`,
-
-      // Service quality keywords
-      `genuine ${brandName} parts`,
-      `authorized ${brandName} repair`,
-      `certified ${brandName} technician`,
-      `warranty ${brandName} repair`,
-      `doorstep ${brandName} service`,
-      `pickup delivery ${brandName}`,
-
-      // Competitive keywords
-      `best ${brandName} repair center`,
-      `cheap ${brandName} repair`,
-      `fast ${brandName} repair`,
-      `professional ${brandName} service`,
-      `trusted ${brandName} repair`,
-    ],
-
-    // Enhanced other metadata for better SEO
-    other: {
-      // Copy existing metadata if it exists
-      ...((baseMetadata.other as Record<string, string>) || {}),
-
-      // Technical SEO enhancements
-      "revisit-after": "7 days",
-      "content-language": "en-IN",
-      distribution: "global",
-      rating: "general",
-
-      // Mobile-specific metadata
-      "mobile-web-app-capable": "yes",
-      "mobile-web-app-status-bar-style": "default",
-      "mobile-web-app-title": `${brandName} Repair`,
-
-      // Business metadata enhancements
-      "business:contact_data:locality": "Kerala",
-      "business:contact_data:region": "Kerala",
-      "business:contact_data:country_name": "India",
-
-      // Service-specific metadata
-      "service:price_range": "₹99-₹15000",
-      "service:warranty": "6 months",
-      "service:pickup": "available",
-      "service:delivery": "available",
-      "service:brands": brandName,
-    } as Record<string, string>,
-  };
-
-  return enhancedMetadata;
+  return getBrandMetadata(brand);
 }
 
 // Fetch function (remains on the server)
