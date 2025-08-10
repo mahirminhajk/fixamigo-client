@@ -11,8 +11,7 @@ import { INFO } from "@/constants";
 
 // SEO Metadata
 export const metadata: Metadata = {
-  title:
-    "Support Request - Fixamigo | Request New Brands, Devices & Custom Services",
+  title: "Support Request - Fixamigo | Get Help with Mobile Repairs",
   description:
     "Submit support requests to Fixamigo for new device brands, custom repair services, or general assistance. Our expert team responds within 24 hours to help with your mobile repair needs in Kerala.",
   keywords: [
