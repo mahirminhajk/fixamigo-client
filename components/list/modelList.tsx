@@ -27,6 +27,7 @@ export default function ModelList({ models, brand }: ModelListProps) {
                 <Image
                   src={model.images?.[0] || "/placeholder.png"} // Optional chaining for images
                   alt={`Image of ${model.name}`}
+                  title={`${model.name}`}
                   width={150} // Adjusted size for 150x150 thumbnail
                   height={150} // Adjusted size for 150x150 thumbnail
                   className="object-contain w-full h-full group-hover:scale-110 transition-transform duration-300 ease-in-out"

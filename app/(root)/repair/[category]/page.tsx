@@ -69,6 +69,7 @@ export default async function Page({
               <Image
                 src={brand.image}
                 alt={brand.name}
+                title={brand.name.toLocaleUpperCase()}
                 width={80}
                 height={80}
                 className="mb-2"

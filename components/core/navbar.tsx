@@ -131,10 +131,11 @@ export default function Navbar({ city }: NavbarProps) {
             <Link href="/">
               <Image
                 src="/logos/text.png"
-                alt="Logo"
+                alt="fixamigo logo"
+                title="Fixamigo Logo"
                 width={100}
                 height={40}
-                className="h-8 sm:h-10 w-auto cursor-pointer" // Added cursor-pointer
+                className="h-8 sm:h-10 w-auto cursor-pointer"
                 priority
               />
             </Link>

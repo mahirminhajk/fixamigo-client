@@ -39,6 +39,7 @@ const CartList = () => {
                   <Image
                     src={cartItem.device.images?.[0] || "/logos/logo.png"}
                     alt={cartItem.device.name}
+                    title={`${cartItem.device.name} Logo`}
                     width={40}
                     height={40}
                     className="rounded-md border bg-white object-contain"
@@ -79,6 +80,7 @@ const CartList = () => {
                     <Image
                       src={getSparePartsIcon(item.category)}
                       alt={item.label}
+                      title={`${item.label} Icon`}
                       width={36}
                       height={36}
                       className="object-contain"
@@ -228,6 +230,7 @@ const CartList = () => {
                     <Image
                       src={cartItem.device.images?.[0] || "/logos/logo.png"}
                       alt={cartItem.device.name}
+                      title={`${cartItem.device.name} Logo`}
                       width={60}
                       height={60}
                       className="rounded-lg border-2 border-white bg-white object-contain shadow-sm"
@@ -271,6 +274,7 @@ const CartList = () => {
                         <Image
                           src={getSparePartsIcon(item.category)}
                           alt={item.label}
+                          title={`${item.label} Icon`}
                           width={48}
                           height={48}
                           className="object-contain"

@@ -37,6 +37,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                   <Image
                     src={getSparePartsIcon(item.category)}
                     alt={item.label}
+                    title={`${item.label} Icon`}
                     width={48}
                     height={48}
                     className="mr-3"
@@ -99,6 +100,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                   <Image
                     src={getSparePartsIcon(item.category)}
                     alt={item.label}
+                    title={`${item.label} Icon`}
                     width={40}
                     height={40}
                     className="mr-3"

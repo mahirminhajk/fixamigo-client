@@ -89,6 +89,7 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
               <Image
                 src={order.device.images[0]}
                 alt={order.device.name}
+                title={`${order.device.name} Image`}
                 width={80}
                 height={96}
                 className="object-contain max-w-full max-h-full"
@@ -144,6 +145,7 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
                 <Image
                   src={getSparePartsIcon(spare.category)}
                   alt={spare.name}
+                  title={`${spare.name} Icon`}
                   width={40}
                   height={40}
                   className="object-contain"

@@ -72,6 +72,7 @@ const AvailableServices = () => {
               <Image
                 src={service.imgSrc}
                 alt={service.title}
+                title={service.title}
                 width={48}
                 height={48}
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 filter brightness-0 invert drop-shadow-sm"

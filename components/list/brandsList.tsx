@@ -187,6 +187,7 @@ const BrandsList = ({
                   <Image
                     src={brand.image}
                     alt={`${brand.name} logo`}
+                    title={`${brand.name} Logo`}
                     width={160}
                     height={160}
                     className="object-contain max-w-full max-h-full drop-shadow-sm

@@ -87,6 +87,9 @@ export default function HeroCarousel() {
                 <Image
                   src={src}
                   alt={`Banner ${index + 1} - Fixamigo mobile repair services`}
+                  title={`Banner ${
+                    index + 1
+                  } - Fixamigo mobile repair services`}
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 1920px"
