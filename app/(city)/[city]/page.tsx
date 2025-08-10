@@ -1,4 +1,4 @@
-import Carousel from "@/components/others/carousel";
+import HeroCarousel from "@/components/others/carousel";
 import ListRepairCategory from "@/components/list/listRepairCategory";
 import BrandsList from "@/components/list/brandsList";
 import { supportCities } from "@/constants";
@@ -43,7 +43,7 @@ const CityHome = async ({ params }: { params: Promise<{ city: string }> }) => {
       />
 
       <section>
-        <Carousel />
+        <HeroCarousel />
         <ProductSearch />
         <ListRepairCategory />
         <AvailableServices />
