@@ -257,6 +257,7 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
                   <Image
                     src={brand.image}
                     alt={brand.name}
+                    title={`${brand.name} Image`}
                     width={40}
                     height={40}
                     className="object-contain"
