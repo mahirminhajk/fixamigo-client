@@ -65,6 +65,7 @@ export default async function Page({
               key={brand.slug}
               href={`/repair/mobile-phone/${brand.slug}`}
               className="border rounded-xl shadow-sm hover:shadow-lg transition flex flex-col items-center p-4"
+              title={`Repair ${brand.name} devices`}
             >
               <Image
                 src={brand.image}
@@ -85,6 +86,7 @@ export default async function Page({
             <Link
               href="/repair/mobile-phone"
               className="text-blue-600 underline"
+              title="View all supported mobile brands"
             >
               View all supported brands
             </Link>

@@ -95,6 +95,7 @@ export default function BrandPageClient({
             <Link
               href={`/support-request?type=device&value=${brand}`}
               className="flex items-center w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-lg transition-all duration-200"
+              title="Request a device that's not listed"
             >
               <div className="flex-shrink-0">
                 <svg

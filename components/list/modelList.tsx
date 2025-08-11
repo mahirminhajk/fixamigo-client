@@ -22,6 +22,7 @@ export default function ModelList({ models, brand }: ModelListProps) {
               href={`/repair/mobile-phone/${brand}/${model.slug}`}
               className="group bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col items-center text-center p-3 sm:p-4 
                            transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              title={`View ${model.name} repair options`}
             >
               <div className="w-full aspect-square flex items-center justify-center mb-3 sm:mb-4 overflow-hidden rounded-md bg-gray-50">
                 <Image
@@ -48,6 +49,7 @@ export default function ModelList({ models, brand }: ModelListProps) {
               href={`/support-request?type=device&value=${brand}`}
               className="group bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col items-center justify-center text-center p-3 sm:p-4 \
                          transition-all duration-300 ease-in-out hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              title="Request a device that's not listed"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

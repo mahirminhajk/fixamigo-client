@@ -94,6 +94,7 @@ export default function DeviceCartBarClient() {
             <Link
               href="/terms-and-conditions"
               className="text-blue-600 underline"
+              title="Terms and Conditions"
             >
               Terms and Conditions
             </Link>
@@ -151,6 +152,7 @@ export default function DeviceCartBarClient() {
             <Link
               href="/terms-and-conditions"
               className="text-blue-600 underline hover:text-blue-700"
+              title="Terms and Conditions"
             >
               Terms and Conditions
             </Link>

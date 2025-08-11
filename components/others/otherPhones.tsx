@@ -197,6 +197,7 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
                 key={device.slug}
                 href={`/repair/mobile-phone/${device.company}/${device.slug}`}
                 className="flex items-center p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 group"
+                title={`View ${device.name} repair options`}
               >
                 <div className="w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex items-center justify-center mr-4">
                   <Image
@@ -250,6 +251,7 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
                 key={brand.slug}
                 href={`/repair/mobile-phone/${brand.slug}`}
                 className="flex items-center p-4 rounded-xl border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-200 group"
+                title={`Explore ${brand.name} devices`}
               >
                 <div className="w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex items-center justify-center mr-4">
                   <Image

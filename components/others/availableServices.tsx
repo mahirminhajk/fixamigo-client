@@ -51,6 +51,7 @@ const AvailableServices = () => {
                        hover:scale-105 hover:-translate-y-2
                        focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                        flex-1 min-h-[220px] md:min-h-[280px] overflow-hidden"
+            title={service.title}
           >
             {/* Background gradient overlay - shows brand orange on hover only */}
             <div
@@ -151,6 +152,7 @@ const AvailableServices = () => {
           <Link
             href="/support-request?type=can-not-find"
             className="text-blue-600 hover:text-blue-700 font-medium ml-1"
+            title="Talk to our experts"
           >
             Talk to our experts
           </Link>

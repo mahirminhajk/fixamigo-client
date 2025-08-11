@@ -168,6 +168,7 @@ const ServiceSteps = () => {
                        before:absolute before:inset-0 before:bg-gradient-to-r 
                        before:from-white/20 before:to-transparent before:rounded-2xl
                        before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300"
+            title="Start your mobile repair"
           >
             <div className="flex items-center gap-3 relative z-10">
               <span>Start Your Repair Journey</span>

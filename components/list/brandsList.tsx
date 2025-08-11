@@ -169,6 +169,7 @@ const BrandsList = ({
                            hover:border-[#D2691E] hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
                            focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 focus:ring-opacity-50 
                            aspect-[4/3] min-h-[120px] relative overflow-hidden"
+                title={`Repair ${brand.name} ${category.replace("-", " ")}`}
               >
                 {/* Background gradient overlay */}
                 <div
@@ -263,6 +264,7 @@ const BrandsList = ({
                              before:from-white/0 before:via-white/20 before:to-white/0
                              before:translate-x-[-100%] hover:before:translate-x-[100%] 
                              before:transition-transform before:duration-700"
+                    title={`View all ${category.replace("-", " ")} brands`}
                   >
                     <div className="relative z-10">
                       <span>View All Brands</span>
@@ -287,6 +289,7 @@ const BrandsList = ({
                          hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
                          transition-all duration-300 hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 justify-center text-center"
+              title="Request a brand that’s not listed"
             >
               <div>
                 <h3

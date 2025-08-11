@@ -53,6 +53,7 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
                 <a
                   href={`tel:${order.agent.phone}`}
                   className="font-bold text-blue-600 hover:text-blue-800 transition-colors duration-200 hover:underline"
+                  title={`Call agent at ${order.agent.phone}`}
                 >
                   {order.agent.phone}
                 </a>

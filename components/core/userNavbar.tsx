@@ -52,7 +52,7 @@ export default function UserNavbar({
               )}
 
               {/* Logo - Mobile */}
-              <Link href="/" className="flex-shrink-0">
+              <Link href="/" className="flex-shrink-0" title="Go to Home">
                 <Image
                   src="/logos/text.png"
                   alt="fixamigo logo"
@@ -86,7 +86,7 @@ export default function UserNavbar({
             {/* Left Section - Logo and Navigation */}
             <div className="flex items-center space-x-8">
               {/* Logo */}
-              <Link href="/" className="flex-shrink-0">
+              <Link href="/" className="flex-shrink-0" title="Go to Home">
                 <Image
                   src="/logos/text.png"
                   alt="fixamigo logo"
@@ -117,6 +117,7 @@ export default function UserNavbar({
                       ? "text-[#D2691E] bg-orange-50 border border-orange-200"
                       : "text-gray-600 hover:text-[#D2691E] hover:bg-orange-50"
                   }`}
+                  title="View your orders"
                 >
                   <Package className="w-4 h-4" />
                   <span>My Orders</span>
@@ -129,6 +130,7 @@ export default function UserNavbar({
                       ? "text-[#D2691E] bg-orange-50 border border-orange-200"
                       : "text-gray-600 hover:text-[#D2691E] hover:bg-orange-50"
                   }`}
+                  title="View your cart"
                 >
                   <ShoppingCart className="w-4 h-4" />
                   <span>Cart</span>
@@ -137,6 +139,7 @@ export default function UserNavbar({
                 <Link
                   href="/"
                   className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-[#D2691E] hover:bg-orange-50 rounded-lg transition-all duration-200"
+                  title="Browse services"
                 >
                   Browse Services
                 </Link>
@@ -168,7 +171,11 @@ export default function UserNavbar({
             <div className="fixed top-0 left-0 w-80 max-w-[85vw] h-full bg-white shadow-2xl z-50 transform transition-transform duration-300">
               {/* Mobile Menu Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                <Link href="/" onClick={() => setMobileMenuOpen(false)}>
+                <Link
+                  href="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  title="Go to Home"
+                >
                   <Image
                     src="/logos/text.png"
                     alt="fixamigo logo"
@@ -202,6 +209,7 @@ export default function UserNavbar({
                       ? "bg-orange-50 text-[#D2691E] border border-orange-200"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
+                  title="View your orders"
                 >
                   <Package className="w-5 h-5" />
                   <span className="font-medium">My Orders</span>
@@ -215,6 +223,7 @@ export default function UserNavbar({
                       ? "bg-orange-50 text-[#D2691E] border border-orange-200"
                       : "text-gray-700 hover:bg-gray-100"
                   }`}
+                  title="View your cart"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   <span className="font-medium">Cart</span>
@@ -224,6 +233,7 @@ export default function UserNavbar({
                   href="/"
                   onClick={() => setMobileMenuOpen(false)}
                   className="flex items-center space-x-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                  title="Browse services"
                 >
                   <User className="w-5 h-5" />
                   <span className="font-medium">Browse Services</span>
@@ -241,6 +251,7 @@ export default function UserNavbar({
                     href="/profile"
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center space-x-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                    title="View profile"
                   >
                     <User className="w-5 h-5" />
                     <span className="font-medium">Profile</span>
@@ -249,6 +260,7 @@ export default function UserNavbar({
                     href="/support-request"
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center space-x-3 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200"
+                    title="Get help or request support"
                   >
                     <svg
                       className="w-5 h-5"

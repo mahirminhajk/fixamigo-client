@@ -17,9 +17,9 @@ function CartBtn() {
 
   return (
     <Button asChild variant="ghost" size="icon" aria-label="View cart">
-      <Link href="/cart">
+      <Link href="/cart" title="View your cart">
         {isCartEmpty() ? (
-          <BsCart2 className="size-6" /> 
+          <BsCart2 className="size-6" />
         ) : (
           <FaCartPlus className="size-6" />
         )}

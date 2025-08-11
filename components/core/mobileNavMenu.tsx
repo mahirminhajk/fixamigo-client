@@ -38,6 +38,7 @@ const MobileNavMenu = ({
           href="/"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Go to Home"
         >
           Home
         </Link>
@@ -45,6 +46,7 @@ const MobileNavMenu = ({
           href="/repair"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Browse all repair services"
         >
           All Repairs
         </Link>
@@ -52,6 +54,7 @@ const MobileNavMenu = ({
           href="/my-services"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="View your orders"
         >
           Orders
         </Link>
@@ -64,6 +67,7 @@ const MobileNavMenu = ({
           href="/"
           className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Go to Home"
         >
           Home
         </Link>
@@ -71,6 +75,7 @@ const MobileNavMenu = ({
           href="/about"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Learn more About us"
         >
           About
         </Link>
@@ -78,6 +83,7 @@ const MobileNavMenu = ({
           href="/my-services"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="View your orders"
         >
           Orders
         </Link>
@@ -85,6 +91,7 @@ const MobileNavMenu = ({
           href="/contact"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Contact us"
         >
           Contact
         </Link>

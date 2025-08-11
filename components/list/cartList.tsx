@@ -35,6 +35,7 @@ const CartList = () => {
                     cartItem.device.slug
                   }`}
                   className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+                  title={`View ${cartItem.device.name} repair options`}
                 >
                   <Image
                     src={cartItem.device.images?.[0] || "/logos/logo.png"}
@@ -226,6 +227,7 @@ const CartList = () => {
                       cartItem.device.slug
                     }`}
                     className="flex items-center gap-4 hover:opacity-80 transition-opacity"
+                    title={`View ${cartItem.device.name} repair options`}
                   >
                     <Image
                       src={cartItem.device.images?.[0] || "/logos/logo.png"}

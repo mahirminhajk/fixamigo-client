@@ -163,6 +163,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
           <Link
             href={`/support-request?type=service&value=${cartDevice.slug}`}
             className="flex items-center justify-between px-4"
+            title="Request a service that's not listed"
           >
             <div className="flex items-center">
               <svg

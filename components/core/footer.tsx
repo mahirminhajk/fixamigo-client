@@ -40,6 +40,7 @@ const Footer = () => {
                 <a
                   href={INFO.emailLink()}
                   className="hover:text-blue-600 transition-colors"
+                  title={`Email ${INFO.name}`}
                 >
                   {INFO.email}
                 </a>
@@ -48,6 +49,7 @@ const Footer = () => {
                 <a
                   href={INFO.phoneLink()}
                   className="hover:text-blue-600 transition-colors"
+                  title={`Call ${INFO.name}`}
                 >
                   {INFO.phoneLabel}
                 </a>
@@ -66,6 +68,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors"
                   aria-label="Instagram"
+                  title="Follow us on Instagram"
                 >
                   <FaInstagram className="w-3 h-3 md:w-4 md:h-4" />
                 </a>
@@ -84,6 +87,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition-colors"
                   aria-label="WhatsApp"
+                  title="Chat with us on WhatsApp"
                 >
                   <FaWhatsapp className="w-3 h-3 md:w-4 md:h-4" />
                 </a>
@@ -101,6 +105,7 @@ const Footer = () => {
                 <Link
                   href="repair/mobile-phone"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Repair mobile phones"
                 >
                   Mobile
                 </Link>
@@ -109,6 +114,7 @@ const Footer = () => {
                 <Link
                   href="/repair/laptop"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Repair laptops"
                 >
                   Laptop
                 </Link>
@@ -117,6 +123,7 @@ const Footer = () => {
                 <Link
                   href="/repair/other"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Other repair services"
                 >
                   Other
                 </Link>
@@ -134,6 +141,7 @@ const Footer = () => {
                 <Link
                   href="/about"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="About Fixamigo"
                 >
                   About Us
                 </Link>
@@ -142,6 +150,7 @@ const Footer = () => {
                 <Link
                   href="/blog"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Read our blog"
                 >
                   Blog
                 </Link>
@@ -160,6 +169,7 @@ const Footer = () => {
                   <Link
                     href="/contact"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Contact Fixamigo"
                   >
                     Contact Us
                   </Link>
@@ -168,6 +178,7 @@ const Footer = () => {
                   <Link
                     href="/faq"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Frequently asked questions"
                   >
                     FAQ
                   </Link>
@@ -176,6 +187,7 @@ const Footer = () => {
                   <Link
                     href="/warranty"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Warranty and returns policy"
                   >
                     Warranty & Returns
                   </Link>
@@ -192,6 +204,7 @@ const Footer = () => {
                   <Link
                     href="/privacy"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Privacy policy"
                   >
                     Privacy Policy
                   </Link>
@@ -200,6 +213,7 @@ const Footer = () => {
                   <Link
                     href="/terms"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Terms and conditions"
                   >
                     Terms & Conditions
                   </Link>
@@ -276,18 +290,21 @@ const Footer = () => {
               <Link
                 href="/privacy"
                 className="text-gray-500 hover:text-gray-800 transition-colors text-xs md:text-sm"
+                title="Privacy policy"
               >
                 Privacy
               </Link>
               <Link
                 href="/terms"
                 className="text-gray-500 hover:text-gray-800 transition-colors text-xs md:text-sm"
+                title="Terms and conditions"
               >
                 Terms
               </Link>
               <Link
                 href="/contact"
                 className="text-gray-500 hover:text-gray-800 transition-colors text-xs md:text-sm"
+                title="Contact Fixamigo"
               >
                 Contact
               </Link>
