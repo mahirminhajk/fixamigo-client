@@ -7,6 +7,8 @@ import ProfileBtn from "../buttons/profileBtn";
 import MobileNavMenu from "./mobileNavMenu";
 import Image from "next/image";
 import { usePathname } from "next/navigation"; // Import usePathname
+import { useHydratedStore } from "@/hooks/useHydratedStore";
+import { useUserStore } from "@/stores/userStore";
 
 interface NavbarProps {
   city?: string;
@@ -25,6 +27,8 @@ export default function Navbar({ city }: NavbarProps) {
   // Determine if the current page is in the repair section
   // Assuming URLs for repair section start with /repair/
   const isRepairSection = pathname.startsWith("/repair");
+  const user = useHydratedStore(useUserStore, (state) => state.user);
+  const isLoggedIn = Boolean(user?._id);
 
   let desktopNavLinks;
   if (isRepairSection) {
@@ -37,20 +41,23 @@ export default function Navbar({ city }: NavbarProps) {
         >
           Home
         </Link>
-        <Link
-          href="/repair"
-          className="hover:text-blue-500 transition"
-          title="Browse all repair services"
-        >
-          All Repairs
-        </Link>
-        <Link
-          href="/my-services"
-          className="hover:text-blue-500 transition"
-          title="View your orders"
-        >
-          Orders
-        </Link>
+        {isLoggedIn ? (
+          <Link
+            href="/my-services"
+            className="hover:text-blue-500 transition"
+            title="View your orders"
+          >
+            Orders
+          </Link>
+        ) : (
+          <Link
+            href="/repair"
+            className="hover:text-blue-500 transition"
+            title="Browse all repair services"
+          >
+            All Repairs
+          </Link>
+        )}
       </>
     );
   } else {
@@ -70,13 +77,23 @@ export default function Navbar({ city }: NavbarProps) {
         >
           About
         </Link>
-        <Link
-          href="/my-services"
-          className="hover:text-blue-500 transition"
-          title="View your orders"
-        >
-          Orders
-        </Link>
+        {isLoggedIn ? (
+          <Link
+            href="/my-services"
+            className="hover:text-blue-500 transition"
+            title="View your orders"
+          >
+            Orders
+          </Link>
+        ) : (
+          <Link
+            href="/repair"
+            className="hover:text-blue-500 transition"
+            title="Browse all repair services"
+          >
+            Repairs
+          </Link>
+        )}
         <Link
           href="/contact"
           className="hover:text-blue-500 transition"
