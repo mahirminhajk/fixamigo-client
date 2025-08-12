@@ -1,16 +1,23 @@
 // app/(root)/repair/[category]/page.tsx
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { repairPageContent, brands } from "@/constants/content";
+import { repairPageContent } from "@/constants/content";
 import OurProcess from "@/components/list/ourProcess";
 import WhyChooseFixamigo from "@/components/list/whyChooseFixamigo";
+import BrandsList from "@/components/list/brandListInRepair";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface RepairPageProps {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }
 
-export default function RepairCategoryPage({ params }: RepairPageProps) {
-  const { category } = params;
+export default async function RepairCategoryPage({ params }: RepairPageProps) {
+  const { category } = await params;
 
   // Find matching repair content
   const repairData = repairPageContent.find(
@@ -23,48 +30,51 @@ export default function RepairCategoryPage({ params }: RepairPageProps) {
 
   return (
     <>
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white py-12">
-        <div className="max-w-6xl mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-bold text-center">
-            {repairData.heading}
-          </h1>
-          <p className="mt-4 text-center text-lg md:text-xl">
-            {repairData.headingDescription}
-          </p>
-        </div>
+      {/* Blog Banner Image */}
+      <div className="w-full h-64 relative mb-8">
+        <Image
+          src="/android-chrome-192x192.png"
+          alt="Repair Banner"
+          fill
+          className="rounded-b-2xl object-cover"
+          priority
+        />
       </div>
 
-      <section className="max-w-6xl mx-auto px-4 py-10">
+      {/* Blog Header */}
+      <div className="max-w-2xl mx-auto px-4 mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm text-gray-500">By Fixamigo</span>
+          <span className="text-sm text-gray-400">
+            {new Date().toLocaleDateString()}
+          </span>
+        </div>
+        <h1 className="text-4xl font-extrabold text-[#D2691E] mb-4 leading-tight">
+          {repairData.heading}
+        </h1>
+        <p className="text-lg text-gray-700 mb-2">
+          {repairData.headingDescription}
+        </p>
+        <hr className="my-6 border-t border-gray-200" />
+      </div>
+
+      <section className="max-w-2xl mx-auto px-4 pb-16">
         {/* Main Description */}
         <div className="prose prose-lg max-w-none mb-12">
           <p className="lead text-lg">{repairData.mainDescription}</p>
         </div>
 
+        <hr className="my-8 border-t border-gray-100" />
+
         {/* Brand Selector */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold text-[#D2691E] mb-6">
-            Select your brand
-          </h2>
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
-            {brands.map((brand) => (
-              <div
-                key={brand.name}
-                className="flex flex-col items-center justify-center p-4 border rounded-lg hover:shadow-md transition-shadow cursor-pointer"
-              >
-                <img
-                  src={brand.image}
-                  alt={brand.name}
-                  className="w-16 h-16 object-contain"
-                />
-                <span className="mt-2 text-sm font-medium">{brand.name}</span>
-              </div>
-            ))}
-          </div>
+        <div className="mb-12">
+          <BrandsList variant="min" category={category} />
         </div>
 
+        <hr className="my-8 border-t border-gray-100" />
+
         {/* Common Issues Section */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+        <div className="mb-12">
           <h2 className="text-2xl font-bold text-[#D2691E] mb-4">
             {repairData.secondHeading}
           </h2>
@@ -82,37 +92,45 @@ export default function RepairCategoryPage({ params }: RepairPageProps) {
           <p className="mt-6">{repairData.secondMainDescription}</p>
         </div>
 
+        <hr className="my-8 border-t border-gray-100" />
+
         {/* Our Process Section */}
-        <div className="bg-gray-50 rounded-xl p-8 mb-12">
+        <div className="mb-12">
           <OurProcess />
         </div>
 
+        <hr className="my-8 border-t border-gray-100" />
+
         {/* Why Choose Fixamigo Section */}
-        <div className="bg-white rounded-xl shadow-lg p-8 mb-12">
+        <div className="mb-12">
           <WhyChooseFixamigo />
         </div>
 
-        {/* FAQ Section */}
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* FAQ Section with Accordion */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-[#D2691E] mb-6">
             {repairData.sixthHeading}
           </h2>
-          <div className="space-y-6">
+          <Accordion type="single" collapsible>
             {repairData.sixthQuestions.map((faq, index) => (
-              <div key={index} className="bg-white rounded-lg shadow p-6">
-                <h3 className="font-bold mb-2">{faq.question}</h3>
-                <p className="text-gray-700">{faq.answer}</p>
-              </div>
+              <AccordionItem value={`item-${index}`} key={index}>
+                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                <AccordionContent>{faq.answer}</AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center bg-white rounded-xl shadow-lg p-8">
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* Call to Action (non-card, left-aligned) */}
+        <div className="p-0">
           <h2 className="text-2xl font-bold text-[#D2691E] mb-4">
             {repairData.seventhHeading}
           </h2>
-          <div className="prose prose-lg max-w-none">
+          <div>
             {repairData.seventhDescription
               .split("\n\n")
               .map((paragraph, index) => (

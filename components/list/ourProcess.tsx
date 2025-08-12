@@ -34,8 +34,8 @@ const steps: Step[] = [
 
 const OurProcess: FC = () => {
   return (
-    <section className="max-w-4xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-2">Our Process</h2>
+    <section className="max-w-4xl mx-auto ">
+      <h2 className="text-2xl font-bold mb-2 text-[#D2691E]">Our Process</h2>
       <p className="text-gray-700 mb-8">
         At fixamigo, we’ve made the repair process simple and hassle-free:
       </p>
