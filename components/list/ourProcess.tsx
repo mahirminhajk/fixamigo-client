@@ -1,32 +1,32 @@
 "use client";
 
-import { FC, ReactElement } from "react";
-import { FaRupeeSign, FaCalendarAlt, FaTools, FaTruck } from "react-icons/fa";
+import { FC } from "react";
+import Image from "next/image";
 
 interface Step {
-  icon: ReactElement;
+  icon: string;
   title: string;
   description: string;
 }
 
 const steps: Step[] = [
   {
-    icon: <FaRupeeSign size={28} className="text-orange-500" />,
+    icon: "/icons/button.png",
     title: "1.Check Price",
     description: "Choose your device for repair and get the best price.",
   },
   {
-    icon: <FaCalendarAlt size={28} className="text-orange-500" />,
+    icon: "/icons/service.png",
     title: "2.Schedule Service",
     description: "Schedule your repair at a convenient date.",
   },
   {
-    icon: <FaTools size={28} className="text-orange-500" />,
+    icon: "/icons/motherboard.png",
     title: "3.Diagnosis & Fix",
     description: "Identify the issue and get it fixed quickly by our experts.",
   },
   {
-    icon: <FaTruck size={28} className="text-orange-500" />,
+    icon: "/icons/laptop.png",
     title: "4.Delivered to You",
     description: "Get your repaired device safely delivered to your doorstep.",
   },
@@ -43,7 +43,15 @@ const OurProcess: FC = () => {
       <div className="grid gap-6">
         {steps.map((step, index) => (
           <div key={index} className="flex items-start gap-4">
-            <div className="flex-shrink-0">{step.icon}</div>
+            <div className="flex-shrink-0">
+              <Image
+                src={step.icon}
+                alt={step.title}
+                width={40}
+                height={40}
+                className="object-contain"
+              />
+            </div>
             <div>
               <h3 className="font-semibold text-lg">{step.title}</h3>
               <p className="text-gray-600 text-sm">{step.description}</p>
