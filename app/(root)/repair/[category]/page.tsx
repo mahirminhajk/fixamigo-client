@@ -1,107 +1,57 @@
-import { brands, repairCategory } from "@/constants";
-import { Metadata } from "next";
-import {
-  getCategoryMetadata,
-  getCategoryStructuredData,
-} from "@/lib/seo/categoryMetadata";
-import Link from "next/link";
+// app/(root)/repair/[category]/page.tsx
+import { notFound } from "next/navigation";
 import Image from "next/image";
-import Script from "next/script";
+import { repairPageContent, brands } from "@/constants/content";
 
-// Static Generation
-export async function generateStaticParams() {
-  return repairCategory
-    .filter((category) => category.slug !== "mobile-phone")
-    .map((category) => ({
-      category: category.slug,
-    }));
+interface RepairPageProps {
+  params: { category: string };
 }
 
-// SEO Metadata
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}): Promise<Metadata> => {
-  const { category } = await params;
-  const metadata = getCategoryMetadata(category);
-  return metadata;
-};
+export default function RepairCategoryPage({ params }: RepairPageProps) {
+  const { category } = params;
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
-  const { category } = await params;
-  const categoryName =
-    repairCategory.find((cat) => cat.slug === category)?.name || "Repair";
-  const structuredData = getCategoryStructuredData(category);
+  // Find matching repair content
+  const repairData = repairPageContent.find(
+    (item) => item.slug.toLowerCase() === category.toLowerCase()
+  );
+
+  if (!repairData) {
+    return notFound();
+  }
 
   return (
-    <>
-      {/* JSON-LD Structured Data for Category */}
-      <Script
-        id="category-structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
+    <section className="max-w-6xl mx-auto px-4 py-10">
+      {/* Heading */}
+      <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        {repairData.heading}
+      </h1>
 
-      <section className="max-w-5xl mx-auto py-10 px-4">
-        <h1 className="text-3xl font-bold mb-4 capitalize">
-          {categoryName} Repair - Choose Your Brand
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Fix your phone&apos;s {categoryName.toLowerCase()} with trusted
-          service providers. Select your brand below to find compatible devices
-          we support for this repair type.
-        </p>
+      {/* Heading Description */}
+      <p className="text-gray-600 mb-4">{repairData.headingDescription}</p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {brands.map((brand) => (
-            <Link
-              key={brand.slug}
-              href={`/repair/mobile-phone/${brand.slug}`}
-              className="border rounded-xl shadow-sm hover:shadow-lg transition flex flex-col items-center p-4"
-            >
-              <Image
-                src={brand.image}
-                alt={brand.name}
-                width={80}
-                height={80}
-                className="mb-2"
-              />
-              <span className="font-medium text-center">{brand.name}</span>
-            </Link>
-          ))}
-        </div>
+      {/* Main Description */}
+      <p className="text-gray-600 mb-8">{repairData.mainDescription}</p>
 
-        <div className="mt-10 text-sm text-gray-500">
-          <p>
-            Can&apos;t find your brand?{" "}
-            <Link
-              href="/repair/mobile-phone"
-              className="text-blue-600 underline"
-            >
-              View all supported brands
-            </Link>
-            .
-          </p>
-        </div>
-      </section>
-    </>
+      {/* Brand Selector */}
+      <h2 className="text-xl font-semibold mb-3">Select your brand</h2>
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4 mb-8">
+        {brands.map((brand) => (
+          <div
+            key={brand.name}
+            className="flex flex-col items-center justify-center p-3 border rounded-lg hover:shadow"
+          >
+            <img
+              src={brand.image}
+              alt={brand.name}
+              className="w-16 h-16 object-contain"
+            />
+
+            <span className="mt-2 text-sm">{brand.name}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Common Issues, Process, and Service Info removed due to missing properties in repairData. */}
+    </section>
   );
 }
-
-/**
- //* /repair/[category]
- //* ex: /repair/display
- * display
- * ports
- * battery
- * camera
- * speaker
- * others
- */

@@ -1,4 +1,21 @@
-import { Heading } from "lucide-react";
+// constants.ts
+export const brands = [
+  { slug: "apple", name: "Apple", image: "/images/brands/apple.png" },
+  { slug: "samsung", name: "Samsung", image: "/images/brands/samsung.png" },
+  { slug: "xiaomi", name: "Xiaomi", image: "/images/brands/xiaomi.png" },
+  { slug: "realme", name: "Realme", image: "/images/brands/realme.png" },
+  { slug: "vivo", name: "Vivo", image: "/images/brands/vivo.png" },
+  { slug: "oppo", name: "Oppo", image: "/images/brands/oppo.png" },
+  { slug: "infinix", name: "Infinix", image: "/images/brands/infinix.png" },
+  { slug: "motorola", name: "Motorola", image: "/images/brands/motorola.png" },
+  { slug: "nokia", name: "Nokia", image: "/images/brands/nokia.png" },
+  { slug: "itel", name: "Itel", image: "/images/brands/itel.png" },
+  { slug: "tecno", name: "Tecno", image: "/images/brands/tecno.png" },
+  { slug: "lava", name: "Lava", image: "/images/brands/lava.png" },
+  { slug: "oppo", name: "Oppo", image: "/images/brands/oppo.png" },
+  { slug: "infinix", name: "Infinix", image: "/images/brands/infinix.png" },
+  { slug: "motorola", name: "Motorola", image: "/images/brands/motorola.png" },
+];
 
 export const repairPageContent = [
   {
