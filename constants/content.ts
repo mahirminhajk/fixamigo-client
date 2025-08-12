@@ -1,4 +1,11 @@
 // constants.ts
+import { faqs } from "./index";
+const pickFaqs = (category: string) => [
+  // all general FAQs first
+  ...faqs.filter((f) => f.category === "general"),
+  // then category-specific ones
+  ...faqs.filter((f) => f.category === category),
+];
 export const brands = [
   { slug: "apple", name: "Apple", image: "/brands/apple.webp" },
   { slug: "samsung", name: "Samsung", image: "/brands/samsung.webp" },
@@ -42,33 +49,7 @@ export const repairPageContent = [
     fourthHeading: "We Service all Brands",
     fifthHeaing: "Why Choose fixamigo",
     sixthHeading: "Frequently Asked Questions",
-    sixthQuestions: [
-      {
-        question: "How long does a phone screen repair take?",
-        answer:
-          "Most screen repairs are completed within 1–2 hours, depending on the model and damage severity.",
-      },
-      {
-        question: "Will my phone’s touch sensitivity be the same after repair?",
-        answer:
-          "Yes. We use original-quality screens to maintain full functionality and touch responsiveness.",
-      },
-      {
-        question: "Do you offer warranty on screen replacement?",
-        answer:
-          "Absolutely. We offer up to 6 months warranty on parts and service for screen repairs.",
-      },
-      {
-        question: "Can I get my screen replaced at home?",
-        answer:
-          "Yes! We offer pickup and delivery service in Malappuram and Kottakkal for your convenience.",
-      },
-      {
-        question: "Is it better to repair or replace a cracked screen?",
-        answer:
-          "If your phone is functioning well otherwise, repairing the screen is often the most cost-effective option.",
-      },
-    ],
+    sixthQuestions: pickFaqs("display"),
     seventhHeading: "Book Your Repair Today",
     seventhDescription:
       "Don’t let a broken screen slow you down. Whether you're in Kottakkal or anywhere in Malappuram district, Fixamigo is your trusted destination for fast, reliable, and affordable screen replacements. \n\n📞 Call us, book online, or visit our service center today!\n📱 Your phone deserves the best—trust Fixamigo to fix it right.",
@@ -96,33 +77,7 @@ export const repairPageContent = [
     fourthHeading: "We Service all Brands",
     fifthHeaing: "Why Choose fixamigo",
     sixthHeading: "Frequently Asked Questions",
-    sixthQuestions: [
-      {
-        question: "How do I know if my phone battery needs replacement?",
-        answer:
-          "If your phone drains quickly, shuts down randomly, takes too long to charge, or shows signs of swelling, it may be time for a battery replacement.",
-      },
-      {
-        question: "How long does a battery replacement take?",
-        answer:
-          "In most cases, battery replacement takes between 30 to 60 minutes, depending on the phone model and battery condition.",
-      },
-      {
-        question: "Will I lose my data during the battery replacement?",
-        answer:
-          "No, battery replacement does not affect your data. However, we always recommend backing up your data for extra safety.",
-      },
-      {
-        question: "Is it safe to use a phone with a swollen battery?",
-        answer:
-          "No. A swollen battery is dangerous and can lead to further damage or even fire. It’s important to stop using the device and get it repaired immediately.",
-      },
-      {
-        question: "Do you use original or compatible batteries?",
-        answer:
-          "We use high-quality original or OEM-compatible batteries, depending on your phone brand and your preference, ensuring performance and safety.",
-      },
-    ],
+    sixthQuestions: pickFaqs("battery"),
     seventhHeading: "Book Your Repair Today",
     seventhDescription:
       "Don’t let a draining or dead battery disrupt your day. Whether you're in Kottakkal town or anywhere in the Malappuram district, Fixamigo is your trusted solution for fast, reliable, and affordable phone battery replacements.\n\n👉 Call now, book online, or visit our repair center today!",
@@ -149,37 +104,7 @@ export const repairPageContent = [
     fourthHeading: "We Service all Brands",
     fifthHeaing: "Why Choose fixamigo",
     sixthHeading: "Frequently Asked Questions",
-    sixthQuestions: [
-      {
-        question:
-          "Why is my phone not charging even when the charger is connected?",
-        answer:
-          "This could be due to a faulty charging port, debris blocking the port, or internal damage. Our technicians can diagnose and fix it quickly.",
-      },
-      {
-        question:
-          "Can a damaged charging port be repaired or does it need replacement?",
-        answer:
-          "In many cases, charging ports can be repaired. If the damage is severe, we recommend a replacement using quality components.",
-      },
-      {
-        question:
-          "How long does it take to repair or replace a phone’s charging port?",
-        answer:
-          "Most port repairs or replacements can be completed within 1–2 hours, depending on the device model and issue severity.",
-      },
-      {
-        question:
-          "My headphones don’t work when plugged in — is it a port issue?",
-        answer:
-          "Yes, this may indicate a problem with your headphone jack or USB-C port. We can inspect and resolve audio port issues for both wired and wireless devices.",
-      },
-      {
-        question: "Will repairing my phone’s port affect the warranty or data?",
-        answer:
-          "Our professional repair process ensures your data stays safe. Warranty impact depends on the phone manufacturer, but we always use quality parts and careful handling.",
-      },
-    ],
+    sixthQuestions: pickFaqs("port"),
     seventhHeading: "Book Your Repair Today",
     seventhDescription:
       "Charging or headphone jack not working? No worries! If you're in Kottakkal or nearby areas in Malappuram, Fixamigo offers quick, expert repair services for charging, USB, and audio ports at a fair price.\n\n👉 Call now, book online, or visit our repair center today!",
@@ -206,34 +131,7 @@ export const repairPageContent = [
     fourthHeading: "We Service all Brands",
     fifthHeaing: "Why Choose fixamigo",
     sixthHeading: "Frequently Asked Questions",
-    sixthQuestions: [
-      {
-        question: "Why is my phone camera showing a black screen?",
-        answer:
-          "A black screen usually indicates a hardware issue or a failed connection between the camera module and motherboard. In most cases, our technicians can fix or replace the faulty component.",
-      },
-      {
-        question: "Can you fix blurry or foggy camera images?",
-        answer:
-          "Yes! Blurry or foggy images can be caused by scratches, internal dust, or moisture inside the lens. We offer deep cleaning and lens replacement services to restore image clarity.",
-      },
-      {
-        question:
-          "My camera app keeps crashing. Is it a software or hardware issue?",
-        answer:
-          "It could be either. We’ll run a full diagnostic to check if it's a software conflict or a faulty camera module that needs repair or replacement.",
-      },
-      {
-        question: "Do you repair both front and back cameras?",
-        answer:
-          "Absolutely. We handle both front (selfie) and rear camera repairs for all major smartphone brands.",
-      },
-      {
-        question: "How long does a camera repair usually take?",
-        answer:
-          "Most camera repairs can be completed within a few hours. In some cases, if parts are needed, it may take 1–2 working days.",
-      },
-    ],
+    sixthQuestions: pickFaqs("camera"),
     seventhHeading: "Book Your Repair Today",
     seventhDescription:
       "Blurry shots or camera not opening? Whether you’re capturing memories in Kottakkal or anywhere in Malappuram, Fixamigo is here with skilled technicians ready to restore your phone’s camera to perfect clarity.\n\n👉 Call now, book online, or visit our repair center today!",
@@ -281,33 +179,7 @@ export const repairPageContent = [
     ],
 
     sixthHeading: "Frequently Asked Questions",
-    sixthQuestions: [
-      {
-        question: "Why is there no sound coming from my phone's speaker?",
-        answer:
-          "This could be due to dust, water damage, software glitches, or a faulty speaker component. Our technicians will diagnose the issue and provide the best repair solution.",
-      },
-      {
-        question: "Can speaker issues be fixed without replacing the speaker?",
-        answer:
-          "Yes, in many cases the problem is due to loose connections, clogged grills, or software issues that can be fixed without replacing the hardware.",
-      },
-      {
-        question: "How long does it take to repair a phone speaker?",
-        answer:
-          "Most speaker repairs are completed within 1–2 hours, depending on the device model and the complexity of the issue.",
-      },
-      {
-        question: "Will my phone's water damage affect the speaker?",
-        answer:
-          "Yes, water damage is a common cause of speaker malfunction. We offer water-damage treatment and speaker repair services to restore functionality.",
-      },
-      {
-        question: "Do you use original or compatible spare parts?",
-        answer:
-          "Yes, we use high-quality OEM or original spare parts to ensure long-lasting performance and sound quality.",
-      },
-    ],
+    sixthQuestions: pickFaqs("speaker"),
 
     seventhHeading: "Book Your Repair Today",
     seventhDescription:
