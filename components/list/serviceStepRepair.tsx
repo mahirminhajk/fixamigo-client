@@ -1,63 +1,46 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const ServiceSteps = () => {
+const ServiceStepsCompact = () => {
   const steps = [
     {
       imgSrc: "/steps-icons/rupee.png",
       title: "Check Price",
-      description:
-        "Select your device and instantly see the most competitive repair price.",
+      description: "Choose your device for repair and get the best price.",
       color: "from-[#D2691E] to-orange-600",
       bgColor: "bg-orange-50",
-      borderColor: "border-gray-200", // match second card border style
+      borderColor: "border-orange-200",
     },
     {
       imgSrc: "/steps-icons/calender.png",
       title: "Schedule Service",
-      description:
-        "Book your repair at a convenient date and time — no long waits.",
+      description: "Schedule your repair at a convenient date.",
       color: "from-[#121212] to-gray-700",
-      bgColor: "bg-orange-50", // use inside bg like cards 1 & 3
+      bgColor: "bg-gray-50",
       borderColor: "border-gray-200",
     },
     {
       imgSrc: "/steps-icons/spannertool.png",
       title: "Diagnosis & Fix",
       description:
-        "Our certified technicians diagnose and fix issues quickly and efficiently.",
+        "Identify the issue and get it fixed quickly by our experts.",
       color: "from-[#D2691E] to-orange-600",
       bgColor: "bg-orange-50",
-      borderColor: "border-gray-200", // match second card border style
+      borderColor: "border-orange-200",
     },
     {
       imgSrc: "/steps-icons/handbox.png",
       title: "Delivered to You",
       description:
-        "Enjoy fast and safe delivery of your fully repaired device to your doorstep.",
+        "Get your repaired device safely delivered to your doorstep.",
       color: "from-[#121212] to-gray-700",
-      bgColor: "bg-orange-50", // use inside bg like cards 1 & 3
+      bgColor: "bg-gray-50",
       borderColor: "border-gray-200",
     },
   ];
 
   return (
     <section className="w-full max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
-      {/* SEO Optimized Heading + Description */}
-      <div className="text-center mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-          Our Process – Hassle-Free Phone & Device Repairs with Fixamigo
-        </h1>
-        <p className="text-gray-600 text-lg max-w-3xl mx-auto">
-          At <strong>Fixamigo</strong>, we’ve simplified the{" "}
-          <strong>phone repair</strong> and <strong>gadget repair</strong>{" "}
-          process to make it fast, reliable, and stress-free. From getting a
-          repair quote to doorstep delivery, our expert technicians ensure your
-          <strong> mobile, tablet, or laptop repair</strong> is done right —
-          every time.
-        </p>
-      </div>
-
       {/* Steps Grid */}
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
         {steps.map((step, index) => (
@@ -81,10 +64,10 @@ const ServiceSteps = () => {
 
             {/* Step number */}
             <div
-              className="absolute top-2 left-2 md:top-4 md:left-4 w-6 h-6 md:w-8 md:h-8 
-                             bg-[#121212]
+              className={`absolute top-2 left-2 md:top-4 md:left-4 w-6 h-6 md:w-8 md:h-8 
+                             bg-gradient-to-br ${step.color}
                              rounded-full flex items-center justify-center
-                             text-white font-bold text-xs md:text-sm shadow-lg"
+                             text-white font-bold text-xs md:text-sm shadow-lg`}
             >
               {index + 1}
             </div>
@@ -101,14 +84,13 @@ const ServiceSteps = () => {
             >
               <Image
                 src={step.imgSrc}
-                alt={`${step.title} - Fixamigo Repair Process`}
+                alt={step.title}
                 width={48}
                 height={48}
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 drop-shadow-sm
                            transform transition-transform duration-300
                            group-hover:scale-110"
               />
-
               {/* Shine effect */}
               <div
                 className="absolute inset-0 rounded-xl md:rounded-2xl 
@@ -151,15 +133,13 @@ const ServiceSteps = () => {
         ))}
       </div>
 
-      {/* Call to action */}
+      {/* CTA button */}
       <div className="text-center mt-8 md:mt-12">
         <div className="relative inline-block">
-          {/* Animated background */}
           <div
             className="absolute inset-0 bg-gradient-to-r from-[#D2691E] via-[#121212] to-[#D2691E] 
                           rounded-2xl blur-sm opacity-75 animate-pulse"
           ></div>
-
           <Link
             href="/repair"
             className="relative inline-flex items-center gap-3 px-6 md:px-8 py-3 md:py-4 
@@ -174,9 +154,21 @@ const ServiceSteps = () => {
                        before:absolute before:inset-0 before:bg-gradient-to-r 
                        before:from-white/20 before:to-transparent before:rounded-2xl
                        before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300"
-            title="Start your mobile repair"
           >
             <div className="flex items-center gap-3 relative z-10">
+              <svg
+                className="w-5 h-5 md:w-6 md:h-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
               <span>Start Your Repair Journey</span>
               <svg
                 className="w-4 h-4 md:w-5 md:h-5 transform transition-transform duration-300 group-hover:translate-x-1"
@@ -195,11 +187,11 @@ const ServiceSteps = () => {
           </Link>
         </div>
         <p className="text-xs md:text-sm text-gray-500 mt-4">
-          ⚡ Quick, reliable, and hassle-free device repairs — anywhere you are.
+          ⚡ Quick, reliable, and hassle-free device repairs
         </p>
       </div>
     </section>
   );
 };
 
-export default ServiceSteps;
+export default ServiceStepsCompact;
