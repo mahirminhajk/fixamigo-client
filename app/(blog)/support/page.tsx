@@ -1,9 +1,24 @@
-"use client";
+import type { Metadata } from "next";
+import Script from "next/script";
 import Link from "next/link";
+import { INFO } from "@/constants";
+import {
+  getSupportMetadata,
+  getSupportStructuredData,
+} from "@/lib/seo/supportMetadata";
+
+export const metadata: Metadata = getSupportMetadata();
 
 export default function CustomerSupportPage() {
+  const structuredData = getSupportStructuredData();
   return (
     <section className="w-full">
+      <Script
+        id="support-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        strategy="beforeInteractive"
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white py-12">
         <div className="max-w-4xl mx-auto px-4">
@@ -11,7 +26,7 @@ export default function CustomerSupportPage() {
             Grievance Redressal & Customer Support
           </h1>
           <p className="mt-4 text-center text-gray-200">
-            We're here to help resolve your concerns
+            We&apos;re here to help resolve your concerns
           </p>
         </div>
       </div>
@@ -38,8 +53,8 @@ export default function CustomerSupportPage() {
                 <h3 className="text-lg font-semibold text-gray-800">
                   Primary Support:
                 </h3>
-                <p className="text-gray-600">Email: support@fixamigo.com</p>
-                <p className="text-gray-600">Phone: +91-XXXXXXXXXX</p>
+                <p className="text-gray-600">Email: {INFO.email}</p>
+                <p className="text-gray-600">Phone: {INFO.phoneLabel}</p>
                 <p className="text-gray-600">
                   Working Hours: Monday to Saturday, 10:00 AM – 4:00 PM
                 </p>
@@ -48,10 +63,14 @@ export default function CustomerSupportPage() {
                 <h3 className="text-lg font-semibold text-gray-800">
                   Grievance Officer:
                 </h3>
-                <p className="text-gray-600">Name: Mahir Minhaj K</p>
-                <p className="text-gray-600">Email: km@fixamigo.com</p>
                 <p className="text-gray-600">
-                  Address: Kunduvayil, Ponmala, Kerala – 676528
+                  Name: {INFO.grievanceOfficer.name}
+                </p>
+                <p className="text-gray-600">
+                  Email: {INFO.grievanceOfficer.email}
+                </p>
+                <p className="text-gray-600">
+                  Address: {INFO.grievanceOfficer.address}
                 </p>
               </div>
             </div>
@@ -132,13 +151,13 @@ export default function CustomerSupportPage() {
             </h2>
             <div className="bg-gray-50 p-4 rounded-lg">
               <p className="text-gray-600 mb-4">
-                If you're not satisfied with the resolution:
+                If you&apos;re not satisfied with the resolution:
               </p>
               <ol className="list-decimal pl-6 space-y-4 text-gray-600">
                 <li>
                   <strong>First Level:</strong> Customer Support Team
                   <br />
-                  Email: support@fixamigo.com
+                  Email: {INFO.email}
                 </li>
                 <li>
                   <strong>Second Level:</strong> Technical Support Lead
@@ -148,7 +167,7 @@ export default function CustomerSupportPage() {
                 <li>
                   <strong>Final Level:</strong> Grievance Officer
                   <br />
-                  Email: km@fixamigo.com
+                  Email: {INFO.grievanceOfficer.email}
                 </li>
               </ol>
             </div>

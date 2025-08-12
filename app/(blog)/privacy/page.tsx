@@ -1,9 +1,24 @@
-"use client";
+import type { Metadata } from "next";
+import Script from "next/script";
 import Link from "next/link";
+import { INFO } from "@/constants";
+import {
+  getPrivacyMetadata,
+  getPrivacyStructuredData,
+} from "@/lib/seo/privacyMetadata";
+
+export const metadata: Metadata = getPrivacyMetadata();
 
 export default function PrivacyPolicyPage() {
+  const structuredData = getPrivacyStructuredData();
   return (
     <section className="w-full">
+      <Script
+        id="privacy-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        strategy="beforeInteractive"
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white py-12">
         <div className="max-w-4xl mx-auto px-4">
@@ -25,11 +40,11 @@ export default function PrivacyPolicyPage() {
               1. About Us & Policy Scope
             </h2>
             <p className="text-gray-600">
-              Fixamigo ("we", "us", "our") operates the Fixamigo platform,
-              providing electronic repair and doorstep pickup/delivery services.
-              This Privacy Policy explains how we collect, use, share, and
-              protect your personal data when you interact with our website and
-              services.
+              {INFO.name} (&quot;we&quot;, &quot;us&quot;, &quot;our&quot;)
+              operates the {INFO.name} platform, providing electronic repair and
+              doorstep pickup/delivery services. This Privacy Policy explains
+              how we collect, use, share, and protect your personal data when
+              you interact with our website and services.
             </p>
           </div>
 
@@ -158,10 +173,10 @@ export default function PrivacyPolicyPage() {
               8. Children & Eligibility
             </h2>
             <p className="text-gray-600">
-              Fixamigo's services are intended for users aged 18 and above. We
-              do not knowingly collect data from minors. Users under 18 should
-              only access the platform under parental supervision. If you
-              believe a minor has shared data without consent, contact us.
+              {INFO.name}&apos;s services are intended for users aged 18 and
+              above. We do not knowingly collect data from minors. Users under
+              18 should only access the platform under parental supervision. If
+              you believe a minor has shared data without consent, contact us.
             </p>
           </div>
 
@@ -172,8 +187,8 @@ export default function PrivacyPolicyPage() {
             </h2>
             <p className="text-gray-600">
               We may update this Privacy Policy from time to time. The
-              "Effective Date" will reflect the latest version. Please review it
-              periodically.
+              &quot;Effective Date&quot; will reflect the latest version. Please
+              review it periodically.
             </p>
           </div>
 
@@ -186,10 +201,12 @@ export default function PrivacyPolicyPage() {
               For any questions or to exercise your data rights, reach out to:
             </p>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-gray-600">Grievance Officer – Fixamigo</p>
-              <p className="text-gray-600">Email: km@fixamigo.com</p>
+              <p className="text-gray-600">Grievance Officer – {INFO.name}</p>
               <p className="text-gray-600">
-                Address: palliyalil, Ponmala, 676528, Kerala
+                Email: {INFO.grievanceOfficer.email}
+              </p>
+              <p className="text-gray-600">
+                Address: {INFO.grievanceOfficer.address}
               </p>
             </div>
           </div>

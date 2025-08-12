@@ -1,9 +1,24 @@
-"use client";
+import type { Metadata } from "next";
+import Script from "next/script";
 import Link from "next/link";
+import { INFO } from "@/constants";
+import {
+  getReturnRefundMetadata,
+  getReturnRefundStructuredData,
+} from "@/lib/seo/returnRefundMetadata";
+
+export const metadata: Metadata = getReturnRefundMetadata();
 
 export default function ReturnRefundPolicyPage() {
+  const structuredData = getReturnRefundStructuredData();
   return (
     <section className="w-full">
+      <Script
+        id="return-refund-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        strategy="beforeInteractive"
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white py-12">
         <div className="max-w-4xl mx-auto px-4">
@@ -21,10 +36,10 @@ export default function ReturnRefundPolicyPage() {
         <div className="prose prose-lg max-w-none">
           {/* Introduction */}
           <p className="text-gray-600 mb-8">
-            At Fixamigo, your satisfaction is our priority. We strive to provide
-            high-quality repair services and ensure transparent communication
-            throughout your service experience. This policy explains our rules
-            for returns, cancellations, and refunds.
+            At {INFO.name}, your satisfaction is our priority. We strive to
+            provide high-quality repair services and ensure transparent
+            communication throughout your service experience. This policy
+            explains our rules for returns, cancellations, and refunds.
           </p>
 
           {/* Service Cancellation */}
@@ -40,7 +55,7 @@ export default function ReturnRefundPolicyPage() {
                 </h3>
                 <p className="text-gray-600">
                   You can cancel your booking at any time before the pickup or
-                  technician's arrival by contacting our support team.
+                  technician&apos;s arrival by contacting our support team.
                 </p>
                 <p className="text-gray-600 mt-2">
                   No cancellation fee will be charged in this case.
@@ -79,9 +94,9 @@ export default function ReturnRefundPolicyPage() {
                   completed.
                 </p>
                 <p className="text-gray-600 mt-2">
-                  However, if Fixamigo is unable to complete the repair due to
-                  technical limitations or unavailable parts, the device will be
-                  returned, and a partial refund may apply if any advance was
+                  However, if {INFO.name} is unable to complete the repair due
+                  to technical limitations or unavailable parts, the device will
+                  be returned, and a partial refund may apply if any advance was
                   paid.
                 </p>
               </div>
@@ -137,8 +152,8 @@ export default function ReturnRefundPolicyPage() {
               3. Return Policy
             </h2>
             <p className="text-gray-600">
-              Fixamigo operates a service-based model. As such, "returns" of
-              services are not applicable. However:
+              {INFO.name} operates a service-based model. As such,
+              &quot;returns&quot; of services are not applicable. However:
             </p>
             <p className="text-gray-600 mt-4 pl-4 border-l-4 border-[#D2691E]">
               If the same issue reappears within the 7-day warranty period, we
@@ -172,16 +187,17 @@ export default function ReturnRefundPolicyPage() {
             </p>
 
             <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              <p className="text-gray-600">Email: support@fixamigo.com</p>
-              <p className="text-gray-600">Phone: +91-XXXXXXXXXX</p>
+              <p className="text-gray-600">Email: {INFO.email}</p>
+              <p className="text-gray-600">Phone: {INFO.phoneLabel}</p>
               <p className="text-gray-600">
-                Grievance Officer: Mahir Minhaj K (km@fixamigo.com)
+                Grievance Officer: {INFO.grievanceOfficer.name} (
+                {INFO.grievanceOfficer.email})
               </p>
               <p className="text-gray-600">
-                Address: Kunduvayil, Ponmala, Kerala – 676528
+                Address: {INFO.grievanceOfficer.address}
               </p>
               <p className="text-gray-600">
-                Working Hours: Monday to Saturday, 10:00 AM – 4:00 PM
+                Working Hours: {INFO.grievanceOfficer.workingHours}
               </p>
             </div>
           </div>

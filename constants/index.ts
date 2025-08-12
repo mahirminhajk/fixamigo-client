@@ -194,6 +194,13 @@ export const INFO = {
   x: "https://x.com/fixamigo",
   googleBusiness: "https://g.page/fixamigo",
   linkedin: "https://www.linkedin.com/company/fixamigo",
+  grievanceOfficer: {
+    name: "Mahir Minhaj K",
+    email: "km@fixamigo.com",
+    phone: "+918086009808",
+    address: "Ponmala, Malappuram, Kerala, India, Pin - 676528",
+    workingHours: "10:00 AM – 4:00 PM, Monday to Saturday",
+  },
 };
 
 export const supportCities = [

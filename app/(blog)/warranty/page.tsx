@@ -1,9 +1,24 @@
-"use client";
+import type { Metadata } from "next";
+import Script from "next/script";
 import Link from "next/link";
+import { INFO } from "@/constants";
+import {
+  getWarrantyMetadata,
+  getWarrantyStructuredData,
+} from "@/lib/seo/warrantyMetadata";
+
+export const metadata: Metadata = getWarrantyMetadata();
 
 export default function WarrantyPolicyPage() {
+  const structuredData = getWarrantyStructuredData();
   return (
     <section className="w-full">
+      <Script
+        id="warranty-structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        strategy="beforeInteractive"
+      />
       {/* Header */}
       <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white py-12">
         <div className="max-w-4xl mx-auto px-4">
@@ -63,7 +78,10 @@ export default function WarrantyPolicyPage() {
               </li>
               <li>Tampering with the device after repair</li>
               <li>Issues unrelated to the original service</li>
-              <li>Damage due to third-party repair after Fixamigo's service</li>
+              <li>
+                Damage due to third-party repair after {INFO.name}&apos;s
+                service
+              </li>
               <li>Software issues (unless related to original service)</li>
               <li>Normal wear and tear</li>
             </ul>
@@ -78,7 +96,9 @@ export default function WarrantyPolicyPage() {
               If you notice the same issue reoccurring within 7 days:
             </p>
             <ul className="list-disc pl-6 space-y-2 text-gray-600">
-              <li>Contact Fixamigo via support@fixamigo.com or call us</li>
+              <li>
+                Contact {INFO.name} via {INFO.email} or call us
+              </li>
               <li>
                 Our team will verify the issue through remote or in-person
                 inspection
@@ -105,7 +125,7 @@ export default function WarrantyPolicyPage() {
             <ul className="list-disc pl-6 space-y-2 text-gray-600">
               <li>
                 If OEM (Original Equipment Manufacturer) parts were used, the
-                warranty applies only as per the manufacturer's terms.
+                warranty applies only as per the manufacturer&apos;s terms.
               </li>
               <li>
                 For third-party compatible parts, Fixamigo offers the 7-day
@@ -149,16 +169,17 @@ export default function WarrantyPolicyPage() {
             </p>
 
             <div className="bg-gray-50 p-4 rounded-lg space-y-2">
-              <p className="text-gray-600">Email: support@fixamigo.com</p>
-              <p className="text-gray-600">Phone: +91-XXXXXXXXXX</p>
+              <p className="text-gray-600">Email: {INFO.email}</p>
+              <p className="text-gray-600">Phone: {INFO.phoneLabel}</p>
               <p className="text-gray-600">
-                Grievance Officer: Mahir Minhaj K (km@fixamigo.com)
+                Grievance Officer: {INFO.grievanceOfficer.name} (
+                {INFO.grievanceOfficer.email})
               </p>
               <p className="text-gray-600">
-                Address: Kunduvayil, Ponmala, Kerala – 676528
+                Address: {INFO.grievanceOfficer.address}
               </p>
               <p className="text-gray-600">
-                Working Hours: Monday to Saturday, 10:00 AM – 4:00 PM
+                Working Hours: {INFO.grievanceOfficer.workingHours}
               </p>
             </div>
           </div>
