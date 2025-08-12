@@ -33,11 +33,13 @@ export default async function RepairCategoryPage({ params }: RepairPageProps) {
       {/* Blog Banner Image */}
       <div className="w-full h-64 relative mb-8">
         <Image
-          src="/android-chrome-192x192.png"
-          alt="Repair Banner"
+          src="/og-fixamigo.jpg"
+          alt="Mobile phone repair banner"
           fill
-          className="rounded-b-2xl object-cover"
           priority
+          sizes="100vw"
+          quality={85}
+          className="object-cover object-center rounded-b-2xl"
         />
       </div>
 
