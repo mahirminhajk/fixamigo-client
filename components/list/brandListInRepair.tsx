@@ -1,9 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-
-type Variant = "all" | "min";
 
 const brands = [
   { name: "Apple", image: "/brands/apple.webp", slug: "apple" },
@@ -28,10 +24,8 @@ const brands = [
 
 export default function BrandListInRepair({
   category = "mobile-phone",
-  variant,
 }: {
   category?: string;
-  variant?: Variant;
 }) {
   return (
     <div className="w-full max-w-4xl mx-auto ">

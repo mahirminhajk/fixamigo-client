@@ -70,7 +70,7 @@ export default async function RepairCategoryPage({ params }: RepairPageProps) {
 
         {/* Brand Selector */}
         <div className="mb-12">
-          <BrandsList variant="min" category={category} />
+          <BrandsList category={category} />
         </div>
 
         <hr className="my-8 border-t border-gray-100" />
