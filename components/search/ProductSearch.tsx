@@ -474,6 +474,7 @@ const ProductSearch: React.FC = () => {
                     <Image
                       src={product.image}
                       alt={product.brand}
+                      title={`${product.brand} Logo`}
                       width={56}
                       height={56}
                       className="w-full h-full object-contain"

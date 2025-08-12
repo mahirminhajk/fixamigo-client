@@ -37,6 +37,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                   <Image
                     src={getSparePartsIcon(item.category)}
                     alt={item.label}
+                    title={`${item.label} Icon`}
                     width={48}
                     height={48}
                     className="mr-3"
@@ -99,6 +100,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                   <Image
                     src={getSparePartsIcon(item.category)}
                     alt={item.label}
+                    title={`${item.label} Icon`}
                     width={40}
                     height={40}
                     className="mr-3"
@@ -161,6 +163,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
           <Link
             href={`/support-request?type=service&value=${cartDevice.slug}`}
             className="flex items-center justify-between px-4"
+            title="Request a service that's not listed"
           >
             <div className="flex items-center">
               <svg

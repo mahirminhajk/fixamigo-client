@@ -51,6 +51,7 @@ const AvailableServices = () => {
                        hover:scale-105 hover:-translate-y-2
                        focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                        flex-1 min-h-[220px] md:min-h-[280px] overflow-hidden"
+            title={service.title}
           >
             {/* Background gradient overlay - shows brand orange on hover only */}
             <div
@@ -72,6 +73,7 @@ const AvailableServices = () => {
               <Image
                 src={service.imgSrc}
                 alt={service.title}
+                title={service.title}
                 width={48}
                 height={48}
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 filter brightness-0 invert drop-shadow-sm"
@@ -150,6 +152,7 @@ const AvailableServices = () => {
           <Link
             href="/support-request?type=can-not-find"
             className="text-blue-600 hover:text-blue-700 font-medium ml-1"
+            title="Talk to our experts"
           >
             Talk to our experts
           </Link>

@@ -1,6 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaWhatsapp,
+  FaFacebookF,
+  FaLinkedin,
+  FaGoogle,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { INFO } from "@/constants";
 
 const Footer = () => {
@@ -16,14 +23,16 @@ const Footer = () => {
               <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
                 <Image
                   src="/logos/circle-logo.png"
-                  alt="FixAmigo Logo"
+                  alt="fixamigo logo"
+                  title="Fixamigo Logo"
                   width={32}
                   height={32}
                   className="w-6 h-6 md:w-8 md:h-8"
                 />
                 <Image
                   src="/logos/text.png"
-                  alt="FixAmigo"
+                  alt="fixamigo logo"
+                  title="Fixamigo Title"
                   width={100}
                   height={24}
                   className="h-4 md:h-6 w-auto"
@@ -38,6 +47,7 @@ const Footer = () => {
                 <a
                   href={INFO.emailLink()}
                   className="hover:text-blue-600 transition-colors"
+                  title={`Email ${INFO.name}`}
                 >
                   {INFO.email}
                 </a>
@@ -46,6 +56,7 @@ const Footer = () => {
                 <a
                   href={INFO.phoneLink()}
                   className="hover:text-blue-600 transition-colors"
+                  title={`Call ${INFO.name}`}
                 >
                   {INFO.phoneLabel}
                 </a>
@@ -64,16 +75,50 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-pink-500 hover:text-white transition-colors"
                   aria-label="Instagram"
+                  title="Follow us on Instagram"
                 >
                   <FaInstagram className="w-3 h-3 md:w-4 md:h-4" />
                 </a>
-                {/* <a
-                  href="#"
-                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"
+                <a
+                  href={INFO.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors"
                   aria-label="Facebook"
+                  title="Follow us on Facebook"
                 >
                   <FaFacebookF className="w-3 h-3 md:w-4 md:h-4" />
-                </a> */}
+                </a>
+                <a
+                  href={INFO.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+                  aria-label="X (Twitter)"
+                  title="Follow us on X (Twitter)"
+                >
+                  <FaXTwitter className="w-3 h-3 md:w-4 md:h-4" />
+                </a>
+                <a
+                  href={INFO.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors"
+                  aria-label="LinkedIn"
+                  title="Connect with us on LinkedIn"
+                >
+                  <FaLinkedin className="w-3 h-3 md:w-4 md:h-4" />
+                </a>
+                <a
+                  href={INFO.googleBusiness}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                  aria-label="Google Business Profile"
+                  title="Find us on Google"
+                >
+                  <FaGoogle className="w-3 h-3 md:w-4 md:h-4" />
+                </a>
                 <a
                   href={INFO.waLink(
                     "Hi, I found your contact through your website. I'd like to know more about your repair services."
@@ -82,6 +127,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-green-500 hover:text-white transition-colors"
                   aria-label="WhatsApp"
+                  title="Chat with us on WhatsApp"
                 >
                   <FaWhatsapp className="w-3 h-3 md:w-4 md:h-4" />
                 </a>
@@ -97,8 +143,9 @@ const Footer = () => {
             <ul className="space-y-1 md:space-y-2">
               <li>
                 <Link
-                  href="repair/mobile-phone"
+                  href="/repair/mobile-phone"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Repair mobile phones"
                 >
                   Mobile
                 </Link>
@@ -107,14 +154,16 @@ const Footer = () => {
                 <Link
                   href="/repair/laptop"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Repair laptops"
                 >
                   Laptop
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/repair/other"
+                  href="/repair"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Other repair services"
                 >
                   Other
                 </Link>
@@ -132,6 +181,7 @@ const Footer = () => {
                 <Link
                   href="/about"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="About Fixamigo"
                 >
                   About Us
                 </Link>
@@ -140,6 +190,7 @@ const Footer = () => {
                 <Link
                   href="/blog"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
+                  title="Read our blog"
                 >
                   Blog
                 </Link>
@@ -158,6 +209,7 @@ const Footer = () => {
                   <Link
                     href="/contact"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Contact Fixamigo"
                   >
                     Contact Us
                   </Link>
@@ -166,6 +218,7 @@ const Footer = () => {
                   <Link
                     href="/faq"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Frequently asked questions"
                   >
                     FAQ
                   </Link>
@@ -174,6 +227,7 @@ const Footer = () => {
                   <Link
                     href="/warranty"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Warranty and returns policy"
                   >
                     Warranty & Returns
                   </Link>
@@ -190,6 +244,7 @@ const Footer = () => {
                   <Link
                     href="/privacy"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Privacy policy"
                   >
                     Privacy Policy
                   </Link>
@@ -198,6 +253,7 @@ const Footer = () => {
                   <Link
                     href="/terms"
                     className="text-gray-600 hover:text-gray-900 transition-colors text-sm"
+                    title="Terms and conditions"
                   >
                     Terms & Conditions
                   </Link>
@@ -274,18 +330,21 @@ const Footer = () => {
               <Link
                 href="/privacy"
                 className="text-gray-500 hover:text-gray-800 transition-colors text-xs md:text-sm"
+                title="Privacy policy"
               >
                 Privacy
               </Link>
               <Link
                 href="/terms"
                 className="text-gray-500 hover:text-gray-800 transition-colors text-xs md:text-sm"
+                title="Terms and conditions"
               >
                 Terms
               </Link>
               <Link
                 href="/contact"
                 className="text-gray-500 hover:text-gray-800 transition-colors text-xs md:text-sm"
+                title="Contact Fixamigo"
               >
                 Contact
               </Link>

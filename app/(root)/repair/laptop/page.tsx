@@ -3,9 +3,85 @@ import type { Metadata } from "next";
 import LaptopSupportForm from "@/components/others/LaptopSupportForm";
 
 export const metadata: Metadata = {
-  title: "Laptop Repair Services | Battery, Screen, Keyboard & More | Fixamigo",
+  title: "Laptop Repair Services | Battery, Keyboard & More | Fixamigo",
   description:
     "Trusted laptop repair near you: battery replacement, screen repair, keyboard fixes, SSD upgrades, overheating and more. Book a callback and get quick support.",
+
+  keywords: [
+    // Primary service keywords
+    "laptop repair services",
+    "laptop repair near me",
+    "laptop service center",
+    "laptop repair shop",
+    "computer repair services",
+    "laptop fixing services",
+
+    // Specific repair keywords
+    "laptop battery replacement",
+    "laptop screen repair",
+    "laptop screen replacement",
+    "laptop keyboard repair",
+    "laptop keyboard replacement",
+    "laptop trackpad repair",
+    "laptop charging port repair",
+    "laptop power button repair",
+
+    // Technical repair keywords
+    "laptop overheating repair",
+    "laptop fan repair",
+    "laptop fan noise fix",
+    "SSD upgrade laptop",
+    "laptop hard drive replacement",
+    "laptop RAM upgrade",
+    "laptop motherboard repair",
+    "liquid damage laptop repair",
+
+    // Brand-specific keywords
+    "Dell laptop repair",
+    "HP laptop repair",
+    "Lenovo laptop repair",
+    "Acer laptop repair",
+    "ASUS laptop repair",
+    "MacBook repair",
+    "Toshiba laptop repair",
+    "Sony laptop repair",
+
+    // Location-based keywords
+    "laptop repair India",
+    "laptop service India",
+    "laptop repair center India",
+    "laptop technician near me",
+    "laptop repair pickup delivery",
+
+    // Service-specific keywords
+    "laptop diagnosis",
+    "laptop troubleshooting",
+    "laptop virus removal",
+    "laptop data recovery",
+    "laptop software repair",
+    "laptop hardware repair",
+    "laptop maintenance",
+
+    // Business keywords
+    "Fixamigo laptop repair",
+    "professional laptop repair",
+    "certified laptop technician",
+    "genuine laptop parts",
+    "laptop repair warranty",
+    "affordable laptop repair",
+    "quick laptop repair",
+    "expert laptop repair",
+
+    // Problem-specific keywords
+    "laptop won't turn on",
+    "laptop black screen",
+    "laptop slow performance",
+    "laptop blue screen",
+    "laptop not charging",
+    "laptop wifi not working",
+    "laptop audio not working",
+  ],
+
   openGraph: {
     title:
       "Laptop Repair Services | Battery, Screen, Keyboard & More | Fixamigo",

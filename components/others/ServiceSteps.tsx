@@ -6,7 +6,8 @@ const ServiceSteps = () => {
     {
       imgSrc: "/steps-icons/rupee.png",
       title: "Check Price",
-      description: "Choose your device for repair and get the best price.",
+      description:
+        "Select your device and instantly see the most competitive repair price.",
       color: "from-[#D2691E] to-orange-600",
       bgColor: "bg-orange-50",
       borderColor: "border-gray-200", // match second card border style
@@ -14,7 +15,8 @@ const ServiceSteps = () => {
     {
       imgSrc: "/steps-icons/calender.png",
       title: "Schedule Service",
-      description: "Schedule your repair at a convenient date.",
+      description:
+        "Book your repair at a convenient date and time — no long waits.",
       color: "from-[#121212] to-gray-700",
       bgColor: "bg-orange-50", // use inside bg like cards 1 & 3
       borderColor: "border-gray-200",
@@ -23,7 +25,7 @@ const ServiceSteps = () => {
       imgSrc: "/steps-icons/spannertool.png",
       title: "Diagnosis & Fix",
       description:
-        "Identify the issue and get it fixed quickly by our experts.",
+        "Our certified technicians diagnose and fix issues quickly and efficiently.",
       color: "from-[#D2691E] to-orange-600",
       bgColor: "bg-orange-50",
       borderColor: "border-gray-200", // match second card border style
@@ -32,7 +34,7 @@ const ServiceSteps = () => {
       imgSrc: "/steps-icons/handbox.png",
       title: "Delivered to You",
       description:
-        "Get your repaired device safely delivered to your doorstep.",
+        "Enjoy fast and safe delivery of your fully repaired device to your doorstep.",
       color: "from-[#121212] to-gray-700",
       bgColor: "bg-orange-50", // use inside bg like cards 1 & 3
       borderColor: "border-gray-200",
@@ -41,13 +43,18 @@ const ServiceSteps = () => {
 
   return (
     <section className="w-full max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
-      {/* Header Section */}
+      {/* SEO Optimized Heading + Description */}
       <div className="text-center mb-8 md:mb-12">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-          How Our Service Works
-        </h2>
-        <p className="text-gray-600 text-base md:text-lg max-w-2xl mx-auto">
-          Simple, transparent process from diagnosis to delivery
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+          Our Process – Hassle-Free Phone & Device Repairs with Fixamigo
+        </h1>
+        <p className="text-gray-600 text-lg max-w-3xl mx-auto">
+          At <strong>Fixamigo</strong>, we’ve simplified the{" "}
+          <strong>phone repair</strong> and <strong>gadget repair</strong>{" "}
+          process to make it fast, reliable, and stress-free. From getting a
+          repair quote to doorstep delivery, our expert technicians ensure your
+          <strong> mobile, tablet, or laptop repair</strong> is done right —
+          every time.
         </p>
       </div>
 
@@ -94,7 +101,7 @@ const ServiceSteps = () => {
             >
               <Image
                 src={step.imgSrc}
-                alt={step.title}
+                alt={`${step.title} - Fixamigo Repair Process`}
                 width={48}
                 height={48}
                 className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12 drop-shadow-sm
@@ -167,6 +174,7 @@ const ServiceSteps = () => {
                        before:absolute before:inset-0 before:bg-gradient-to-r 
                        before:from-white/20 before:to-transparent before:rounded-2xl
                        before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-300"
+            title="Start your mobile repair"
           >
             <div className="flex items-center gap-3 relative z-10">
               <span>Start Your Repair Journey</span>
@@ -187,7 +195,7 @@ const ServiceSteps = () => {
           </Link>
         </div>
         <p className="text-xs md:text-sm text-gray-500 mt-4">
-          Quick, reliable, and hassle-free device repairs
+          ⚡ Quick, reliable, and hassle-free device repairs — anywhere you are.
         </p>
       </div>
     </section>

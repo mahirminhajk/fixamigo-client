@@ -7,6 +7,8 @@ import ProfileBtn from "../buttons/profileBtn";
 import MobileNavMenu from "./mobileNavMenu";
 import Image from "next/image";
 import { usePathname } from "next/navigation"; // Import usePathname
+import { useHydratedStore } from "@/hooks/useHydratedStore";
+import { useUserStore } from "@/stores/userStore";
 
 interface NavbarProps {
   city?: string;
@@ -25,35 +27,78 @@ export default function Navbar({ city }: NavbarProps) {
   // Determine if the current page is in the repair section
   // Assuming URLs for repair section start with /repair/
   const isRepairSection = pathname.startsWith("/repair");
+  const user = useHydratedStore(useUserStore, (state) => state.user);
+  const isLoggedIn = Boolean(user?._id);
 
   let desktopNavLinks;
   if (isRepairSection) {
     desktopNavLinks = (
       <>
-        <Link href="/" className="hover:text-blue-500 transition">
+        <Link
+          href="/"
+          className="hover:text-blue-500 transition"
+          title="Go to Home"
+        >
           Home
         </Link>
-        <Link href="/repair" className="hover:text-blue-500 transition">
-          All Repairs
-        </Link>
-        <Link href="/my-services" className="hover:text-blue-500 transition">
-          Orders
-        </Link>
+        {isLoggedIn ? (
+          <Link
+            href="/my-services"
+            className="hover:text-blue-500 transition"
+            title="View your orders"
+          >
+            Orders
+          </Link>
+        ) : (
+          <Link
+            href="/repair"
+            className="hover:text-blue-500 transition"
+            title="Browse all repair services"
+          >
+            All Repairs
+          </Link>
+        )}
       </>
     );
   } else {
     desktopNavLinks = (
       <>
-        <Link href="/" className="hover:text-blue-500 transition">
+        <Link
+          href="/"
+          className="hover:text-blue-500 transition"
+          title="Go to Home"
+        >
           Home
         </Link>
-        <Link href="/about" className="hover:text-blue-500 transition">
+        <Link
+          href="/about"
+          className="hover:text-blue-500 transition"
+          title="Learn more About us"
+        >
           About
         </Link>
-        <Link href="/my-services" className="hover:text-blue-500 transition">
-          Orders
-        </Link>
-        <Link href="/contact" className="hover:text-blue-500 transition">
+        {isLoggedIn ? (
+          <Link
+            href="/my-services"
+            className="hover:text-blue-500 transition"
+            title="View your orders"
+          >
+            Orders
+          </Link>
+        ) : (
+          <Link
+            href="/repair"
+            className="hover:text-blue-500 transition"
+            title="Browse all repair services"
+          >
+            Repairs
+          </Link>
+        )}
+        <Link
+          href="/contact"
+          className="hover:text-blue-500 transition"
+          title="Contact us"
+        >
           Contact
         </Link>
       </>
@@ -69,6 +114,7 @@ export default function Navbar({ city }: NavbarProps) {
           <Link
             href="/support-request"
             className="block hover:bg-black/10 transition-colors duration-300 cursor-pointer"
+            title="Share feedback or request support"
           >
             <div className="container mx-auto px-4 py-2 sm:px-6 sm:py-3">
               {/* Mobile Layout */}
@@ -128,13 +174,14 @@ export default function Navbar({ city }: NavbarProps) {
         <nav className="container mx-auto flex items-center justify-between px-6 py-4">
           {/* Logo */}
           <div>
-            <Link href="/">
+            <Link href="/" title="Go to Home">
               <Image
                 src="/logos/text.png"
-                alt="Logo"
+                alt="fixamigo logo"
+                title="Fixamigo Logo"
                 width={100}
                 height={40}
-                className="h-8 sm:h-10 w-auto cursor-pointer" // Added cursor-pointer
+                className="h-8 sm:h-10 w-auto cursor-pointer"
                 priority
               />
             </Link>
@@ -164,7 +211,7 @@ export default function Navbar({ city }: NavbarProps) {
             {/* Improved tappable area for Menu icon */}
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="p-2 md:hidden -mr-2" // Added padding, negative margin to maintain alignment
+              className="p-2 md:hidden -mr-2"
               aria-label="Open mobile menu"
             >
               <Menu className="w-6 h-6 cursor-pointer" />

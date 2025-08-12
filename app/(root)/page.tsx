@@ -1,4 +1,4 @@
-import Carousel from "@/components/others/carousel";
+import HeroCarousel from "@/components/others/carousel";
 import ProductSearch from "@/components/search/ProductSearch";
 import ListRepairCategory from "@/components/list/listRepairCategory";
 import BrandsList from "@/components/list/brandsList";
@@ -40,7 +40,7 @@ const Home = () => {
       />
 
       <section>
-        <Carousel />
+        <HeroCarousel />
         <ProductSearch />
         <ListRepairCategory />
         <AvailableServices />

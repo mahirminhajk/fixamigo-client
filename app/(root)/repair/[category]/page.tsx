@@ -1,107 +1,154 @@
-import { brands, repairCategory } from "@/constants";
-import { Metadata } from "next";
-import {
-  getCategoryMetadata,
-  getCategoryStructuredData,
-} from "@/lib/seo/categoryMetadata";
-import Link from "next/link";
+// app/(root)/repair/[category]/page.tsx
+import { notFound } from "next/navigation";
 import Image from "next/image";
-import Script from "next/script";
+import { repairPageContent } from "@/constants/content";
+import OurProcess from "@/components/list/ourProcess";
+import WhyChooseFixamigo from "@/components/list/whyChooseFixamigo";
+import BrandsList from "@/components/list/brandListInRepair";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
-// Static Generation
-export async function generateStaticParams() {
-  return repairCategory
-    .filter((category) => category.slug !== "mobile-phone")
-    .map((category) => ({
-      category: category.slug,
-    }));
+interface RepairPageProps {
+  params: Promise<{ category: string }>;
 }
 
-// SEO Metadata
-export const generateMetadata = async ({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}): Promise<Metadata> => {
+export default async function RepairCategoryPage({ params }: RepairPageProps) {
   const { category } = await params;
-  const metadata = getCategoryMetadata(category);
-  return metadata;
-};
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ category: string }>;
-}) {
-  const { category } = await params;
-  const categoryName =
-    repairCategory.find((cat) => cat.slug === category)?.name || "Repair";
-  const structuredData = getCategoryStructuredData(category);
+  // Find matching repair content
+  const repairData = repairPageContent.find(
+    (item) => item.slug.toLowerCase() === category.toLowerCase()
+  );
+
+  if (!repairData) {
+    return notFound();
+  }
 
   return (
     <>
-      {/* JSON-LD Structured Data for Category */}
-      <Script
-        id="category-structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(structuredData),
-        }}
-      />
+      {/* Blog Banner Image */}
+      <div className="w-full h-64 relative mb-8">
+        <Image
+          src="/og-fixamigo.jpg"
+          alt="Mobile phone repair banner"
+          fill
+          priority
+          sizes="100vw"
+          quality={85}
+          className="object-cover object-center rounded-b-2xl"
+        />
+      </div>
 
-      <section className="max-w-5xl mx-auto py-10 px-4">
-        <h1 className="text-3xl font-bold mb-4 capitalize">
-          {categoryName} Repair - Choose Your Brand
+      {/* Blog Header */}
+      <div className="max-w-2xl mx-auto px-4 mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm text-gray-500">By Fixamigo</span>
+          <span className="text-sm text-gray-400">
+            {new Date().toLocaleDateString()}
+          </span>
+        </div>
+        <h1 className="text-4xl font-extrabold text-[#D2691E] mb-4 leading-tight">
+          {repairData.heading}
         </h1>
-        <p className="text-gray-600 mb-6">
-          Fix your phone&apos;s {categoryName.toLowerCase()} with trusted
-          service providers. Select your brand below to find compatible devices
-          we support for this repair type.
+        <p className="text-lg text-gray-700 mb-2">
+          {repairData.headingDescription}
         </p>
+        <hr className="my-6 border-t border-gray-200" />
+      </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {brands.map((brand) => (
-            <Link
-              key={brand.slug}
-              href={`/repair/mobile-phone/${brand.slug}`}
-              className="border rounded-xl shadow-sm hover:shadow-lg transition flex flex-col items-center p-4"
-            >
-              <Image
-                src={brand.image}
-                alt={brand.name}
-                width={80}
-                height={80}
-                className="mb-2"
-              />
-              <span className="font-medium text-center">{brand.name}</span>
-            </Link>
-          ))}
+      <section className="max-w-2xl mx-auto px-4 pb-16">
+        {/* Main Description */}
+        <div className="prose prose-lg max-w-none mb-12">
+          <p className="lead text-lg">{repairData.mainDescription}</p>
         </div>
 
-        <div className="mt-10 text-sm text-gray-500">
-          <p>
-            Can&apos;t find your brand?{" "}
-            <Link
-              href="/repair/mobile-phone"
-              className="text-blue-600 underline"
-            >
-              View all supported brands
-            </Link>
-            .
-          </p>
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* Brand Selector */}
+        <div className="mb-12">
+          <BrandsList category={category} />
+        </div>
+
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* Common Issues Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-[#D2691E] mb-4">
+            {repairData.secondHeading}
+          </h2>
+          <p className="mb-4">{repairData.secondDescription}</p>
+          <ul className="list-disc pl-6 space-y-2">
+            {(Array.isArray(repairData.secondPoints)
+              ? repairData.secondPoints
+              : repairData.secondPoints.split(",")
+            ).map((point: string, index: number) => (
+              <li key={index} className="text-gray-700">
+                {point.trim()}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6">{repairData.secondMainDescription}</p>
+        </div>
+
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* Our Process Section */}
+        <div className="mb-12">
+          <OurProcess />
+        </div>
+
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* Why Choose Fixamigo Section */}
+        <div className="mb-12">
+          <WhyChooseFixamigo />
+        </div>
+
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* FAQ Section with Accordion */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-[#D2691E] mb-6">
+            {repairData.sixthHeading}
+          </h2>
+          <Accordion type="single" collapsible>
+            {repairData.sixthQuestions.map((faq, index) => (
+              <AccordionItem value={`item-${index}`} key={index}>
+                <AccordionTrigger>{faq.question}</AccordionTrigger>
+                <AccordionContent>{faq.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+
+        <hr className="my-8 border-t border-gray-100" />
+
+        {/* Call to Action (non-card, left-aligned) */}
+        <div className="p-0">
+          <h2 className="text-2xl font-bold text-[#D2691E] mb-4">
+            {repairData.seventhHeading}
+          </h2>
+          <div>
+            {repairData.seventhDescription
+              .split("\n\n")
+              .map((paragraph, index) => (
+                <p key={index} className="mb-4">
+                  {paragraph}
+                </p>
+              ))}
+          </div>
+          <a
+            href="#book-repair"
+            className="inline-block mt-6 px-8 py-4 bg-[#D2691E] text-white font-bold rounded-xl hover:bg-[#121212] transition-colors"
+          >
+            Book Your Repair Now
+          </a>
         </div>
       </section>
     </>
   );
 }
-
-/**
- //* /repair/[category]
- //* ex: /repair/display
- * display
- * ports
- * battery
- * camera
- * speaker
- * others
- */

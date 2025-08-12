@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import api from "@/lib/axiosInstance";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button"; // Import Button
 
@@ -22,6 +23,8 @@ const ProfileBtn = () => {
   const [open, setOpen] = useState(false);
   const onOpenChange = () => setOpen(!open);
 
+  const router = useRouter();
+
   const onCompleted = () => {
     setOpen(false);
   };
@@ -31,21 +34,35 @@ const ProfileBtn = () => {
     clearUser();
   };
 
+  const navigateToOrders = () => {
+    router.push("/my-services");
+  };
+
   const user = useHydratedStore(useUserStore, (state) => state.user);
   return (
     <div>
       {user?._id ? (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="Open user profile menu">
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Open user profile menu"
+            >
               <UserRoundCheckIcon className="size-6" />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-60"> {/* Adjusted width slightly */}
+          <PopoverContent className="w-60">
+            {" "}
+            {/* Adjusted width slightly */}
             <div>
-              <div className="flex flex-col space-y-1 p-2 border-b mb-2"> {/* Reduced padding, added border */}
+              <div className="flex flex-col space-y-1 p-2 border-b mb-2">
+                {" "}
+                {/* Reduced padding, added border */}
                 <h4 className="text-sm font-semibold">{user.name}</h4>
-                <p className="text-xs text-muted-foreground"> {/* Slightly smaller text for phone */}
+                <p className="text-xs text-muted-foreground">
+                  {" "}
+                  {/* Slightly smaller text for phone */}
                   {user.phoneNo}
                 </p>
               </div>
@@ -54,7 +71,7 @@ const ProfileBtn = () => {
                   variant="ghost"
                   size="sm"
                   className="w-full justify-start"
-                  // onClick={() => {/* TODO: Implement navigation to My Orders */}}
+                  onClick={navigateToOrders}
                 >
                   My Orders
                 </Button>
@@ -75,7 +92,7 @@ const ProfileBtn = () => {
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" aria-label="Open login menu">
               {/* Removed pt-1 as Button size="icon" handles centering */}
-              <User className="size-6" /> 
+              <User className="size-6" />
             </Button>
           </SheetTrigger>
           <UserRegSheet onCompleted={onCompleted} />

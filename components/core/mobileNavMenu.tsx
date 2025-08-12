@@ -2,6 +2,8 @@
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
+import { useUserStore } from "@/stores/userStore";
 
 interface MobileNavMenuProps {
   menuOpen: boolean;
@@ -15,6 +17,8 @@ const MobileNavMenu = ({
   isRepairSection, // Destructure the new prop
 }: MobileNavMenuProps) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
+  const user = useHydratedStore(useUserStore, (state) => state.user);
+  const isLoggedIn = Boolean(user?._id);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent): void {
@@ -38,23 +42,29 @@ const MobileNavMenu = ({
           href="/"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Go to Home"
         >
           Home
         </Link>
-        <Link
-          href="/repair"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
-          onClick={() => setMenuOpen(false)}
-        >
-          All Repairs
-        </Link>
-        <Link
-          href="/my-services"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
-          onClick={() => setMenuOpen(false)}
-        >
-          Orders
-        </Link>
+        {isLoggedIn ? (
+          <Link
+            href="/my-services"
+            className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
+            onClick={() => setMenuOpen(false)}
+            title="View your orders"
+          >
+            Orders
+          </Link>
+        ) : (
+          <Link
+            href="/repair"
+            className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
+            onClick={() => setMenuOpen(false)}
+            title="Browse all repair services"
+          >
+            All Repairs
+          </Link>
+        )}
       </>
     );
   } else {
@@ -64,6 +74,7 @@ const MobileNavMenu = ({
           href="/"
           className="block py-2 px-4 text-lg hover:bg-gray-100 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Go to Home"
         >
           Home
         </Link>
@@ -71,20 +82,34 @@ const MobileNavMenu = ({
           href="/about"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Learn more About us"
         >
           About
         </Link>
-        <Link
-          href="/my-services"
-          className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
-          onClick={() => setMenuOpen(false)}
-        >
-          Orders
-        </Link>
+        {isLoggedIn ? (
+          <Link
+            href="/my-services"
+            className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
+            onClick={() => setMenuOpen(false)}
+            title="View your orders"
+          >
+            Orders
+          </Link>
+        ) : (
+          <Link
+            href="/repair"
+            className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
+            onClick={() => setMenuOpen(false)}
+            title="Browse all repair services"
+          >
+            Repairs
+          </Link>
+        )}
         <Link
           href="/contact"
           className="block py-2 px-4 text-lg hover:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-md transition"
           onClick={() => setMenuOpen(false)}
+          title="Contact us"
         >
           Contact
         </Link>

@@ -54,6 +54,7 @@ const ListRepairCategory = () => {
                          focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
                          border border-gray-700 hover:border-[#D2691E]
                          cursor-pointer"
+              title={`Explore ${category.name} repairs`}
             >
               {/* Icon */}
               <div className="mb-1 pointer-events-none">
@@ -86,6 +87,7 @@ const ListRepairCategory = () => {
           <Link
             href="/support-request?type=can-not-find"
             className="text-blue-600 hover:text-blue-700 font-medium ml-1"
+            title="Contact support"
           >
             Contact support
           </Link>

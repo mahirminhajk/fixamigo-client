@@ -18,6 +18,7 @@ function ShowModel({ deviceData }: ShowModelProps) {
             <Image
               src={deviceData.images[1]}
               alt={deviceData.name}
+              title={deviceData.name}
               width={224}
               height={224}
               className="object-cover w-full h-full mb-2"
@@ -38,6 +39,7 @@ function ShowModel({ deviceData }: ShowModelProps) {
             <Image
               src={deviceData.images[1]}
               alt={deviceData.name}
+              title={deviceData.name}
               width={256}
               height={256}
               className="object-cover w-full h-full rounded-lg"

@@ -43,6 +43,7 @@ const CheckoutOrderSummary = ({
           <Image
             src={cartItem.device.images?.[0] || "/logos/logo.png"}
             alt={cartItem.device.name}
+            title={cartItem.device.name.toLocaleUpperCase()}
             width={48}
             height={48}
             className="rounded-md border bg-white object-contain lg:w-12 lg:h-12"
@@ -72,6 +73,7 @@ const CheckoutOrderSummary = ({
               <Image
                 src={getSparePartsIcon(item.category)}
                 alt={item.label}
+                title={item.label.toUpperCase()}
                 width={32}
                 height={32}
                 className="object-contain flex-shrink-0 lg:w-8 lg:h-8"

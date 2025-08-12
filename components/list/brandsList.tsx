@@ -169,6 +169,7 @@ const BrandsList = ({
                            hover:border-[#D2691E] hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
                            focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 focus:ring-opacity-50 
                            aspect-[4/3] min-h-[120px] relative overflow-hidden"
+                title={`Repair ${brand.name} ${category.replace("-", " ")}`}
               >
                 {/* Background gradient overlay */}
                 <div
@@ -187,6 +188,7 @@ const BrandsList = ({
                   <Image
                     src={brand.image}
                     alt={`${brand.name} logo`}
+                    title={`${brand.name} Logo`}
                     width={160}
                     height={160}
                     className="object-contain max-w-full max-h-full drop-shadow-sm
@@ -248,25 +250,25 @@ const BrandsList = ({
                               rounded-2xl blur-lg opacity-0 group-hover:opacity-30 group-hover:animate-pulse scale-105 transition-opacity"
                 ></div>
 
-                <Link href={`/repair/${category}`} legacyBehavior>
-                  <a
-                    className="relative inline-flex items-center px-6 md:px-8 py-3 md:py-4 
-                             bg-[#121212] hover:bg-gradient-to-r hover:from-[#D2691E] hover:to-[#121212]
-                             text-white font-bold rounded-2xl text-sm md:text-base
-                             shadow-xl hover:shadow-2xl
-                             transform transition-all duration-300
-                             hover:scale-105 hover:-translate-y-1
-                             focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
-                             overflow-hidden group
-                             before:absolute before:inset-0 before:bg-gradient-to-r 
-                             before:from-white/0 before:via-white/20 before:to-white/0
-                             before:translate-x-[-100%] hover:before:translate-x-[100%] 
-                             before:transition-transform before:duration-700"
-                  >
-                    <div className="relative z-10">
-                      <span>View All Brands</span>
-                    </div>
-                  </a>
+                <Link
+                  href={`/repair/${category}`}
+                  className="relative inline-flex items-center px-6 md:px-8 py-3 md:py-4 
+                           bg-[#121212] hover:bg-gradient-to-r hover:from-[#3f352e] hover:to-[#121212]
+                           text-white font-bold rounded-2xl text-sm md:text-base
+                           shadow-xl hover:shadow-2xl
+                           transform transition-all duration-300
+                           hover:scale-105 hover:-translate-y-1
+                           focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50
+                           overflow-hidden group
+                           before:absolute before:inset-0 before:bg-gradient-to-r 
+                           before:from-white/0 before:via-white/20 before:to-white/0
+                           before:translate-x-[-100%] hover:before:translate-x-[100%] 
+                           before:transition-transform before:duration-700"
+                  title={`View all ${category.replace("-", " ")} brands`}
+                >
+                  <div className="relative z-10">
+                    <span>View All Brands</span>
+                  </div>
                 </Link>
               </div>
               <p className="text-xs md:text-sm text-gray-500 mt-3">
@@ -286,6 +288,7 @@ const BrandsList = ({
                          hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
                          transition-all duration-300 hover:scale-105
                          focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 justify-center text-center"
+              title="Request a brand that’s not listed"
             >
               <div>
                 <h3
