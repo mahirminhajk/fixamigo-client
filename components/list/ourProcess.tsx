@@ -11,22 +11,22 @@ interface Step {
 
 const steps: Step[] = [
   {
-    icon: "/icons/button.png",
+    icon: "/steps-icons/rupee.png",
     title: "1.Check Price",
     description: "Choose your device for repair and get the best price.",
   },
   {
-    icon: "/icons/service.png",
+    icon: "/steps-icons/calender.png",
     title: "2.Schedule Service",
     description: "Schedule your repair at a convenient date.",
   },
   {
-    icon: "/icons/motherboard.png",
+    icon: "/steps-icons/spannertool.png",
     title: "3.Diagnosis & Fix",
     description: "Identify the issue and get it fixed quickly by our experts.",
   },
   {
-    icon: "/icons/laptop.png",
+    icon: "/steps-icons/handbox.png",
     title: "4.Delivered to You",
     description: "Get your repaired device safely delivered to your doorstep.",
   },
