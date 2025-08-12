@@ -1,6 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaInstagram, FaWhatsapp } from "react-icons/fa";
+import {
+  FaInstagram,
+  FaWhatsapp,
+  FaFacebookF,
+  FaLinkedin,
+  FaGoogle,
+} from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import { INFO } from "@/constants";
 
 const Footer = () => {
@@ -72,13 +79,46 @@ const Footer = () => {
                 >
                   <FaInstagram className="w-3 h-3 md:w-4 md:h-4" />
                 </a>
-                {/* <a
-                  href="#"
-                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors"
+                <a
+                  href={INFO.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors"
                   aria-label="Facebook"
+                  title="Follow us on Facebook"
                 >
                   <FaFacebookF className="w-3 h-3 md:w-4 md:h-4" />
-                </a> */}
+                </a>
+                <a
+                  href={INFO.x}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-colors"
+                  aria-label="X (Twitter)"
+                  title="Follow us on X (Twitter)"
+                >
+                  <FaXTwitter className="w-3 h-3 md:w-4 md:h-4" />
+                </a>
+                <a
+                  href={INFO.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-blue-700 hover:text-white transition-colors"
+                  aria-label="LinkedIn"
+                  title="Connect with us on LinkedIn"
+                >
+                  <FaLinkedin className="w-3 h-3 md:w-4 md:h-4" />
+                </a>
+                <a
+                  href={INFO.googleBusiness}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-7 h-7 md:w-8 md:h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors"
+                  aria-label="Google Business Profile"
+                  title="Find us on Google"
+                >
+                  <FaGoogle className="w-3 h-3 md:w-4 md:h-4" />
+                </a>
                 <a
                   href={INFO.waLink(
                     "Hi, I found your contact through your website. I'd like to know more about your repair services."
@@ -103,7 +143,7 @@ const Footer = () => {
             <ul className="space-y-1 md:space-y-2">
               <li>
                 <Link
-                  href="repair/mobile-phone"
+                  href="/repair/mobile-phone"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
                   title="Repair mobile phones"
                 >
@@ -121,7 +161,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/repair/other"
+                  href="/repair"
                   className="text-gray-600 hover:text-gray-900 transition-colors text-xs md:text-sm"
                   title="Other repair services"
                 >
