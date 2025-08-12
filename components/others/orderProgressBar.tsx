@@ -426,7 +426,8 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
                         Failed
                       </span>
                     )}
-                    {(isActive || isInProgress) && (
+                    {(isInProgress ||
+                      (isActive && !isCompleted && !isFailed)) && (
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         <div className="w-3 h-3 mr-1">
                           <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
