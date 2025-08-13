@@ -117,13 +117,17 @@ export default function SupportRequestForm({
       {type === "device" && (
         <>
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
+            <label
+              className="block text-sm font-semibold text-gray-900 mb-2"
+              htmlFor="brand"
+            >
               Brand
             </label>
             <input
               type="text"
               value={value}
               disabled
+              title="Service Category"
               className="w-full pl-4 pr-4 py-4 text-gray-700 bg-gray-100 border-2 border-gray-200
                          rounded-2xl shadow-lg cursor-not-allowed"
             />
@@ -184,15 +188,21 @@ export default function SupportRequestForm({
       {type === "service" && (
         <>
           <div>
-            <label className="block text-sm font-semibold text-gray-900 mb-2">
+            <label
+              className="block text-sm font-semibold text-gray-900 mb-2"
+              htmlFor="serviceCategory"
+            >
               Service Category
             </label>
             <input
               type="text"
+              name="serviceCategory"
               value={value}
               disabled
+              title="Service Category"
+              placeholder="Service Category"
               className="w-full pl-4 pr-4 py-4 text-gray-700 bg-gray-100 border-2 border-gray-200
-                         rounded-2xl shadow-lg cursor-not-allowed"
+                       rounded-2xl shadow-lg cursor-not-allowed"
             />
           </div>
           <div>
