@@ -4,8 +4,8 @@ import { INFO } from "@/constants";
 export function getWarrantyMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
-    title: `Warranty Policy | ${INFO.name}`,
-    description: `${INFO.name} warranty policy explains coverage, exclusions, and how to raise a warranty claim after repair.`,
+    title: `Repair Warranty Policy & Coverage | ${INFO.name}`,
+    description: `${INFO.name} warranty policy explains coverage, exclusions, claim steps, and timelines after a repair. Learn how to file a claim and what is included or excluded.`,
     keywords: ["warranty policy", "repair warranty", "fixamigo warranty"],
     authors: [{ name: INFO.name }],
     robots: { index: true, follow: true },
@@ -15,8 +15,8 @@ export function getWarrantyMetadata(): Metadata {
       locale: "en_IN",
       url: `${baseUrl}/warranty`,
       siteName: INFO.name,
-      title: `Warranty Policy | ${INFO.name}`,
-      description: `${INFO.name} warranty policy overview.`,
+      title: `Repair Warranty Policy & Coverage | ${INFO.name}`,
+      description: `${INFO.name} repair warranty policy, coverage, exclusions, and how to raise a claim with processing timelines after service.`,
       images: [
         {
           url: `${baseUrl}/og-fixamigo.jpg`,
@@ -28,8 +28,8 @@ export function getWarrantyMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `Warranty Policy | ${INFO.name}`,
-      description: `${INFO.name} warranty policy overview.`,
+      title: `Repair Warranty Policy & Coverage | ${INFO.name}`,
+      description: `${INFO.name} repair warranty policy, coverage, exclusions, and claim steps with timelines after service.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },
   };

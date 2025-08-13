@@ -9,13 +9,13 @@ export function getCityMetadata(city: string): Metadata {
 
   // Generate dynamic brand list for keywords
   const brandNames = brands
-    .slice(0, 8)
+    .slice(0, 3)
     .map((brand) => brand.name)
     .join(", ");
 
   return {
-    title: `${formattedCity} Mobile Services – ${INFO.name} | Free Pickup & Delivery`,
-    description: `Professional mobile phone repair in ${formattedCity}, Kerala. Expert technicians for ${brandNames}. Free pickup & delivery. Screen, battery, camera repairs with warranty. Book online now!`,
+    title: `${formattedCity} Mobile Repair – Free Pickup & Delivery`,
+    description: `Professional mobile phone repair in ${formattedCity}, Kerala. Expert technicians for ${brandNames} and more. Screen, battery, camera repairs.`,
 
     keywords: [
       // Local service keywords
@@ -46,6 +46,11 @@ export function getCityMetadata(city: string): Metadata {
       `warranty mobile repair ${formattedCity}`,
       `free pickup delivery ${formattedCity}`,
       `online mobile repair booking ${formattedCity}`,
+
+      // Local shop keywords
+      `mobile repair shop ${formattedCity}`,
+      `phone repair store ${formattedCity}`,
+      `smartphone repair center ${formattedCity}`,
     ],
 
     authors: [{ name: INFO.name }],

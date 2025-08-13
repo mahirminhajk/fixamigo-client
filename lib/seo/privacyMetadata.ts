@@ -4,8 +4,8 @@ import { INFO } from "@/constants";
 export function getPrivacyMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
-    title: `Privacy Policy | ${INFO.name}`,
-    description: `${INFO.name}'s Privacy Policy explains data collection, usage, sharing, and rights. Learn how we protect your information and how to contact us.`,
+    title: `Privacy Policy & Data Rights | ${INFO.name}`,
+    description: `${INFO.name}'s Privacy Policy explains what data we collect, how we use and share it, and your rights. Learn how we protect your information and contact our team.`,
     keywords: [
       "privacy policy",
       "data protection",
@@ -22,8 +22,8 @@ export function getPrivacyMetadata(): Metadata {
       locale: "en_IN",
       url: `${baseUrl}/privacy`,
       siteName: INFO.name,
-      title: `Privacy Policy | ${INFO.name}`,
-      description: `${INFO.name} privacy practices and user rights.`,
+      title: `Privacy Policy & Data Rights | ${INFO.name}`,
+      description: `${INFO.name} privacy practices, data handling, and user rights including access, correction, and deletion requests in Kerala.`,
       images: [
         {
           url: `${baseUrl}/og-fixamigo.jpg`,
@@ -35,8 +35,8 @@ export function getPrivacyMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `Privacy Policy | ${INFO.name}`,
-      description: `${INFO.name} privacy practices and user rights.`,
+      title: `Privacy Policy & Data Rights | ${INFO.name}`,
+      description: `${INFO.name} privacy practices, data handling, and user rights including access, correction, and deletion requests.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },
   };

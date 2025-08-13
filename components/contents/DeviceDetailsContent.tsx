@@ -22,6 +22,8 @@ export default async function DeviceDetailsContent({
             company: deviceData.company,
             images: deviceData.images,
           }}
+          renderHeadingAsH1={false}
+          only="mobile"
         />
         <ListSpareParts
           spareParts={deviceData.spareParts}
@@ -49,6 +51,8 @@ export default async function DeviceDetailsContent({
                 company: deviceData.company,
                 images: deviceData.images,
               }}
+              renderHeadingAsH1={true}
+              only="desktop"
             />
 
             {/* Spare Parts Section */}

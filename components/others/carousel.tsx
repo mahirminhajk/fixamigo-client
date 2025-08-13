@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import {
   Carousel,
@@ -11,10 +12,22 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 
-const images = [
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner1.png",
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner4.webp",
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner3.png",
+const slides = [
+  {
+    src: "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner1.webp",
+    href: "/repair/mobile-phone",
+    label: "Explore mobile and laptop repair services",
+  },
+  {
+    src: "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner2.webp",
+    href: "/brands",
+    label: "Browse supported brands and models",
+  },
+  {
+    src: "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner3.webp",
+    href: "/repair",
+    label: "Submit a support or custom service request",
+  },
 ];
 
 export default function HeroCarousel() {
@@ -81,19 +94,26 @@ export default function HeroCarousel() {
         }}
       >
         <CarouselContent>
-          {images.map((src, index) => (
+          {slides.map((slide, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-[1920/600] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-lg">
+              <div className="relative w-full aspect-[16/9] md:aspect-[8/3] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-lg">
                 <Image
-                  src={src}
+                  src={slide.src}
                   alt={`Banner ${index + 1} - Fixamigo mobile repair services`}
                   title={`Banner ${
                     index + 1
                   } - Fixamigo mobile repair services`}
                   fill
                   className="object-cover object-center"
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, (max-width: 1600px) 100vw, 1600px"
+                  quality={85}
                   priority={index === 0}
+                />
+                {/* Full-slide clickable overlay without visual changes */}
+                <Link
+                  href={slide.href}
+                  aria-label={slide.label}
+                  className="absolute inset-0"
                 />
               </div>
             </CarouselItem>
@@ -107,7 +127,7 @@ export default function HeroCarousel() {
 
       {/* Dot Indicators */}
       <div className="flex justify-center mt-4 space-x-2">
-        {images.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${

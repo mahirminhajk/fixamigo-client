@@ -83,7 +83,7 @@ export const repairPageContent = [
       "Don’t let a draining or dead battery disrupt your day. Whether you're in Kottakkal town or anywhere in the Malappuram district, Fixamigo is your trusted solution for fast, reliable, and affordable phone battery replacements.\n\n👉 Call now, book online, or visit our repair center today!",
   },
   {
-    slug: "port",
+    slug: "ports",
     heading: "Phone Ports Repair",
     headingDescription:
       "Charging Issues or Headphones Not Working? fixamigo Has You Covered.",

@@ -4,8 +4,8 @@ import { INFO } from "@/constants";
 export function getAboutMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
-    title: `About Us | ${INFO.name}`,
-    description: `${INFO.name} is ${INFO.tagline2} in Kerala. Learn about our mission, values, and how we deliver trusted mobile and laptop repairs with pickup & delivery and warranty-backed service.`,
+    title: `About ${INFO.name} — Trusted Repairs in Kerala`,
+    description: `Learn about ${INFO.name}—our mission, values, and trusted mobile and laptop repairs across Kerala with pickup, delivery, and warranty-backed service.`,
     keywords: [
       "about Fixamigo",
       "about us",
