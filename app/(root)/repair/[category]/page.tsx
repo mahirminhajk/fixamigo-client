@@ -11,9 +11,24 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Link from "next/link";
+import Script from "next/script";
+import {
+  getCategoryMetadata,
+  getCategoryStructuredData,
+} from "@/lib/seo/categoryMetadata";
 
 interface RepairPageProps {
   params: Promise<{ category: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ category: string }>;
+}) {
+  const { category } = await params;
+  return getCategoryMetadata(category);
 }
 
 export default async function RepairCategoryPage({ params }: RepairPageProps) {
@@ -28,8 +43,13 @@ export default async function RepairCategoryPage({ params }: RepairPageProps) {
     return notFound();
   }
 
+  const structuredData = getCategoryStructuredData(category);
+
   return (
     <>
+      <Script id="category-structured-data" type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </Script>
       {/* Blog Banner Image */}
       <div className="w-full h-64 relative mb-8">
         <Image
@@ -70,7 +90,7 @@ export default async function RepairCategoryPage({ params }: RepairPageProps) {
 
         {/* Brand Selector */}
         <div className="mb-12">
-          <BrandsList category={category} />
+          <BrandsList />
         </div>
 
         <hr className="my-8 border-t border-gray-100" />
@@ -141,12 +161,12 @@ export default async function RepairCategoryPage({ params }: RepairPageProps) {
                 </p>
               ))}
           </div>
-          <a
-            href="#book-repair"
+          <Link
+            href="/repair/mobile-phone"
             className="inline-block mt-6 px-8 py-4 bg-[#D2691E] text-white font-bold rounded-xl hover:bg-[#121212] transition-colors"
           >
             Book Your Repair Now
-          </a>
+          </Link>
         </div>
       </section>
     </>

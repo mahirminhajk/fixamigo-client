@@ -4,8 +4,8 @@ import { INFO } from "@/constants";
 export function getContactMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
-    title: `Contact Us | ${INFO.name}`,
-    description: `Contact ${INFO.name} for support, bookings, and queries. Call ${INFO.phoneLabel}, email ${INFO.email}, or WhatsApp for quick assistance.`,
+    title: `Contact ${INFO.name} — Support, Booking & Help`,
+    description: `Contact ${INFO.name} for support, bookings, and queries. Reach us by phone, email, or WhatsApp for quick, friendly assistance across Kerala.`,
     keywords: [
       "contact fixamigo",
       "fixamigo phone",
@@ -24,8 +24,8 @@ export function getContactMetadata(): Metadata {
       locale: "en_IN",
       url: `${baseUrl}/contact`,
       siteName: INFO.name,
-      title: `Contact ${INFO.name}`,
-      description: `Reach ${INFO.name} by phone, email, or WhatsApp for fast support and repair bookings.`,
+      title: `Contact ${INFO.name} — Support, Booking & Help`,
+      description: `Reach ${INFO.name} by phone, email, or WhatsApp for fast support and repair bookings across Kerala.`,
       images: [
         {
           url: `${baseUrl}/og-fixamigo.jpg`,
@@ -37,8 +37,8 @@ export function getContactMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `Contact ${INFO.name}`,
-      description: `Call ${INFO.phoneLabel} or email ${INFO.email} for support.`,
+      title: `Contact ${INFO.name} — Support, Booking & Help`,
+      description: `Contact ${INFO.name} by phone, email, or WhatsApp for support and bookings across Kerala.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },
   };

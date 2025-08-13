@@ -6,24 +6,39 @@ export function getCategoryMetadata(category: string): Metadata {
   const categoryName =
     category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
   const canonicalUrl = `${baseUrl}/repair/${category}`;
-  const cityNames = supportCities.map((city) => city.name).join(", ");
+  const cat = categoryName.toLowerCase();
+  const baseKeywords = [
+    `${cat} repair`,
+    `phone ${cat} repair`,
+    `smartphone ${cat} replacement`,
+    `mobile ${cat} repair Kerala`,
+    `${cat} repair near me`,
+    `professional ${cat} repair`,
+    `${cat} repair service`,
+    `${cat} repair warranty`,
+    `${cat} repair price`,
+    `${cat} repair same day`,
+    `${cat} pickup and delivery`,
+    `fixamigo ${cat} repair`,
+  ];
+  const cityKeywords = supportCities.flatMap((city) => {
+    const cityName = city.name.toLowerCase();
+    return [
+      `${cat} repair in ${cityName}`,
+      `${cityName} ${cat} repair`,
+      `${cat} replacement in ${cityName}`,
+      `${cat} service in ${cityName}`,
+      `${cat} repair near ${cityName}`,
+    ];
+  });
 
   return {
     title: `${categoryName} Repair for All Phone Brands | ${INFO.name}`,
     description: `Need a ${categoryName.toLowerCase()} repair for your phone? Explore trusted repair options by brand at ${
       INFO.name
-    }. Fast service, quality parts, and warranty backed repairs across ${cityNames}.`,
+    }. Fast service and quality parts repairs across Kerala.`,
 
-    keywords: [
-      `${categoryName.toLowerCase()} repair`,
-      `phone ${categoryName.toLowerCase()} repair`,
-      `smartphone ${categoryName.toLowerCase()} replacement`,
-      `mobile ${categoryName.toLowerCase()} repair Kerala`,
-      `${categoryName.toLowerCase()} repair near me`,
-      `professional ${categoryName.toLowerCase()} repair`,
-      `${categoryName.toLowerCase()} repair service`,
-      `${categoryName.toLowerCase()} repair warranty`,
-    ],
+    keywords: [...baseKeywords, ...cityKeywords],
 
     authors: [{ name: INFO.name }],
     creator: INFO.name,
@@ -54,7 +69,7 @@ export function getCategoryMetadata(category: string): Metadata {
       description: `Looking for ${categoryName.toLowerCase()} repair? Choose your phone brand to get started with reliable service.`,
       images: [
         {
-          url: `${baseUrl}/og-category-${category}.jpg`,
+          url: `${baseUrl}/og-fixamigo.jpg`,
           width: 1200,
           height: 630,
           alt: `${categoryName} Repair Services`,
@@ -69,7 +84,7 @@ export function getCategoryMetadata(category: string): Metadata {
       creator: "@fixamigo",
       title: `${categoryName} Repair Services`,
       description: `Professional ${categoryName.toLowerCase()} repair for all phone brands. Quality parts, warranty, and expert service.`,
-      images: [`${baseUrl}/og-category-${category}.jpg`],
+      images: [`${baseUrl}/og-fixamigo.jpg`],
     },
 
     category: "Technology",

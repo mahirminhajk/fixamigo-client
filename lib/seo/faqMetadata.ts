@@ -6,14 +6,14 @@ export function getFaqMetadata(
 ): Metadata {
   const canonical = `${baseUrl.replace(/\/$/, "")}/faq`;
   return {
-    title: `FAQ — ${INFO.name}`,
-    description: `Answers to the most common questions about ${INFO.name} repairs, pricing, warranty, pickup & delivery, and more.`,
+    title: `Frequently Asked Questions — ${INFO.name}`,
+    description: `Find answers to common questions about ${INFO.name}: repairs, pricing, warranty, pickup and delivery, turnaround time, supported brands, and coverage.`,
     alternates: { canonical },
     openGraph: {
       type: "website",
       url: canonical,
-      title: `FAQ | ${INFO.name}`,
-      description: `Common questions about ${INFO.name}: repairs, warranty, brands, turnaround time, data safety and service coverage.`,
+      title: `Frequently Asked Questions — ${INFO.name}`,
+      description: `Common questions about ${INFO.name}: repairs, warranty, brands, turnaround time, data safety, and coverage across Kerala.`,
       siteName: INFO.name,
       images: [
         {
@@ -26,8 +26,8 @@ export function getFaqMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title: `FAQ | ${INFO.name}`,
-      description: `Get quick answers about ${INFO.name} repairs, pricing, warranty and service process.`,
+      title: `Frequently Asked Questions — ${INFO.name}`,
+      description: `Quick answers about ${INFO.name} repairs, pricing, warranty, data safety, and the service process across Kerala.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },
   };

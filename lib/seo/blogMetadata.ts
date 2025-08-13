@@ -4,8 +4,8 @@ import { INFO } from "@/constants";
 export function getBlogMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
-    title: `Blog | ${INFO.name}`,
-    description: `Read updates, repair tips, and how‑tos from ${INFO.name} — ${INFO.tagline2}. Guides on mobile and laptop care, announcements, and more.`,
+    title: `Blog — Tips, Guides & Updates | ${INFO.name}`,
+    description: `Explore repair tips, how‑to guides, and updates from ${INFO.name}. Learn device care best practices, product news, and service announcements.`,
     keywords: [
       "fixamigo blog",
       "mobile repair tips",
@@ -23,7 +23,7 @@ export function getBlogMetadata(): Metadata {
       locale: "en_IN",
       url: `${baseUrl}/blog`,
       siteName: INFO.name,
-      title: `Blog | ${INFO.name}`,
+      title: `Blog — Tips, Guides & Updates | ${INFO.name}`,
       description: `Updates, tips, and guides from ${INFO.name}.`,
       images: [
         {
@@ -36,7 +36,7 @@ export function getBlogMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `Blog | ${INFO.name}`,
+      title: `Blog — Tips, Guides & Updates | ${INFO.name}`,
       description: `Updates, tips, and guides from ${INFO.name}.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },

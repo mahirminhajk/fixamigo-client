@@ -4,8 +4,8 @@ import { INFO } from "@/constants";
 export function getReturnRefundMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
-    title: `Return & Refund Policy | ${INFO.name}`,
-    description: `Read ${INFO.name}'s return, cancellation, and refund policy for repair services, including eligibility and processing timelines.`,
+    title: `Returns, Cancellations & Refunds | ${INFO.name}`,
+    description: `Read ${INFO.name}'s return, cancellation, and refund policy for repair services, including eligibility criteria, timelines, and how to request a return or refund.`,
     keywords: [
       "return policy",
       "refund policy",
@@ -20,8 +20,8 @@ export function getReturnRefundMetadata(): Metadata {
       locale: "en_IN",
       url: `${baseUrl}/return-refund`,
       siteName: INFO.name,
-      title: `Return & Refund Policy | ${INFO.name}`,
-      description: `${INFO.name} return and refund policy overview.`,
+      title: `Returns, Cancellations & Refunds | ${INFO.name}`,
+      description: `${INFO.name} return, cancellation, and refund policy overview with eligibility and processing details.`,
       images: [
         {
           url: `${baseUrl}/og-fixamigo.jpg`,
@@ -33,8 +33,8 @@ export function getReturnRefundMetadata(): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: `Return & Refund Policy | ${INFO.name}`,
-      description: `${INFO.name} return and refund policy overview.`,
+      title: `Returns, Cancellations & Refunds | ${INFO.name}`,
+      description: `${INFO.name} return, cancellation, and refund policy overview with eligibility and timelines.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },
   };

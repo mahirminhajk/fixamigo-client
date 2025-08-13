@@ -22,11 +22,7 @@ const brands = [
   { name: "LG", image: "/brands/lg.webp", slug: "lg" },
 ];
 
-export default function BrandListInRepair({
-  category = "mobile-phone",
-}: {
-  category?: string;
-}) {
+export default function BrandListInRepair() {
   return (
     <div className="w-full max-w-4xl mx-auto ">
       <h2 className="text-2xl font-bold mb-4 text-[#D2691E]">
@@ -37,7 +33,7 @@ export default function BrandListInRepair({
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
         {brands.slice(0, 8).map((brand) => (
           <Link
-            href={`/repair/${category}/${brand.slug}`}
+            href={`/repair/mobile-phone/${brand.slug}`}
             key={brand.slug}
             className="flex items-center justify-center bg-gray-100 p-4 rounded-lg hover:shadow-md transition"
           >

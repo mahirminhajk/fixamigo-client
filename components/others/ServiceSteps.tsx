@@ -45,9 +45,9 @@ const ServiceSteps = () => {
     <section className="w-full max-w-6xl mx-auto px-4 md:px-6 py-8 md:py-12">
       {/* SEO Optimized Heading + Description */}
       <div className="text-center mb-8 md:mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
           Our Process – Hassle-Free Phone & Device Repairs with Fixamigo
-        </h1>
+        </h2>
         <p className="text-gray-600 text-lg max-w-3xl mx-auto">
           At <strong>Fixamigo</strong>, we’ve simplified the{" "}
           <strong>phone repair</strong> and <strong>gadget repair</strong>{" "}

@@ -5,7 +5,7 @@ export function getSupportMetadata(): Metadata {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://fixamigo.com";
   return {
     title: `Customer Support & Grievance | ${INFO.name}`,
-    description: `Reach ${INFO.name} support and grievance redressal team. Contact details, escalation process, and response timelines.`,
+    description: `Reach ${INFO.name} support and grievance redressal team. Find contacts, escalation steps, and response timelines for quick resolution across Kerala.`,
     keywords: ["customer support", "grievance redressal", "support fixamigo"],
     authors: [{ name: INFO.name }],
     robots: { index: true, follow: true },
@@ -16,7 +16,7 @@ export function getSupportMetadata(): Metadata {
       url: `${baseUrl}/support`,
       siteName: INFO.name,
       title: `Customer Support & Grievance | ${INFO.name}`,
-      description: `Support channels, grievance officer, and escalation steps at ${INFO.name}.`,
+      description: `Support channels, grievance officer contacts, and escalation steps at ${INFO.name}, including response timelines and availability.`,
       images: [
         {
           url: `${baseUrl}/og-fixamigo.jpg`,
@@ -29,7 +29,7 @@ export function getSupportMetadata(): Metadata {
     twitter: {
       card: "summary_large_image",
       title: `Customer Support & Grievance | ${INFO.name}`,
-      description: `Support channels and grievance escalation steps.`,
+      description: `Support channels, grievance officer contacts, and escalation steps with response timelines.`,
       images: [`${baseUrl}/og-fixamigo.jpg`],
     },
   };

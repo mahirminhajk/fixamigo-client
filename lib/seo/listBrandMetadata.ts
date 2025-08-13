@@ -132,7 +132,7 @@ export function getBrandMetadata(brandSlug: string): Metadata {
 
   return {
     title: `${brandName} Repair | All Models | ${INFO.name}`,
-    description: `Professional ${brandName} mobile phone repair services in Kerala. Choose your ${brandName} model for screen, battery, camera repair and more. Free pickup & delivery in ${cityNames}.`,
+    description: `Professional ${brandName} mobile phone repair services in Kerala. Choose your ${brandName} model for screen, battery repair and more. Free pickup & delivery.`,
 
     // Comprehensive keywords (50+ keywords)
     keywords: [
