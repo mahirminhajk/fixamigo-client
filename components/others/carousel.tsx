@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/carousel";
 
 const images = [
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner1.png",
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner4.webp",
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner3.png",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner5.webp",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner6.webp",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner7.webp",
 ];
 
 export default function HeroCarousel() {
@@ -83,7 +83,7 @@ export default function HeroCarousel() {
         <CarouselContent>
           {images.map((src, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-[1920/600] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-lg">
+              <div className="relative w-full aspect-[16/9] md:aspect-[8/3] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-lg">
                 <Image
                   src={src}
                   alt={`Banner ${index + 1} - Fixamigo mobile repair services`}
@@ -92,7 +92,8 @@ export default function HeroCarousel() {
                   } - Fixamigo mobile repair services`}
                   fill
                   className="object-cover object-center"
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, (max-width: 1024px) 100vw, 1920px"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, (max-width: 1600px) 100vw, 1600px"
+                  quality={85}
                   priority={index === 0}
                 />
               </div>
