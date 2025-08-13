@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/carousel";
 
 const images = [
-  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner5.webp",
+  "https://fixamigo.s3.ap-south-1.amazonaws.com/b/2.jpg",
   "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner6.webp",
   "https://fixamigo.s3.ap-south-1.amazonaws.com/b/banner7.webp",
 ];

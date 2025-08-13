@@ -19,17 +19,11 @@ export async function getDeviceMetadata(
     const deviceName = deviceData.name;
     const cityNames = supportCities.map((city) => city.name).join(", ");
 
-    // Get top spare part categories for keyword injection
-    const topParts = deviceData.spareParts
-      ?.slice(0, 3)
-      .map((sp) => sp.label.toLowerCase())
-      .join(", ");
-
-    const repairServices = topParts || "display, battery, camera";
+    const repairServices = "display, battery, camera";
 
     // Optimized title (30-65 characters) for better SEO
     const title = `${deviceName} Repair | ${brandName} | ${INFO.name}`;
-    const description = `Professional ${deviceName} repair in Kerala. We fix ${repairServices} and more for ${brandName} devices. Free pickup & delivery in ${cityNames}. Book online with warranty!`;
+    const description = `Professional ${deviceName} repair in Kerala. We fix ${repairServices} and more for ${brandName} devices. Free pickup & delivery.`;
 
     // Enhanced keywords with comprehensive coverage (60+ keywords)
     const keywords = [
