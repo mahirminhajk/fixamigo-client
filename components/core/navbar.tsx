@@ -107,44 +107,43 @@ export default function Navbar({ city }: NavbarProps) {
 
   return (
     <>
-      {/* Testing Phase Banner */}
+      {/* Live Service Banner */}
       <div className="bg-gradient-to-r from-[#121212] via-[#D2691E] to-[#121212] text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/20 to-white/10"></div>
         <div className="relative z-10">
           <Link
-            href="/support-request"
+            href="/repair"
             className="block hover:bg-black/10 transition-colors duration-300 cursor-pointer"
-            title="Share feedback or request support"
+            title="Book a repair now"
           >
             <div className="container mx-auto px-4 py-2 sm:px-6 sm:py-3">
               {/* Mobile Layout */}
               <div className="flex flex-col sm:hidden text-center gap-1">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="w-2 h-2 bg-[#D2691E] rounded-full animate-pulse"></div>
-                  <div className="text-sm font-semibold">
-                    We&apos;re Just Getting Started!
-                  </div>
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <div className="text-sm font-semibold">We&apos;re Live!</div>
                 </div>
                 <div className="text-xs opacity-90 leading-tight px-2">
-                  Early version — Your feedback helps us improve!
+                  We&apos;re ready to take your order — fast pickup and expert
+                  repairs.
                 </div>
               </div>
 
               {/* Desktop Layout */}
               <div className="hidden sm:flex items-center justify-center text-center gap-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 bg-[#D2691E] rounded-full animate-pulse"></div>
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
                   <div className="text-base font-semibold">
-                    We&apos;re Just Getting Started!
+                    We&apos;re Live!
                   </div>
                 </div>
                 <div className="w-px h-4 bg-white/30"></div>
                 <div className="text-sm opacity-90">
-                  This is our early version — we&apos;re improving every day.
-                  Your feedback helps us make it better!
+                  We&apos;re ready to take your order — book a repair in
+                  minutes.
                 </div>
                 <div className="flex items-center gap-1 text-xs font-medium bg-white/20 px-3 py-1 rounded-full">
-                  <span>Share Feedback</span>
+                  <span>Book a Repair</span>
                   <svg
                     className="w-3 h-3"
                     fill="none"
