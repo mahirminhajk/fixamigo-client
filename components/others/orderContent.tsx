@@ -15,7 +15,7 @@ import {
 import api from "@/lib/axiosInstance";
 import { formatAddress, formatDate, getSparePartsIcon } from "@/lib/utils";
 import { INFO } from "@/constants";
-import { IOrder } from "@/types/order";
+import { IOrder, OrderStatus } from "@/types/order";
 
 type Agent = IOrder["agent"];
 type Alert = IOrder["alert"];
@@ -33,7 +33,7 @@ export default function OrderContent({ order }: OrderContentProps) {
 
   return (
     <div className="w-full space-y-6">
-      <ContactAgentCard agent={order.agent} />
+      <ContactAgentCard agent={order.agent} status={order.status} />
       <DeviceCard order={order} />
       <AlertBanner alert={order.alert} />
       <SparePartsCard order={order} />
@@ -44,8 +44,17 @@ export default function OrderContent({ order }: OrderContentProps) {
   );
 }
 
-function ContactAgentCard({ agent }: { agent?: Agent }) {
+function ContactAgentCard({
+  agent,
+  status,
+}: {
+  agent?: Agent;
+  status: IOrder["status"];
+}) {
   if (!agent) return null;
+  const show =
+    status === OrderStatus.OUT_FOR_DELIVERY || status === OrderStatus.EN_ROUTE;
+  if (!show) return null;
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
@@ -487,26 +496,22 @@ function OrderActionsCard({ order }: { order: IOrder }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
-          <svg
-            className="w-4 h-4 text-gray-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z"
-            />
-          </svg>
-        </div>
-        <h2 className="font-bold text-gray-900 text-lg lg:text-xl">
-          Order Actions
-        </h2>
+    <section className="pt-4 border-t border-gray-200">
+      <div className="flex items-center gap-2 mb-3 text-gray-700">
+        <svg
+          className="w-4 h-4 opacity-70"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z"
+          />
+        </svg>
+        <h3 className="font-medium text-sm">Need help or want to cancel?</h3>
       </div>
       <div className="flex flex-col sm:flex-row gap-3">
         <a
@@ -515,14 +520,27 @@ function OrderActionsCard({ order }: { order: IOrder }) {
           rel="noopener noreferrer"
           className="w-full sm:w-auto"
         >
-          <Button variant="outline" className="w-full">
-            Need Help via WhatsApp
+          <Button variant="secondary" className="w-full">
+            <span className="inline-flex items-center gap-2">
+              <svg
+                className="w-4 h-4 text-green-600"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.198.297-.767.966-.94 1.164-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.654-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.173.198-.297.298-.495.099-.198.05-.372-.025-.521-.074-.149-.669-1.613-.916-2.207-.242-.58-.487-.501-.67-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.077 4.487.71.306 1.263.489 1.694.626.712.227 1.36.195 1.872.118.571-.085 1.758-.718 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+              </svg>
+              WhatsApp Support
+            </span>
           </Button>
         </a>
 
         <Sheet open={cancelOpen} onOpenChange={setCancelOpen}>
           <SheetTrigger asChild>
-            <Button variant="destructive" className="w-full sm:w-auto">
+            <Button
+              variant="ghost"
+              className="w-full sm:w-auto text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200"
+            >
               Cancel Order
             </Button>
           </SheetTrigger>
@@ -530,6 +548,9 @@ function OrderActionsCard({ order }: { order: IOrder }) {
             <SheetHeader>
               <SheetTitle>Cancel Order</SheetTitle>
             </SheetHeader>
+            <div className="mt-2 text-sm text-gray-600">
+              Tell us why you want to cancel. This helps us improve.
+            </div>
             <div className="mt-4 space-y-4">
               <div>
                 <label
@@ -597,6 +618,6 @@ function OrderActionsCard({ order }: { order: IOrder }) {
           </SheetContent>
         </Sheet>
       </div>
-    </div>
+    </section>
   );
 }
