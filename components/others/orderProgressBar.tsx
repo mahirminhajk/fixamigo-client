@@ -126,6 +126,18 @@ const buildCompleteStepStructure = (stepper: IStepper[]): IStepper[] => {
     );
   });
 
+  // Include any additional dynamic steps provided by backend (e.g., "Cancelled")
+  const knownSteps = new Set<string>([
+    "Order Confirmation",
+    "Price Confirmation",
+    ...remainingSteps,
+  ]);
+  stepper.forEach((s) => {
+    if (!knownSteps.has(s.step)) {
+      completeSteps.push(s);
+    }
+  });
+
   // Sort by explicit stepNo first; fallback to default step order; then original order
   const withIndex = completeSteps.map((s, idx) => ({ s, idx }));
   withIndex.sort((a, b) => {
@@ -279,10 +291,16 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
     return buildCompleteStepStructure(stepper || []);
   }, [stepper]);
 
+  // Determine if order is cancelled based on presence of a "Cancelled" step
+  const isOrderCancelled = useMemo(() => {
+    return (stepper || []).some((s) => s.step === "Cancelled");
+  }, [stepper]);
+
   // Find the current active step index
   const currentActiveStepIndex = useMemo(() => {
+    if (isOrderCancelled) return -1; // No active step when order is cancelled
     return getCurrentActiveStepIndex(completeSteps);
-  }, [completeSteps]);
+  }, [completeSteps, isOrderCancelled]);
 
   // If no stepper data at all, show a loading state
   if (!stepper) {
@@ -335,6 +353,8 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
           const isCompleted = step.status === "COMPLETED";
           const isFailed = step.status === "FAILED";
           const isInProgress = step.status === "IN_PROGRESS";
+          const showActiveHighlight =
+            !isOrderCancelled && (isActive || isInProgress);
           const isPlaceholder =
             step.status === "PENDING" &&
             !step.completedAt &&
@@ -347,7 +367,7 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
             colorClasses = displayConfig.colors.failed;
           } else if (isCompleted) {
             colorClasses = displayConfig.colors.completed;
-          } else if (isActive || isInProgress) {
+          } else if (showActiveHighlight) {
             colorClasses = displayConfig.colors.active;
           } else if (isPlaceholder) {
             colorClasses = "bg-gray-200 border-gray-300 text-gray-400";
@@ -387,14 +407,14 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
               {/* Step Icon Circle */}
               <div
                 className={`relative w-8 h-8 lg:w-10 lg:h-10 flex items-center justify-center rounded-full border-2 z-10 transition-all duration-300 shadow-sm ${colorClasses} ${
-                  isActive ? "shadow-lg scale-110" : ""
+                  showActiveHighlight ? "shadow-lg scale-110" : ""
                 }`}
               >
                 {isCompleted ? (
                   <FaCheck size={14} />
                 ) : isFailed ? (
                   <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                ) : isActive || isInProgress ? (
+                ) : showActiveHighlight ? (
                   <FaClock size={14} className="animate-pulse" />
                 ) : (
                   <Icon size={14} />
@@ -441,15 +461,16 @@ const OrderProgressBar: React.FC<OrderProgressBarProps> = ({
                         Failed
                       </span>
                     )}
-                    {(isInProgress ||
-                      (isActive && !isCompleted && !isFailed)) && (
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        <div className="w-3 h-3 mr-1">
-                          <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
-                        </div>
-                        Active
-                      </span>
-                    )}
+                    {!isOrderCancelled &&
+                      (isInProgress ||
+                        (isActive && !isCompleted && !isFailed)) && (
+                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          <div className="w-3 h-3 mr-1">
+                            <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-600"></div>
+                          </div>
+                          Active
+                        </span>
+                      )}
                   </div>
 
                   <p
