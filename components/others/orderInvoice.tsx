@@ -111,6 +111,62 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
         </div>
       </div>
 
+      {/* Alert (below Device) - no outer card */}
+      {order.alert?.isActive && (
+        <div
+          className={`p-4 lg:p-5 rounded-xl border ${
+            order.alert.type === "ERROR"
+              ? "bg-red-50 border-red-200 text-red-800"
+              : order.alert.type === "WARNING"
+              ? "bg-yellow-50 border-yellow-200 text-yellow-800"
+              : order.alert.type === "SUCCESS"
+              ? "bg-green-50 border-green-200 text-green-800"
+              : "bg-blue-50 border-blue-200 text-blue-800"
+          }`}
+        >
+          <div className="flex items-start gap-3">
+            <div className="w-8 h-8 rounded-full bg-white/60 flex items-center justify-center">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div className="flex-1">
+              {order.alert.title && (
+                <h4 className="font-bold text-base lg:text-lg mb-1">
+                  {order.alert.title}
+                </h4>
+              )}
+              {order.alert.message && (
+                <p className="text-sm lg:text-base leading-relaxed mb-1">
+                  {order.alert.message}
+                </p>
+              )}
+              {order.alert.createdAt && (
+                <p className="text-xs lg:text-sm opacity-75">
+                  {new Date(order.alert.createdAt).toLocaleDateString("en-US", {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Spare Parts Section */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
         <div className="flex items-center gap-3 mb-4">
@@ -162,15 +218,13 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
               </div>
               <div className="text-right">
                 <p
-                  className="font-bold text-sm lg:text-base"
-                  style={{
-                    color:
-                      spare.price.range &&
-                      spare.price.startPrice &&
-                      spare.price.endPrice
-                        ? "#D2691E"
-                        : "#1f2937",
-                  }}
+                  className={`font-bold text-sm lg:text-base ${
+                    spare.price.range &&
+                    spare.price.startPrice &&
+                    spare.price.endPrice
+                      ? "text-[#D2691E]"
+                      : "text-[#1f2937]"
+                  }`}
                 >
                   {spare.price.range &&
                   spare.price.startPrice &&
@@ -273,10 +327,9 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
                 Items (1)
               </span>
               <span
-                className="font-bold text-sm lg:text-base"
-                style={{
-                  color: hasRangeItems ? "#D2691E" : "#1f2937",
-                }}
+                className={`font-bold text-sm lg:text-base ${
+                  hasRangeItems ? "text-[#D2691E]" : "text-gray-900"
+                }`}
               >
                 ₹{order.price.final}
                 {hasRangeItems ? "*" : ""}
@@ -296,10 +349,9 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
                 Total Price
               </span>
               <span
-                className="font-bold text-lg lg:text-xl"
-                style={{
-                  color: hasRangeItems ? "#D2691E" : "#1f2937",
-                }}
+                className={`font-bold text-lg lg:text-xl ${
+                  hasRangeItems ? "text-[#D2691E]" : "text-gray-900"
+                }`}
               >
                 ₹{order.price.final}
                 {hasRangeItems ? "*" : ""}
