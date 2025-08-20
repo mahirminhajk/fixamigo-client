@@ -74,22 +74,21 @@ const STEP_DISPLAY_CONFIG: Record<string, StepDisplayConfig> = {
       failed: "bg-red-100 border-red-500 text-red-600",
     },
   },
-  Completion: {
-    icon: FaCheck,
-    defaultLabel: "Order Complete",
-    colors: {
-      pending: "bg-gray-300 border-gray-400 text-gray-500",
-      active: "bg-green-100 border-green-500 text-green-600",
-      completed: "bg-green-500 border-green-500 text-white",
-      failed: "bg-red-100 border-red-500 text-red-600",
-    },
-  },
 };
 
 interface OrderProgressBarProps {
   stepper: IStepper[];
   estimatedDeliveryDate?: string;
 }
+
+// Default order mapping used when stepNo is missing
+const DEFAULT_STEP_ORDER: Record<string, number> = {
+  "Order Confirmation": 1,
+  "Price Confirmation": 2,
+  Pickup: 3,
+  Repair: 4,
+  Delivery: 5,
+};
 
 // Helper to build complete step structure combining expected steps with actual data
 const buildCompleteStepStructure = (stepper: IStepper[]): IStepper[] => {
@@ -117,7 +116,7 @@ const buildCompleteStepStructure = (stepper: IStepper[]): IStepper[] => {
   }
 
   // Add remaining expected steps
-  const remainingSteps = ["Pickup", "Repair", "Delivery", "Completion"];
+  const remainingSteps = ["Pickup", "Repair", "Delivery"];
   remainingSteps.forEach((stepName) => {
     completeSteps.push(
       stepMap.get(stepName) || {
@@ -127,7 +126,23 @@ const buildCompleteStepStructure = (stepper: IStepper[]): IStepper[] => {
     );
   });
 
-  return completeSteps;
+  // Sort by explicit stepNo first; fallback to default step order; then original order
+  const withIndex = completeSteps.map((s, idx) => ({ s, idx }));
+  withIndex.sort((a, b) => {
+    const aNo =
+      a.s.stepNo ?? DEFAULT_STEP_ORDER[a.s.step] ?? Number.MAX_SAFE_INTEGER;
+    const bNo =
+      b.s.stepNo ?? DEFAULT_STEP_ORDER[b.s.step] ?? Number.MAX_SAFE_INTEGER;
+    if (aNo !== bNo) return aNo - bNo;
+    // If same order value, fall back to default step order explicitly (helps when both have stepNo)
+    const aDef = DEFAULT_STEP_ORDER[a.s.step] ?? Number.MAX_SAFE_INTEGER;
+    const bDef = DEFAULT_STEP_ORDER[b.s.step] ?? Number.MAX_SAFE_INTEGER;
+    if (aDef !== bDef) return aDef - bDef;
+    // Preserve original relative order as a final fallback
+    return a.idx - b.idx;
+  });
+
+  return withIndex.map((x) => x.s);
 };
 
 // Helper to get display configuration for a step
