@@ -36,8 +36,6 @@ export default function OrderSummaryContent() {
         const res = await api.get(`/order/${orderId}`);
         if (res.status === 200) {
           clearCart();
-          console.log("order: ", res.data.data.order);
-          console.log("stepper data: ", res.data.data.order.stepper);
           setOrder(res.data.data.order);
         } else {
           setError("Something went wrong");

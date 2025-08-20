@@ -103,6 +103,7 @@ export interface IStepper {
   substatus?: string; // For detailed status within a step
   completedAt?: Date;
   startedAt?: Date;
+  stepNo?: number;
   data?: { [key: string]: string };
 }
 
