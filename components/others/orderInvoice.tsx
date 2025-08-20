@@ -1,12 +1,80 @@
+"use client";
+
+import { useState } from "react";
 import { formatAddress, formatDate, getSparePartsIcon } from "@/lib/utils";
 import { IOrder } from "@/types/order";
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import api from "@/lib/axiosInstance";
+import { AxiosError } from "axios";
+import { INFO } from "@/constants";
 
 interface OrderInvoiceProps {
   order: IOrder;
 }
 
 const OrderInvoice = ({ order }: OrderInvoiceProps) => {
+  // Cancel sheet state
+  const [cancelOpen, setCancelOpen] = useState(false);
+  const [reason, setReason] = useState("");
+  const [customReason, setCustomReason] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState<string | null>(null);
+
+  const helpMessage = `I need help with my order ${order.code}`;
+  const helpHref = INFO.waLink(helpMessage);
+
+  const presetReasons = [
+    "Found a better option",
+    "Price is too high",
+    "Booked by mistake",
+    "Device already fixed",
+    "Delivery taking too long",
+    "Other",
+  ];
+
+  const finalReason = () => {
+    const base = reason || (customReason ? "Other" : "");
+    const extra = customReason.trim();
+    return [base, extra].filter(Boolean).join(" - ");
+  };
+
+  const onSubmitCancel = async () => {
+    setSubmitError(null);
+    setSubmitSuccess(null);
+    const r = finalReason();
+    if (!r) {
+      setSubmitError("Please select or enter a reason.");
+      return;
+    }
+    try {
+      setSubmitting(true);
+      await api.post(`/order/${order._id}/cancel`, { reason: r });
+      setSubmitSuccess("Order canceled successfully.");
+      // Optionally refresh the page to reflect the new status
+      setTimeout(() => {
+        if (typeof window !== "undefined") window.location.reload();
+      }, 800);
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        const msg = e.response?.data?.message || "Failed to cancel order.";
+        setSubmitError(msg);
+      } else {
+        setSubmitError("Failed to cancel order.");
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   // Check if any spare part has range pricing
   const hasRangeItems =
     order.sparePartsDetails?.some(
@@ -383,6 +451,119 @@ const OrderInvoice = ({ order }: OrderInvoiceProps) => {
           </div>
 
           {/* View Invoice button removed as requested */}
+        </div>
+      </div>
+
+      {/* Actions Card: Help & Cancel */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">
+            <svg
+              className="w-4 h-4 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 10h.01M12 10h.01M16 10h.01M9 16h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <h2 className="font-bold text-gray-900 text-lg lg:text-xl">
+            Order Actions
+          </h2>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <a
+            href={helpHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto"
+          >
+            <Button variant="outline" className="w-full">
+              Need Help via WhatsApp
+            </Button>
+          </a>
+
+          <Sheet open={cancelOpen} onOpenChange={setCancelOpen}>
+            <SheetTrigger asChild>
+              <Button variant="destructive" className="w-full sm:w-auto">
+                Cancel Order
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="bottom" className="max-h-[85vh] overflow-auto">
+              <SheetHeader>
+                <SheetTitle>Cancel Order</SheetTitle>
+              </SheetHeader>
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label
+                    htmlFor="cancel-reason"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Select a reason
+                  </label>
+                  <select
+                    id="cancel-reason"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  >
+                    <option value="">Choose reason</option>
+                    {presetReasons.map((r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="cancel-details"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Additional details (optional)
+                  </label>
+                  <textarea
+                    id="cancel-details"
+                    value={customReason}
+                    onChange={(e) => setCustomReason(e.target.value)}
+                    rows={4}
+                    placeholder="Type more details here..."
+                    className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    We use this to improve our service.
+                  </p>
+                </div>
+                {submitError && (
+                  <div className="text-sm text-red-600">{submitError}</div>
+                )}
+                {submitSuccess && (
+                  <div className="text-sm text-green-700">{submitSuccess}</div>
+                )}
+              </div>
+              <div className="mt-6 flex items-center gap-3">
+                <Button
+                  variant="destructive"
+                  onClick={onSubmitCancel}
+                  disabled={submitting}
+                >
+                  {submitting ? "Cancelling..." : "Confirm Cancel"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setCancelOpen(false)}
+                  disabled={submitting}
+                >
+                  Close
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </div>
