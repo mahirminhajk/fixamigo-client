@@ -1,6 +1,6 @@
 "use client";
 
-import OrderInvoice from "@/components/others/orderInvoice";
+import OrderContent from "@/components/others/orderContent";
 import OrderProgressBar from "@/components/others/orderProgressBar";
 import api from "@/lib/axiosInstance";
 import { useCartStore } from "@/stores/cartStore";
@@ -240,7 +240,7 @@ export default function OrderSummaryContent() {
 
           {/* Order Details - Mobile: Full width, Desktop: Right 3 columns */}
           <div className="lg:col-span-3 order-2 lg:order-2">
-            <OrderInvoice order={order} />
+            <OrderContent order={order} />
           </div>
         </div>
       </div>
