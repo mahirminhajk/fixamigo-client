@@ -57,7 +57,7 @@ This document provides an overview of the reusable components used in the Fixami
 - **`emptyAndNotLogined.tsx`**: A component to display when the cart is empty or the user is not logged in.
 - **`LaptopSupportForm.tsx`**: A form for laptop support requests.
 - **`modelCart.tsx`**: A modal cart component.
-- **`orderInvoice.tsx`**: A component for displaying the order invoice.
+- **`orderContent.tsx`**: A modular component composing the order details (agent, device, alert, spare parts, service details, payment, and actions).
 - **`orderProgressBar.tsx`**: A progress bar for tracking the order status.
 - **`otherPhones.tsx`**: A component for displaying other phone models.
 - **`popupLoading.tsx`**: A loading popup.
