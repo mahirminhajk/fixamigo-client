@@ -497,6 +497,15 @@ function OrderActionsCard({ order }: { order: IOrder }) {
 
   return (
     <section className="pt-4 border-t border-gray-200">
+      {/** Hide cancel when order is already cancelled */}
+      {/** Compute ability to cancel */}
+      {/** Using enum ensures type-safe comparison */}
+      {/** canCancel = not CANCELLED */}
+      {/** WhatsApp help always visible */}
+      {/** Sheet slides in from right now */}
+
+      {/* compute cancel visibility */}
+      {(() => null)()}
       <div className="flex items-center gap-2 mb-3 text-gray-700">
         <svg
           className="w-4 h-4 opacity-70"
@@ -535,88 +544,90 @@ function OrderActionsCard({ order }: { order: IOrder }) {
           </Button>
         </a>
 
-        <Sheet open={cancelOpen} onOpenChange={setCancelOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              className="w-full sm:w-auto text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200"
-            >
-              Cancel Order
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="bottom" className="max-h-[85vh] overflow-auto">
-            <SheetHeader>
-              <SheetTitle>Cancel Order</SheetTitle>
-            </SheetHeader>
-            <div className="mt-2 text-sm text-gray-600">
-              Tell us why you want to cancel. This helps us improve.
-            </div>
-            <div className="mt-4 space-y-4">
-              <div>
-                <label
-                  htmlFor="cancel-reason"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Select a reason
-                </label>
-                <select
-                  id="cancel-reason"
-                  value={reason}
-                  onChange={(e) => setReason(e.target.value)}
-                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-                >
-                  <option value="">Choose reason</option>
-                  {presetReasons.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label
-                  htmlFor="cancel-details"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Additional details (optional)
-                </label>
-                <textarea
-                  id="cancel-details"
-                  value={customReason}
-                  onChange={(e) => setCustomReason(e.target.value)}
-                  rows={4}
-                  placeholder="Type more details here..."
-                  className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  We use this to improve our service.
-                </p>
-              </div>
-              {submitError && (
-                <div className="text-sm text-red-600">{submitError}</div>
-              )}
-              {submitSuccess && (
-                <div className="text-sm text-green-700">{submitSuccess}</div>
-              )}
-            </div>
-            <div className="mt-6 flex items-center gap-3">
+        {order.status !== OrderStatus.CANCELLED && (
+          <Sheet open={cancelOpen} onOpenChange={setCancelOpen}>
+            <SheetTrigger asChild>
               <Button
-                variant="destructive"
-                onClick={onSubmitCancel}
-                disabled={submitting}
+                variant="ghost"
+                className="w-full sm:w-auto text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200"
               >
-                {submitting ? "Cancelling..." : "Confirm Cancel"}
+                Cancel Order
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => setCancelOpen(false)}
-                disabled={submitting}
-              >
-                Close
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
+            </SheetTrigger>
+            <SheetContent side="right" className="max-h-[85vh] overflow-auto">
+              <SheetHeader>
+                <SheetTitle>Cancel Order</SheetTitle>
+              </SheetHeader>
+              <div className="mt-2 text-sm text-gray-600">
+                Tell us why you want to cancel. This helps us improve.
+              </div>
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label
+                    htmlFor="cancel-reason"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Select a reason
+                  </label>
+                  <select
+                    id="cancel-reason"
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                    className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  >
+                    <option value="">Choose reason</option>
+                    {presetReasons.map((r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label
+                    htmlFor="cancel-details"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Additional details (optional)
+                  </label>
+                  <textarea
+                    id="cancel-details"
+                    value={customReason}
+                    onChange={(e) => setCustomReason(e.target.value)}
+                    rows={4}
+                    placeholder="Type more details here..."
+                    className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    We use this to improve our service.
+                  </p>
+                </div>
+                {submitError && (
+                  <div className="text-sm text-red-600">{submitError}</div>
+                )}
+                {submitSuccess && (
+                  <div className="text-sm text-green-700">{submitSuccess}</div>
+                )}
+              </div>
+              <div className="mt-6 flex items-center gap-3">
+                <Button
+                  variant="destructive"
+                  onClick={onSubmitCancel}
+                  disabled={submitting}
+                >
+                  {submitting ? "Cancelling..." : "Confirm Cancel"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setCancelOpen(false)}
+                  disabled={submitting}
+                >
+                  Close
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
+        )}
       </div>
     </section>
   );
