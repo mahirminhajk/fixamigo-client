@@ -389,7 +389,7 @@ const ProductSearch: React.FC = () => {
                        focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100
                        placeholder-gray-400 transition-all duration-300 ease-in-out
                        disabled:bg-gray-50 disabled:cursor-not-allowed"
-            disabled={isPending}
+            // keep input enabled during pending to avoid focus/keyboard loss on mobile
           />
           {searchQuery && (
             <button
