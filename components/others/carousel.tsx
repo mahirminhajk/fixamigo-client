@@ -7,8 +7,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
   type CarouselApi,
 } from "@/components/ui/carousel";
 
@@ -87,7 +85,7 @@ export default function HeroCarousel() {
     <div className="relative w-full">
       <Carousel
         setApi={setApi}
-        className="w-full"
+        className="w-full xl:px-16 2xl:px-24"
         opts={{
           align: "start",
           loop: true,
@@ -96,7 +94,7 @@ export default function HeroCarousel() {
         <CarouselContent>
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-[16/9] md:aspect-[8/3] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-lg">
+              <div className="relative w-full aspect-[16/9] md:aspect-[8/3] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-3xl">
                 <Image
                   src={slide.src}
                   alt={`Banner ${index + 1} - Fixamigo mobile repair services`}
@@ -104,7 +102,7 @@ export default function HeroCarousel() {
                     index + 1
                   } - Fixamigo mobile repair services`}
                   fill
-                  className="object-cover object-center"
+                  className="object-cover xl:object-contain object-center"
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, (max-width: 1600px) 100vw, 1600px"
                   quality={85}
                   priority={index === 0}
@@ -120,9 +118,7 @@ export default function HeroCarousel() {
           ))}
         </CarouselContent>
 
-        {/* Navigation Arrows - Hidden on mobile, visible on desktop */}
-        <CarouselPrevious className="hidden md:flex left-4 size-12 bg-black/60 hover:bg-black/80 border-none text-white shadow-lg backdrop-blur-sm" />
-        <CarouselNext className="hidden md:flex right-4 size-12 bg-black/60 hover:bg-black/80 border-none text-white shadow-lg backdrop-blur-sm" />
+        {/* Navigation arrows removed as requested */}
       </Carousel>
 
       {/* Dot Indicators */}
