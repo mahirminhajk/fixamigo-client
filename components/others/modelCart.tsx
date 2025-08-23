@@ -27,6 +27,13 @@ function ModelCart() {
 
   const hasRangeItemsForDevice = hasRangeItems(cartItem.device._id);
   const totalPrice = getTotalPrice(cartItem.device._id);
+  // Detect presence of UNKNOWN spare parts (quote-after-order items)
+  const hasUnknownItemsForDevice = cartItem.spareParts.some(
+    (p) => p.type === "UNKNOWN"
+  );
+  const totalPriceColorClass = hasRangeItemsForDevice
+    ? "text-[#D2691E]"
+    : "text-blue-600";
 
   return (
     <div className="p-6 bg-white rounded-[6px] shadow-sm max-w-md mx-auto lg:max-w-none lg:shadow-md">
@@ -75,23 +82,23 @@ function ModelCart() {
 
       <div className="flex justify-between font-semibold text-lg">
         <span>Total Price</span>
-        <span
-          className={hasRangeItemsForDevice ? "font-semibold" : "text-blue-600"}
-          style={{
-            color: hasRangeItemsForDevice ? "#D2691E" : undefined,
-          }}
-        >
+        <span className={`font-semibold ${totalPriceColorClass}`}>
           ₹{totalPrice}
           {hasRangeItemsForDevice ? "*" : ""}
         </span>
       </div>
 
       {hasRangeItemsForDevice && (
-        <div className="mt-2 text-xs" style={{ color: "#D2691E" }}>
+        <div className="mt-2 text-xs text-[#D2691E]">
           <p>
             * Maximum estimated price. Final price will be confirmed by service
             partner.
           </p>
+        </div>
+      )}
+      {hasUnknownItemsForDevice && (
+        <div className="mt-2 text-xs text-[#D2691E] text-wrap">
+          <p>Price will be confirmed after order.</p>
         </div>
       )}
 

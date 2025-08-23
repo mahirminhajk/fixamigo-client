@@ -56,7 +56,7 @@ export default function OtherServices({
       label: m.label,
       name: m.label,
       category: "OTHERS",
-      type: SparePartType.UNKNOWN,
+      type: SparePartType.DIAGNOSIS,
       price: { total: 0, repair: 0, final: 0 },
     } as ISparePart;
   });
