@@ -1,9 +1,14 @@
 import ListSpareParts from "@/components/list/listSpareParts";
+import UnknownSpareParts from "@/components/list/UnknownSpareParts";
+import DiagnosisServices from "@/components/list/DiagnosisServices";
+import OtherServices from "@/components/list/OtherServices";
 import ShowModel from "@/components/others/showModel";
 import WhyChooseUs from "@/components/others/whyChooseUs";
 import OtherPhones from "@/components/others/otherPhones";
 import { IDevice } from "@/types/device";
+import { ISparePart } from "@/types";
 import ModelCart from "../others/modelCart";
+import Link from "next/link";
 
 interface DeviceDetailsContentProps {
   deviceData: IDevice;
@@ -12,6 +17,29 @@ interface DeviceDetailsContentProps {
 export default async function DeviceDetailsContent({
   deviceData,
 }: DeviceDetailsContentProps) {
+  // Define the complete required categories list
+  const REQUIRED_CATEGORIES = [
+    "BATTERY",
+    "DISPLAY",
+    "CAMERA",
+    "CHARGING_PORT",
+    "MOTHERBOARD",
+    "SPEAKER",
+    "VIBRATOR",
+    "BUTTONS",
+    "FRONT_CAMERA",
+    "BACK_CAMERA",
+    "CAMERA_GLASS",
+  ];
+
+  const existingCategories = Array.isArray(deviceData.spareParts)
+    ? deviceData.spareParts.map((sp) => sp.category)
+    : [];
+
+  const missingCategories = REQUIRED_CATEGORIES.filter(
+    (cat) => !existingCategories.includes(cat)
+  );
+
   return (
     <section className="max-w-7xl mx-auto px-4">
       {/* Mobile Layout (unchanged) */}
@@ -35,6 +63,79 @@ export default async function DeviceDetailsContent({
             images: deviceData.images,
           }}
         />
+        {/* Missing categories placeholder services */}
+        <UnknownSpareParts
+          missingCategories={missingCategories}
+          cartDevice={{
+            _id: deviceData._id,
+            name: deviceData.name,
+            slug: deviceData.slug,
+            company: deviceData.company,
+            images: deviceData.images,
+          }}
+        />
+        <DiagnosisServices
+          existingSpareParts={deviceData.spareParts as ISparePart[]}
+          cartDevice={{
+            _id: deviceData._id,
+            name: deviceData.name,
+            slug: deviceData.slug,
+            company: deviceData.company,
+            images: deviceData.images,
+          }}
+        />
+        <OtherServices
+          existingSpareParts={deviceData.spareParts as ISparePart[]}
+          cartDevice={{
+            _id: deviceData._id,
+            name: deviceData.name,
+            slug: deviceData.slug,
+            company: deviceData.company,
+            images: deviceData.images,
+          }}
+        />
+        {/* Support/help request card (moved from ListSpareParts) */}
+        <div className="bg-gray-100 py-4 rounded-[6px] shadow-sm mt-4 lg:col-span-full">
+          <Link
+            href={`/support-request?type=service&value=${deviceData.slug}`}
+            className="flex items-center justify-between px-4"
+            title="Request a service that's not listed"
+          >
+            <div className="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6 text-blue-500 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                />
+              </svg>
+              <span className="text-sm font-medium text-gray-800">
+                Can&apos;t find the service you need? Request here
+              </span>
+            </div>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-gray-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </div>
         <ModelCart />
         <WhyChooseUs />
       </div>{" "}
@@ -66,6 +167,81 @@ export default async function DeviceDetailsContent({
                 images: deviceData.images,
               }}
             />
+
+            {/* Missing categories placeholder services */}
+            <UnknownSpareParts
+              missingCategories={missingCategories}
+              cartDevice={{
+                _id: deviceData._id,
+                name: deviceData.name,
+                slug: deviceData.slug,
+                company: deviceData.company,
+                images: deviceData.images,
+              }}
+            />
+
+            <DiagnosisServices
+              existingSpareParts={deviceData.spareParts as ISparePart[]}
+              cartDevice={{
+                _id: deviceData._id,
+                name: deviceData.name,
+                slug: deviceData.slug,
+                company: deviceData.company,
+                images: deviceData.images,
+              }}
+            />
+            <OtherServices
+              existingSpareParts={deviceData.spareParts as ISparePart[]}
+              cartDevice={{
+                _id: deviceData._id,
+                name: deviceData.name,
+                slug: deviceData.slug,
+                company: deviceData.company,
+                images: deviceData.images,
+              }}
+            />
+            {/* Support/help request card (moved from ListSpareParts) */}
+            <div className="bg-gray-100 py-4 rounded-[6px] shadow-sm mt-4 lg:col-span-full">
+              <Link
+                href={`/support-request?type=service&value=${deviceData.slug}`}
+                className="flex items-center justify-between px-4"
+                title="Request a service that's not listed"
+              >
+                <div className="flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6 text-blue-500 mr-3"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"
+                    />
+                  </svg>
+                  <span className="text-sm font-medium text-gray-800">
+                    Can&apos;t find the service you need? Request here
+                  </span>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </Link>
+            </div>
 
             {/* Model Cart */}
             <ModelCart />
