@@ -2,6 +2,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { getSparePartsIcon } from "@/lib/utils";
 import { IOrder } from "@/types/order";
+import { SparePartType } from "@/types/spareParts";
 import Image from "next/image";
 import PriceRangeInfo from "../list/PriceRangeInfo";
 
@@ -27,6 +28,10 @@ const CheckoutOrderSummary = ({
 
   const hasRangeItemsForDevice = hasRangeItems(cartItem.device._id);
   const totalCartPrice = getTotalPrice(cartItem.device._id);
+  const hasUnknownOrDiagnosis = cartItem.spareParts.some(
+    (p) =>
+      p.type === SparePartType.UNKNOWN || p.type === SparePartType.DIAGNOSIS
+  );
 
   return (
     <div className="bg-white p-4 lg:p-6 rounded-xl shadow-md space-y-4 w-full max-w-md lg:max-w-none mx-auto lg:mx-0">
@@ -82,21 +87,28 @@ const CheckoutOrderSummary = ({
                 {item.label}
               </span>
             </div>
-            <span
-              className="font-semibold text-sm lg:text-base flex-shrink-0"
-              style={{
-                color:
+            {item.type === SparePartType.UNKNOWN ||
+            item.type === SparePartType.DIAGNOSIS ? (
+              <span className="font-semibold text-sm lg:text-base flex-shrink-0 text-[#D2691E]">
+                Quote after order
+              </span>
+            ) : (
+              <span
+                className={`font-semibold text-sm lg:text-base flex-shrink-0 ${
                   item.price.range &&
                   item.price.startPrice &&
                   item.price.endPrice
-                    ? "#D2691E"
-                    : "black",
-              }}
-            >
-              {item.price.range && item.price.startPrice && item.price.endPrice
-                ? `₹${item.price.startPrice} - ₹${item.price.endPrice}*`
-                : `₹${item.price.final}`}
-            </span>
+                    ? "text-[#D2691E]"
+                    : "text-black"
+                }`}
+              >
+                {item.price.range &&
+                item.price.startPrice &&
+                item.price.endPrice
+                  ? `₹${item.price.startPrice} - ₹${item.price.endPrice}*`
+                  : `₹${item.price.final}`}
+              </span>
+            )}
           </div>
         ))}
       </div>
@@ -106,10 +118,9 @@ const CheckoutOrderSummary = ({
         <div className="flex justify-between text-sm lg:text-base">
           <span className="text-gray-600">Subtotal</span>
           <span
-            className="font-semibold"
-            style={{
-              color: hasRangeItemsForDevice ? "#D2691E" : "black",
-            }}
+            className={`font-semibold ${
+              hasRangeItemsForDevice ? "text-[#D2691E]" : "text-black"
+            }`}
           >
             ₹{totalCartPrice.toLocaleString()}
             {hasRangeItemsForDevice ? "*" : ""}
@@ -126,9 +137,9 @@ const CheckoutOrderSummary = ({
         <div className="flex justify-between font-bold text-base lg:text-lg">
           <span>Total</span>
           <span
-            style={{
-              color: hasRangeItemsForDevice ? "#D2691E" : "#2563eb",
-            }}
+            className={
+              hasRangeItemsForDevice ? "text-[#D2691E]" : "text-blue-600"
+            }
           >
             ₹{(totalCartPrice + (order?.price?.delivery || 0)).toLocaleString()}
             {hasRangeItemsForDevice ? "*" : ""}
@@ -136,11 +147,16 @@ const CheckoutOrderSummary = ({
         </div>
 
         {hasRangeItemsForDevice && (
-          <div className="mt-2 text-xs lg:text-sm" style={{ color: "#D2691E" }}>
+          <div className="mt-2 text-xs lg:text-sm text-[#D2691E]">
             <p>
               * Maximum estimated price. Final price will be confirmed by
               service partner.
             </p>
+          </div>
+        )}
+        {hasUnknownOrDiagnosis && (
+          <div className="mt-1 text-xs lg:text-sm text-[#D2691E]">
+            <p>Price will be confirmed after order.</p>
           </div>
         )}
       </div>

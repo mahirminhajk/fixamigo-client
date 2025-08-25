@@ -426,11 +426,6 @@ function CheckoutPageContent() {
 
             {/* Right Column - Order Summary */}
             <div className="lg:order-2 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-6 lg:h-fit lg:sticky lg:top-4">
-              <div className="lg:border-b lg:border-gray-200 lg:pb-4 lg:mb-6">
-                <h2 className="hidden lg:block text-lg font-semibold text-gray-900 mb-4">
-                  Order Summary
-                </h2>
-              </div>
               <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
             </div>
           </div>
