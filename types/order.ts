@@ -14,19 +14,22 @@ export interface IOrder {
     images: string[];
   };
   sparePartsDetails?: {
-    _id: string;
+    _id?: string;
     name: string;
     category: string;
+    type?: SparePartType;
     price: {
       repair: number;
       total: number;
       final: number;
       rule: string;
-      range?: boolean;
+      range?: boolean; // indicates if price is still a range
       startPrice?: number;
       endPrice?: number;
-      confirmedBy?: string;
+    };
+    confirmation?: {
       confirmedAt?: Date;
+      stockConfirmed?: boolean; // stock availability confirmed for non-range pricing
     };
   }[];
 
@@ -95,6 +98,13 @@ export enum OrderStatus {
   CANCELLED = "CANCELLED",
   REJECTED = "REJECTED",
   OTHERS = "OTHERS",
+}
+
+export enum SparePartType {
+  DEFAULT = "DEFAULT",
+  RANGE = "RANGE",
+  DIAGNOSIS = "DIAGNOSIS",
+  UNKNOWN = "UNKNOWN", // For parts/services without predefined spare part pricing
 }
 
 export interface IStepper {

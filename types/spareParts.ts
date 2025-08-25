@@ -1,9 +1,4 @@
-export enum SparePartType {
-  DEFAULT = "DEFAULT",
-  RANGE = "RANGE",
-  DIAGNOSIS = "DIAGNOSIS",
-  UNKNOWN = "UNKNOWN", // For parts/services without predefined spare part pricing
-}
+import { SparePartType } from "./order";
 
 export interface ISparePart {
   _id: string;

@@ -2,7 +2,7 @@ import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { getSparePartsIcon } from "@/lib/utils";
 import { IOrder } from "@/types/order";
-import { SparePartType } from "@/types/spareParts";
+import { SparePartType } from "@/types";
 import Image from "next/image";
 import PriceRangeInfo from "../list/PriceRangeInfo";
 
