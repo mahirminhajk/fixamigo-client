@@ -1,7 +1,7 @@
 "use client";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
-import { SparePartType } from "@/types/spareParts";
+import { SparePartType } from "@/types";
 import { useCartStore } from "@/stores/cartStore";
 import Image from "next/image";
 import Link from "next/link";

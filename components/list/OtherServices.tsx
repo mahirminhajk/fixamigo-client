@@ -1,7 +1,10 @@
-import AddToCartBtn from "../buttons/addToCartBtn";
+"use client";
 import { ICartDevice, ISparePart, SparePartType } from "@/types";
 import { HardDrive, Cpu, KeyRound } from "lucide-react";
 import { MdRestore, MdBugReport, MdLockOpen } from "react-icons/md";
+import { Button } from "@/components/ui/button";
+import { useCartStore } from "@/stores/cartStore";
+import { useRouter } from "next/navigation";
 
 interface OtherServicesProps {
   existingSpareParts: ISparePart[];
@@ -41,6 +44,11 @@ export default function OtherServices({
   existingSpareParts,
   cartDevice,
 }: OtherServicesProps) {
+  const addToCart = useCartStore((s) => s.addToCart);
+  const clearCart = useCartStore((s) => s.clearCart);
+  const removeFromCart = useCartStore((s) => s.removeFromCart);
+  const cartItems = useCartStore((s) => s.cart.items);
+  const router = useRouter();
   const existingLabels = (existingSpareParts || []).map((sp) =>
     sp.label.toLowerCase()
   );
@@ -92,7 +100,35 @@ export default function OtherServices({
                     </p>
                   </div>
                 </div>
-                <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
+                {(() => {
+                  const selected = cartItems.some(
+                    (ci) =>
+                      ci.device._id === cartDevice._id &&
+                      ci.spareParts.some((sp) => sp._id === item._id)
+                  );
+                  return selected ? (
+                    <Button
+                      onClick={() => removeFromCart(cartDevice._id, item._id)}
+                      variant="destructive"
+                      className="text-[10px] px-3 py-1 h-7 rounded"
+                    >
+                      Remove
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        clearCart();
+                        addToCart(cartDevice, item);
+                        router.push(
+                          `/repair/checkout?device=${cartDevice.slug}`
+                        );
+                      }}
+                      className="bg-black hover:bg-black/80 text-white font-semibold text-[10px] px-3 py-1 h-7 rounded"
+                    >
+                      Book Now
+                    </Button>
+                  );
+                })()}
               </div>
             </div>
           );
@@ -124,7 +160,35 @@ export default function OtherServices({
                   </div>
                 </div>
                 <div className="flex items-center justify-end">
-                  <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
+                  {(() => {
+                    const selected = cartItems.some(
+                      (ci) =>
+                        ci.device._id === cartDevice._id &&
+                        ci.spareParts.some((sp) => sp._id === item._id)
+                    );
+                    return selected ? (
+                      <Button
+                        onClick={() => removeFromCart(cartDevice._id, item._id)}
+                        variant="destructive"
+                        className="text-xs px-3 py-1 h-7 rounded"
+                      >
+                        Remove
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={() => {
+                          clearCart();
+                          addToCart(cartDevice, item);
+                          router.push(
+                            `/repair/checkout?device=${cartDevice.slug}`
+                          );
+                        }}
+                        className="bg-black hover:bg-black/80 text-white text-xs font-semibold"
+                      >
+                        Book Now
+                      </Button>
+                    );
+                  })()}
                 </div>
               </div>
             </div>
