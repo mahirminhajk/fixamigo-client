@@ -133,11 +133,26 @@ export default function DiagnosisServices({
                   const selected = cartItems.some(
                     (ci) =>
                       ci.device._id === cartDevice._id &&
-                      ci.spareParts.some((sp) => sp._id === item._id)
+                      ci.spareParts.some(
+                        (sp) =>
+                          sp.type === SparePartType.DIAGNOSIS &&
+                          sp.label === item.label
+                      )
                   );
                   return selected ? (
                     <Button
-                      onClick={() => removeFromCart(cartDevice._id, item._id)}
+                      onClick={() => {
+                        const target = cartItems
+                          .find((ci) => ci.device._id === cartDevice._id)
+                          ?.spareParts.find(
+                            (sp) =>
+                              sp.type === SparePartType.DIAGNOSIS &&
+                              sp.label === item.label
+                          );
+                        if (target) {
+                          removeFromCart(cartDevice._id, target._id);
+                        }
+                      }}
                       variant="destructive"
                       className="text-[10px] px-3 py-1 h-7 rounded"
                     >
@@ -201,11 +216,26 @@ export default function DiagnosisServices({
                     const selected = cartItems.some(
                       (ci) =>
                         ci.device._id === cartDevice._id &&
-                        ci.spareParts.some((sp) => sp._id === item._id)
+                        ci.spareParts.some(
+                          (sp) =>
+                            sp.type === SparePartType.DIAGNOSIS &&
+                            sp.label === item.label
+                        )
                     );
                     return selected ? (
                       <Button
-                        onClick={() => removeFromCart(cartDevice._id, item._id)}
+                        onClick={() => {
+                          const target = cartItems
+                            .find((ci) => ci.device._id === cartDevice._id)
+                            ?.spareParts.find(
+                              (sp) =>
+                                sp.type === SparePartType.DIAGNOSIS &&
+                                sp.label === item.label
+                            );
+                          if (target) {
+                            removeFromCart(cartDevice._id, target._id);
+                          }
+                        }}
                         variant="destructive"
                         className="text-xs px-3 py-1 h-7 rounded"
                       >
