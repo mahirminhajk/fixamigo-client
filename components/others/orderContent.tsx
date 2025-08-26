@@ -15,7 +15,7 @@ import {
 import api from "@/lib/axiosInstance";
 import { formatAddress, formatDate, getSparePartsIcon } from "@/lib/utils";
 import { INFO } from "@/constants";
-import { IOrder, OrderStatus } from "@/types/order";
+import { IOrder, OrderStatus, SparePartType } from "@/types/order";
 
 type Agent = IOrder["agent"];
 type Alert = IOrder["alert"];
@@ -236,50 +236,60 @@ function SparePartsCard({ order }: { order: IOrder }) {
       </div>
 
       <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-4 rounded-xl border border-purple-200 space-y-4">
-        {order.sparePartsDetails?.map((spare, i) => (
-          <div
-            key={i}
-            className={`flex items-center gap-4 ${
-              i !== 0 ? "pt-4 border-t border-purple-200" : ""
-            }`}
-          >
-            <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-lg overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
-              <Image
-                src={getSparePartsIcon(spare.category)}
-                alt={spare.name}
-                title={`${spare.name} Icon`}
-                width={40}
-                height={40}
-                className="object-contain"
-              />
+        {order.sparePartsDetails?.map((spare, i) => {
+          const needsConfirmation =
+            spare.type === SparePartType.UNKNOWN ||
+            spare.type === SparePartType.DIAGNOSIS ||
+            spare.type === SparePartType.RANGE;
+          const stockConfirmed = spare.confirmation?.stockConfirmed ?? false;
+          const showRange =
+            needsConfirmation &&
+            !stockConfirmed &&
+            spare.price.range &&
+            spare.price.startPrice &&
+            spare.price.endPrice;
+          const awaitingText = needsConfirmation && !stockConfirmed;
+          return (
+            <div
+              key={i}
+              className={`flex items-center gap-4 ${
+                i !== 0 ? "pt-4 border-t border-purple-200" : ""
+              }`}
+            >
+              <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-lg overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
+                <Image
+                  src={getSparePartsIcon(spare.category)}
+                  alt={spare.name}
+                  title={`${spare.name} Icon`}
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="font-bold text-gray-900 text-sm lg:text-base truncate">
+                  {spare.name.toUpperCase()}
+                </h3>
+                <p className="text-gray-600 text-xs lg:text-sm">
+                  <span className="font-medium">{spare.category}</span>
+                </p>
+              </div>
+              <div className="text-right">
+                {awaitingText ? (
+                  <p className="font-semibold text-sm lg:text-base text-[#D2691E]">
+                    {showRange
+                      ? `₹${spare.price.startPrice} - ₹${spare.price.endPrice}*`
+                      : "Price will be confirmed"}
+                  </p>
+                ) : (
+                  <p className="font-bold text-sm lg:text-base text-[#1f2937]">
+                    ₹{spare.price.final}
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-gray-900 text-sm lg:text-base truncate">
-                {spare.name.toUpperCase()}
-              </h3>
-              <p className="text-gray-600 text-xs lg:text-sm">
-                <span className="font-medium">{spare.category}</span>
-              </p>
-            </div>
-            <div className="text-right">
-              <p
-                className={`font-bold text-sm lg:text-base ${
-                  spare.price.range &&
-                  spare.price.startPrice &&
-                  spare.price.endPrice
-                    ? "text-[#D2691E]"
-                    : "text-[#1f2937]"
-                }`}
-              >
-                {spare.price.range &&
-                spare.price.startPrice &&
-                spare.price.endPrice
-                  ? `₹${spare.price.startPrice} - ₹${spare.price.endPrice}*`
-                  : `₹${spare.price.final}`}
-              </p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -354,6 +364,15 @@ function PaymentDetailsCard({
   order: IOrder;
   hasRangeItems: boolean;
 }) {
+  const anyAwaitingConfirmation = order.sparePartsDetails?.some((spare) => {
+    const needsConfirmation =
+      spare.type === SparePartType.UNKNOWN ||
+      spare.type === SparePartType.DIAGNOSIS ||
+      spare.type === SparePartType.RANGE;
+    const stockConfirmed = spare.confirmation?.stockConfirmed ?? false;
+    return needsConfirmation && !stockConfirmed;
+  });
+  const showMaxEstimatedNote = hasRangeItems && anyAwaitingConfirmation;
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
@@ -414,7 +433,7 @@ function PaymentDetailsCard({
               {hasRangeItems ? "*" : ""}
             </span>
           </div>
-          {hasRangeItems && (
+          {showMaxEstimatedNote && (
             <div className="mt-4 p-3 bg-orange-50 border border-orange-200 rounded-lg">
               <p className="text-xs lg:text-sm text-orange-800 flex items-start gap-2">
                 <svg

@@ -94,7 +94,7 @@ export default function HeroCarousel() {
         <CarouselContent>
           {slides.map((slide, index) => (
             <CarouselItem key={index}>
-              <div className="relative w-full aspect-[16/9] md:aspect-[8/3] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden rounded-3xl">
+              <div className="relative w-full aspect-[16/9] md:aspect-[8/3] max-h-[400px] sm:max-h-[450px] md:max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] overflow-hidden">
                 <Image
                   src={slide.src}
                   alt={`Banner ${index + 1} - Fixamigo mobile repair services`}

@@ -4,6 +4,7 @@ import CheckoutPaymentMethodCard from "@/components/checkoutComps/checkoutPaymen
 import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
 import CheckoutServiceMethodCard from "@/components/checkoutComps/checkoutServiceMethodCard";
 import CheckoutOrderSummary from "@/components/checkoutComps/checkoutOrderSummary";
+import CheckoutNoteCard from "@/components/checkoutComps/checkoutNoteCard";
 import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import api from "@/lib/axiosInstance";
@@ -384,7 +385,7 @@ function CheckoutPageContent() {
                   </div>
                 )}
 
-                <div className="p-4 lg:p-6 space-y-6 lg:space-y-8 flex flex-col items-center lg:items-stretch pb-48 lg:pb-8">
+                <div className="p-4 lg:p-6 space-y-6 lg:space-y-8 flex flex-col items-center lg:items-stretch pb-16 lg:pb-8">
                   <div className="w-full space-y-4 lg:space-y-6">
                     <CheckoutServiceMethodCard
                       onServiceMethodChange={onServiceMethodChange}
@@ -409,6 +410,12 @@ function CheckoutPageContent() {
                     <CheckoutPaymentMethodCard
                       onPaymentMethodChange={onPaymentMethodChange}
                     />
+                    <CheckoutNoteCard
+                      order={order}
+                      onNoteSaved={(note) =>
+                        setOrder((prev) => (prev ? { ...prev, note } : prev))
+                      }
+                    />
                   </div>
 
                   {/* Desktop Place Order Button */}
@@ -425,12 +432,8 @@ function CheckoutPageContent() {
             </div>
 
             {/* Right Column - Order Summary */}
-            <div className="lg:order-2 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-6 lg:h-fit lg:sticky lg:top-4">
-              <div className="lg:border-b lg:border-gray-200 lg:pb-4 lg:mb-6">
-                <h2 className="hidden lg:block text-lg font-semibold text-gray-900 mb-4">
-                  Order Summary
-                </h2>
-              </div>
+            {/* Added pb-32 on mobile to ensure full visibility above fixed bottom PlaceServiceBtn */}
+            <div className="lg:order-2 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-6 lg:h-fit lg:sticky lg:top-4 pb-32">
               <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
             </div>
           </div>

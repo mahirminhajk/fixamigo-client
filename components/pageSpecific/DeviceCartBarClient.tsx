@@ -60,34 +60,26 @@ export default function DeviceCartBarClient() {
 
   const total = getTotalPrice(cartItem.device._id);
   const hasRangeItemsForDevice = hasRangeItems(cartItem.device._id);
-  if (total === 0) return null;
+  const hasUnknownItemsForDevice = cartItem.spareParts.some(
+    (p) => p.type === "UNKNOWN"
+  );
+  const priceColorClass = hasRangeItemsForDevice
+    ? "text-[#D2691E]"
+    : "text-black";
 
   return (
-    <div
-      className="fixed bottom-0 left-0 w-full flex justify-center pointer-events-none z-50 lg:bottom-6 lg:right-6 lg:left-auto lg:w-auto"
-      style={{
-        transition: "opacity 0.3s, transform 0.3s",
-        opacity: 1,
-        transform: "translateY(0)",
-      }}
-    >
+    <div className="fixed bottom-0 left-0 w-full flex justify-center pointer-events-none z-50 lg:bottom-6 lg:right-6 lg:left-auto lg:w-auto transition-opacity duration-300 opacity-100">
       {/* Mobile Layout - Full width bottom bar */}
       <div className="lg:hidden w-full max-w-[500px] bg-white py-3 px-4 border shadow-md flex justify-between items-center rounded-t-[12px] pointer-events-auto">
         <div className="flex flex-col justify-between h-full">
-          <p
-            className="font-bold text-xl mb-1"
-            style={{
-              color: hasRangeItemsForDevice ? "#D2691E" : "black",
-            }}
-          >
+          <p className={`font-bold text-xl mb-1 ${priceColorClass}`}>
             ₹{total}
             {hasRangeItemsForDevice ? "*" : ""}
           </p>
           {hasRangeItemsForDevice && (
-            <p className="text-xs mb-1" style={{ color: "#D2691E" }}>
-              Max estimated price
-            </p>
+            <p className="text-xs mb-1 text-[#D2691E]">Max estimated price</p>
           )}
+
           <p className="text-gray-600 text-xs mt-2">
             By clicking <span className="font-semibold">Book now</span>, you
             agree with our{" "}
@@ -99,17 +91,18 @@ export default function DeviceCartBarClient() {
               Terms and Conditions
             </Link>
           </p>
+          {hasUnknownItemsForDevice && (
+            <p className="text-xs mb-1 text-[#D2691E]">
+              Price will be confirmed after order
+            </p>
+          )}
         </div>
         <button
           onClick={handleBookNow}
           className="flex items-center gap-2 bg-black text-white py-3 px-5 rounded-[6px] font-semibold ml-4"
         >
           Book Now
-          <span
-            style={{ display: "inline-block", transform: "translateY(2px)" }}
-          >
-            &rarr;
-          </span>
+          <span className="inline-block relative top-[2px]">&rarr;</span>
         </button>
       </div>
 
@@ -119,18 +112,16 @@ export default function DeviceCartBarClient() {
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm text-gray-600">Total Amount</p>
-              <p
-                className="font-bold text-2xl"
-                style={{
-                  color: hasRangeItemsForDevice ? "#D2691E" : "black",
-                }}
-              >
+              <p className={`font-bold text-2xl ${priceColorClass}`}>
                 ₹{total}
                 {hasRangeItemsForDevice ? "*" : ""}
               </p>
               {hasRangeItemsForDevice && (
-                <p className="text-xs" style={{ color: "#D2691E" }}>
-                  Max estimated price
+                <p className="text-xs text-[#D2691E]">Max estimated price</p>
+              )}
+              {hasUnknownItemsForDevice && (
+                <p className="text-xs text-[#D2691E]">
+                  Price will be confirmed <br /> after order
                 </p>
               )}
             </div>
