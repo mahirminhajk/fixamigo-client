@@ -385,7 +385,7 @@ function CheckoutPageContent() {
                   </div>
                 )}
 
-                <div className="p-4 lg:p-6 space-y-6 lg:space-y-8 flex flex-col items-center lg:items-stretch pb-48 lg:pb-8">
+                <div className="p-4 lg:p-6 space-y-6 lg:space-y-8 flex flex-col items-center lg:items-stretch pb-16 lg:pb-8">
                   <div className="w-full space-y-4 lg:space-y-6">
                     <CheckoutServiceMethodCard
                       onServiceMethodChange={onServiceMethodChange}
@@ -432,7 +432,8 @@ function CheckoutPageContent() {
             </div>
 
             {/* Right Column - Order Summary */}
-            <div className="lg:order-2 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-6 lg:h-fit lg:sticky lg:top-4">
+            {/* Added pb-32 on mobile to ensure full visibility above fixed bottom PlaceServiceBtn */}
+            <div className="lg:order-2 lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-6 lg:h-fit lg:sticky lg:top-4 pb-32">
               <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
             </div>
           </div>
