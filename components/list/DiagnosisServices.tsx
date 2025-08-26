@@ -75,12 +75,15 @@ export default function DiagnosisServices({
   ).map((raw) => {
     const meta = RAW_TO_OPTIMIZED[raw];
     const label = meta?.label || raw;
-    const slug = label
+    // Build idLabel: lowercase, spaces -> underscore, remove non alphanum/underscore, collapse repeats
+    const idLabel = label
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "");
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "_")
+      .replace(/_+/g, "_");
     return {
-      _id: `diagnosis-${cartDevice._id}-${slug}`,
+      _id: `diagnosis-${cartDevice._id}-${idLabel}`,
       label,
       name: label,
       category: "DIAGNOSIS",

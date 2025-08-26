@@ -76,9 +76,15 @@ export default function OtherServices({
   );
 
   const services: ISparePart[] = filteredMetas.map((m) => {
-    const slug = m.label.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+    const idLabel = m.label
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "_")
+      .replace(/_+/g, "_");
     return {
-      _id: `other-${cartDevice._id}-${slug}`,
+      _id: `diagnosis-${cartDevice._id}-${idLabel}`,
+      // using same prefix pattern as diagnosis-* so backend can parse uniformly
       label: m.label,
       name: m.label,
       category: "OTHERS",
