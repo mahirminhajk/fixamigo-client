@@ -70,6 +70,7 @@ export interface IOrder {
   };
 
   createdAt: Date;
+  note?: string;
 }
 
 export enum PaymentMode {

@@ -4,6 +4,7 @@ import CheckoutPaymentMethodCard from "@/components/checkoutComps/checkoutPaymen
 import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
 import CheckoutServiceMethodCard from "@/components/checkoutComps/checkoutServiceMethodCard";
 import CheckoutOrderSummary from "@/components/checkoutComps/checkoutOrderSummary";
+import CheckoutNoteCard from "@/components/checkoutComps/checkoutNoteCard";
 import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import api from "@/lib/axiosInstance";
@@ -408,6 +409,12 @@ function CheckoutPageContent() {
                     />
                     <CheckoutPaymentMethodCard
                       onPaymentMethodChange={onPaymentMethodChange}
+                    />
+                    <CheckoutNoteCard
+                      order={order}
+                      onNoteSaved={(note) =>
+                        setOrder((prev) => (prev ? { ...prev, note } : prev))
+                      }
                     />
                   </div>
 
