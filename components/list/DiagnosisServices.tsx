@@ -11,6 +11,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { useRouter } from "next/navigation";
+import UserRegSheet from "../sheets/userRegSheet";
+import { Sheet } from "@/components/ui/sheet";
+import { useUserStore } from "@/stores/userStore";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
+import { useState } from "react";
 
 interface DiagnosisServicesProps {
   existingSpareParts: ISparePart[];
@@ -48,6 +53,19 @@ export default function DiagnosisServices({
   // Subscribe to cart items to ensure component re-renders when cart changes
   const cartItems = useCartStore((s) => s.cart.items);
   const router = useRouter();
+  const user = useHydratedStore(useUserStore, (s) => s.user);
+  const [open, setOpen] = useState(false);
+  const [pendingItem, setPendingItem] = useState<ISparePart | null>(null);
+  const onOpenChange = () => setOpen((o) => !o);
+  const onCompleted = () => {
+    setOpen(false);
+    if (pendingItem) {
+      clearCart();
+      addToCart(cartDevice, pendingItem);
+      router.push(`/repair/checkout?device=${cartDevice.slug}`);
+      setPendingItem(null);
+    }
+  };
   const existingLabels = (existingSpareParts || []).map((sp) =>
     sp.label.toLowerCase()
   );
@@ -75,6 +93,9 @@ export default function DiagnosisServices({
 
   return (
     <div className="w-full max-w-md mx-auto lg:max-w-none p-4 mt-8">
+      <Sheet open={open} onOpenChange={onOpenChange}>
+        <UserRegSheet onCompleted={onCompleted} />
+      </Sheet>
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-lg font-bold">CHECK &amp; DIAGNOSE</h2>
       </div>
@@ -122,6 +143,11 @@ export default function DiagnosisServices({
                   ) : (
                     <Button
                       onClick={() => {
+                        if (!user?._id) {
+                          setPendingItem(item);
+                          setOpen(true);
+                          return;
+                        }
                         clearCart();
                         addToCart(cartDevice, item);
                         router.push(
@@ -185,6 +211,11 @@ export default function DiagnosisServices({
                     ) : (
                       <Button
                         onClick={() => {
+                          if (!user?._id) {
+                            setPendingItem(item);
+                            setOpen(true);
+                            return;
+                          }
                           clearCart();
                           addToCart(cartDevice, item);
                           router.push(
