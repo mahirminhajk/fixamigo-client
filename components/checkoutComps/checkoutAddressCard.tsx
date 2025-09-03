@@ -29,9 +29,17 @@ interface AddressFormData {
   alternateNumber: string;
 }
 
+interface GeoLocationData {
+  latitude: number;
+  longitude: number;
+}
+
 interface CheckoutAddressCardProps {
   address?: IAddress;
-  onAddressSubmit: (address: IAddress | string) => Promise<void>;
+  onAddressSubmit: (
+    address: IAddress | string,
+    location?: GeoLocationData
+  ) => Promise<void>;
   loading: boolean;
   error: "BAD_REQUEST" | "NO_ZONES" | null;
   onAddressSelect?: (address: IAddress) => void; // Optional prop to update local state
@@ -48,6 +56,9 @@ const CheckoutAddressCard = ({
   const [showAddNewForm, setShowAddNewForm] = useState(false);
   const [existingAddresses, setExistingAddresses] = useState<IAddress[]>([]);
   const [fetchingAddresses, setFetchingAddresses] = useState(false);
+  const [location, setLocation] = useState<GeoLocationData | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   const toggleSheet = () => {
     setOpen(!open);
@@ -129,7 +140,12 @@ const CheckoutAddressCard = ({
     };
 
     try {
-      await onAddressSubmit(newAddress);
+      await onAddressSubmit(
+        newAddress,
+        location
+          ? { latitude: location.latitude, longitude: location.longitude }
+          : undefined
+      );
 
       // If there's an onAddressSelect callback, use it to update local state
       if (onAddressSelect) {
@@ -380,6 +396,96 @@ const CheckoutAddressCard = ({
                       ).value.replace(/\D/g, ""))
                     }
                   />
+                </div>
+
+                {/* Optional Location Section */}
+                <div className="mt-6 p-4 border rounded-xl bg-gradient-to-br from-gray-50 to-white space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xs font-semibold">
+                      i
+                    </span>
+                    <p className="text-sm font-medium text-gray-800">
+                      Pickup Location (Optional)
+                    </p>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Share your approximate location to help us plan a faster
+                    pickup. You can skip this step if you prefer.
+                  </p>
+                  {location && (
+                    <div className="text-xs text-gray-700 bg-blue-50 border border-blue-100 rounded-md p-2 flex items-center justify-between gap-2">
+                      <div>
+                        <p>
+                          Lat:{" "}
+                          <span className="font-medium">
+                            {location.latitude.toFixed(5)}
+                          </span>
+                          , Lng:{" "}
+                          <span className="font-medium">
+                            {location.longitude.toFixed(5)}
+                          </span>
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setLocation(null)}
+                        className="text-blue-600 hover:underline shrink-0"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  )}
+                  {locationError && (
+                    <p className="text-xs text-red-600">{locationError}</p>
+                  )}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    disabled={locating}
+                    onClick={() => {
+                      setLocationError(null);
+                      if (!navigator.geolocation) {
+                        setLocationError(
+                          "Geolocation not supported by this browser."
+                        );
+                        return;
+                      }
+                      setLocating(true);
+                      navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                          setLocation({
+                            latitude: pos.coords.latitude,
+                            longitude: pos.coords.longitude,
+                          });
+                          setLocating(false);
+                        },
+                        (err) => {
+                          let msg = "Failed to get location.";
+                          if (err.code === err.PERMISSION_DENIED)
+                            msg =
+                              "Permission denied. You can still continue without it.";
+                          else if (err.code === err.POSITION_UNAVAILABLE)
+                            msg = "Location unavailable right now.";
+                          else if (err.code === err.TIMEOUT)
+                            msg = "Request timed out. Try again.";
+                          setLocationError(msg);
+                          setLocating(false);
+                        },
+                        {
+                          enableHighAccuracy: true,
+                          timeout: 10000,
+                          maximumAge: 0,
+                        }
+                      );
+                    }}
+                    className="w-full"
+                  >
+                    {locating
+                      ? "Detecting..."
+                      : location
+                      ? "Update Location"
+                      : "Use My Current Location"}
+                  </Button>
                 </div>
 
                 <div>

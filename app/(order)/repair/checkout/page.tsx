@@ -94,7 +94,10 @@ function CheckoutPageContent() {
   }, [cartItem]);
 
   //* onAddressSubmit
-  const onAddressSubmit = async (address: IAddress | string) => {
+  const onAddressSubmit = async (
+    address: IAddress | string,
+    location?: { latitude: number; longitude: number }
+  ) => {
     setAddressError(null);
     setGeneralError(null); // Clear any previous errors
     setLoading(true);
@@ -102,6 +105,14 @@ function CheckoutPageContent() {
     const data =
       typeof address === "string"
         ? { addressId: address }
+        : location
+        ? {
+            newAddress: address,
+            location: {
+              longitude: location.longitude,
+              latitude: location.latitude,
+            },
+          }
         : { newAddress: address };
     await api
       .patch(`/order/${order?._id}/set-address`, data)
