@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import AuthSheetProvider from "@/providers/AuthSheetProvider";
 
 const tahoma = localFont({
   src: [
@@ -84,11 +85,8 @@ export default function RootLayout({
       <GoogleAnalytics />
       <body className={`${tahoma.className} antialiased`}>
         {children}
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3163056550133556"
-          crossOrigin="anonymous"
-        />
+        {/* Global auth sheet, client-only */}
+        <AuthSheetProvider />
       </body>
     </html>
   );

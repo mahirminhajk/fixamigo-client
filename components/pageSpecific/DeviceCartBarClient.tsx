@@ -3,10 +3,9 @@ import Link from "next/link";
 import { useCartStore } from "@/stores/cartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useUserStore } from "@/stores/userStore";
-import React, { useState } from "react";
+import React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Sheet } from "@/components/ui/sheet";
-import UserRegSheet from "@/components/sheets/userRegSheet";
+import { useAuthSheet } from "@/hooks/useAuthSheet";
 
 export default function DeviceCartBarClient() {
   // Hydrate cart state for SSR/CSR safety
@@ -22,12 +21,9 @@ export default function DeviceCartBarClient() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // User registration sheet
-  const [open, setOpen] = useState(false);
-  const onOpenChange = () => setOpen(!open);
+  const { openAuth } = useAuthSheet();
 
   const onCompleted = () => {
-    setOpen(false);
     router.push("/repair/checkout");
   };
 
@@ -35,7 +31,7 @@ export default function DeviceCartBarClient() {
   const handleBookNow = (e: React.MouseEvent) => {
     e.preventDefault();
     if (!isLogged()) {
-      setOpen(true);
+      openAuth({ onCompleted });
     } else {
       router.push(`/repair/checkout?device=${deviceSlug}`);
     }
@@ -151,10 +147,7 @@ export default function DeviceCartBarClient() {
         </div>
       </div>
 
-      {/* User Registration Sheet */}
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <UserRegSheet onCompleted={onCompleted} />
-      </Sheet>
+      {/* Auth sheet is global via provider */}
     </div>
   );
 }

@@ -5,8 +5,7 @@ import { MdRestore, MdBugReport, MdLockOpen } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useCartStore } from "@/stores/cartStore";
 import { useRouter } from "next/navigation";
-import UserRegSheet from "../sheets/userRegSheet";
-import { Sheet } from "@/components/ui/sheet";
+import { useAuthSheet } from "@/hooks/useAuthSheet";
 import { useUserStore } from "@/stores/userStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useState } from "react";
@@ -55,11 +54,9 @@ export default function OtherServices({
   const cartItems = useCartStore((s) => s.cart.items);
   const router = useRouter();
   const user = useHydratedStore(useUserStore, (s) => s.user);
-  const [open, setOpen] = useState(false);
+  const { openAuth } = useAuthSheet();
   const [pendingItem, setPendingItem] = useState<ISparePart | null>(null);
-  const onOpenChange = () => setOpen((o) => !o);
   const onCompleted = () => {
-    setOpen(false);
     if (pendingItem) {
       clearCart();
       addToCart(cartDevice, pendingItem);
@@ -97,9 +94,7 @@ export default function OtherServices({
 
   return (
     <div className="w-full max-w-md mx-auto lg:max-w-none p-4 mt-8">
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <UserRegSheet onCompleted={onCompleted} />
-      </Sheet>
+      {/* Auth sheet is global via provider */}
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-lg font-bold">OTHER SERVICE</h2>
       </div>
@@ -161,7 +156,7 @@ export default function OtherServices({
                       onClick={() => {
                         if (!user?._id) {
                           setPendingItem(item);
-                          setOpen(true);
+                          openAuth({ onCompleted });
                           return;
                         }
                         clearCart();
@@ -241,7 +236,7 @@ export default function OtherServices({
                         onClick={() => {
                           if (!user?._id) {
                             setPendingItem(item);
-                            setOpen(true);
+                            openAuth({ onCompleted });
                             return;
                           }
                           clearCart();

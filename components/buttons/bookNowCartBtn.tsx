@@ -1,11 +1,9 @@
 "use client";
-import UserRegSheet from "../sheets/userRegSheet";
 import { Button } from "@/components/ui/button";
-import { Sheet } from "@/components/ui/sheet";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useUserStore } from "@/stores/userStore";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthSheet } from "@/hooks/useAuthSheet";
 
 interface BookNowCartBtnProps {
   deviceSlug: string;
@@ -18,19 +16,16 @@ const BookNowCartBtn = ({ deviceSlug }: BookNowCartBtnProps) => {
   //* user-store
   const user = useHydratedStore(useUserStore, (state) => state.user);
 
-  //* sheet
-  const [open, setOpen] = useState(false);
-  const onOpenChange = () => setOpen(!open);
+  const { openAuth } = useAuthSheet();
 
   const onCompleted = () => {
-    setOpen(false);
     router.push(`/repair/checkout?device=${deviceSlug}`);
   };
 
   //* book-now btn
   const onClick = () => {
     if (!user?._id) {
-      setOpen(true);
+      openAuth({ onCompleted });
     } else {
       router.push(`/repair/checkout?device=${deviceSlug}`);
     }
@@ -41,9 +36,6 @@ const BookNowCartBtn = ({ deviceSlug }: BookNowCartBtnProps) => {
 
   return (
     <>
-      <Sheet open={open} onOpenChange={onOpenChange}>
-        <UserRegSheet onCompleted={onCompleted} />
-      </Sheet>
       <Button
         onClick={onClick}
         size="lg"
