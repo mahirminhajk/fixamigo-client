@@ -3,16 +3,13 @@
 import OrderContent from "@/components/others/orderContent";
 import OrderProgressBar from "@/components/others/orderProgressBar";
 import api from "@/lib/axiosInstance";
-import { useCartStore } from "@/stores/cartStore";
 import { IOrder } from "@/types/order";
 import { AxiosError } from "axios";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { AUTH_COMPLETED_EVENT } from "@/lib/authEvents";
 
 export default function OrderSummaryContent() {
-  //* store
-  const clearCart = useCartStore((state) => state.clearCart);
-
   //* state
   const [order, setOrder] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true); // Set initial loading to true
@@ -22,37 +19,45 @@ export default function OrderSummaryContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("id");
 
-  //* fetch order
-  useEffect(() => {
-    const fetchOrder = async () => {
-      if (!orderId) {
-        setError("Order ID not found in URL.");
-        setLoading(false);
-        return;
+  const fetchOrder = useCallback(async () => {
+    if (!orderId) {
+      setError("Order ID not found in URL.");
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await api.get(`/order/${orderId}`);
+      if (res.status === 200) {
+        setOrder(res.data.data.order);
+      } else {
+        setError("Something went wrong");
       }
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await api.get(`/order/${orderId}`);
-        if (res.status === 200) {
-          clearCart();
-          setOrder(res.data.data.order);
-        } else {
-          setError("Something went wrong");
-        }
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          setError(err.response?.data.message || "An error occurred");
-        } else {
-          setError("An unexpected error occurred");
-        }
-      } finally {
-        setLoading(false);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        setError(err.response?.data.message || "An error occurred");
+      } else {
+        setError("An unexpected error occurred");
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  }, [orderId]);
 
+  // initial fetch + refetch when orderId changes
+  useEffect(() => {
     fetchOrder();
-  }, [orderId, clearCart]); // Added clearCart to dependencies as it's used in effect
+  }, [fetchOrder]);
+
+  // refetch after successful auth
+  useEffect(() => {
+    const handler = () => {
+      fetchOrder();
+    };
+    window.addEventListener(AUTH_COMPLETED_EVENT, handler);
+    return () => window.removeEventListener(AUTH_COMPLETED_EVENT, handler);
+  }, [fetchOrder]);
 
   if (!orderId) {
     return (

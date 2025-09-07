@@ -3,9 +3,8 @@
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useUserStore } from "@/stores/userStore";
 import { User, UserRoundCheckIcon } from "lucide-react";
-import { Sheet, SheetTrigger } from "@/components/ui/sheet";
-import UserRegSheet from "../sheets/userRegSheet";
-import { useState } from "react";
+// Removed SheetTrigger; using global auth hook
+import { useAuthSheet } from "@/hooks/useAuthSheet";
 import {
   Popover,
   PopoverContent,
@@ -20,14 +19,11 @@ const ProfileBtn = () => {
   //* user-store
   const clearUser = useUserStore((state) => state.clearUser);
 
-  const [open, setOpen] = useState(false);
-  const onOpenChange = () => setOpen(!open);
+  const { openAuth } = useAuthSheet();
 
   const router = useRouter();
 
-  const onCompleted = () => {
-    setOpen(false);
-  };
+  const onCompleted = () => {};
 
   const onSignOut = async () => {
     await api.post("/auth/logout", {});
@@ -88,15 +84,14 @@ const ProfileBtn = () => {
           </PopoverContent>
         </Popover>
       ) : (
-        <Sheet open={open} onOpenChange={onOpenChange}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="Open login menu">
-              {/* Removed pt-1 as Button size="icon" handles centering */}
-              <User className="size-6" />
-            </Button>
-          </SheetTrigger>
-          <UserRegSheet onCompleted={onCompleted} />
-        </Sheet>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Open login menu"
+          onClick={() => openAuth({ onCompleted })}
+        >
+          <User className="size-6" />
+        </Button>
       )}
     </div>
   );

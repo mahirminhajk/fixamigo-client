@@ -14,6 +14,7 @@ import api from "@/lib/axiosInstance";
 import { AxiosError } from "axios";
 import { useUserStore } from "@/stores/userStore";
 import { FaWhatsapp } from "react-icons/fa";
+import { useAuthSheetStore } from "@/stores/authSheetStore";
 
 interface UserRegSheetProps {
   onCompleted: () => void;
@@ -22,6 +23,7 @@ interface UserRegSheetProps {
 const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
   //* user-store
   const setUser = useUserStore((state) => state.setUser);
+  const closeSheet = useAuthSheetStore((s) => s.closeSheet);
 
   const [step, setStep] = useState(1);
 
@@ -108,6 +110,9 @@ const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
           phoneNo: user.phone,
         });
         onCompleted();
+        closeSheet();
+        // Reset internal state so next open starts from phone step
+        resetRegistration();
       }
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -165,6 +170,9 @@ const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
         phoneNo: user.phone,
       });
       onCompleted();
+      closeSheet();
+      // Reset internal state so next open starts from phone step
+      resetRegistration();
     } catch (error) {
       if (error instanceof AxiosError) {
         setNameError(error.response?.data?.message || "Something went wrong");
