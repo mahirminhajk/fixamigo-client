@@ -20,8 +20,19 @@ interface SearchProduct {
   brand: string;
   slug: string;
 }
+interface ProductSearchProps {
+  heading?: string;
+  subheading?: string;
+}
 
-const ProductSearch: React.FC = () => {
+const DEFAULT_HEADING = "Find Your Device";
+const DEFAULT_SUBHEADING =
+  "Search for your device to get repair parts and services";
+
+const ProductSearch: React.FC<ProductSearchProps> = ({
+  heading = DEFAULT_HEADING,
+  subheading = DEFAULT_SUBHEADING,
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState<SearchProduct[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -322,11 +333,9 @@ const ProductSearch: React.FC = () => {
       {/* Header Section */}
       <div className="text-center mb-8">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
-          Find Your Device
+          {heading}
         </h2>
-        <p className="text-gray-600 text-base md:text-lg">
-          Search for your device to get repair parts and services
-        </p>
+        <p className="text-gray-600 text-base md:text-lg">{subheading}</p>
       </div>
 
       <div className="relative max-w-2xl mx-auto" ref={searchRef}>
