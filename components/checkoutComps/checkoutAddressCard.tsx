@@ -72,7 +72,12 @@ const CheckoutAddressCard = ({
   //* user
   const user = useUserStore((state) => state.user);
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<AddressFormData>({
+    mode: "onChange",
     defaultValues: {
       name: address?.name ?? user?.name ?? "",
       phone: address?.phone ?? user?.phoneNo ?? "",
@@ -326,18 +331,47 @@ const CheckoutAddressCard = ({
                 </Button>
 
                 <div>
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name">
+                    Name <span className="text-red-500">*</span>
+                  </Label>
                   <Input
-                    {...register("name")}
+                    {...register("name", {
+                      required: "Name is required",
+                      minLength: {
+                        value: 2,
+                        message: "Name must be at least 2 characters",
+                      },
+                    })}
                     id="name"
                     placeholder="Enter Your Name"
                     autoFocus={!user?.name}
                   />
+                  {errors.name && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {errors.name.message}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label htmlFor="phone">Phone</Label>
+                  <Label htmlFor="phone">
+                    Phone <span className="text-red-500">*</span>
+                  </Label>
                   <Input
-                    {...register("phone")}
+                    {...register("phone", {
+                      required: "Phone is required",
+                      minLength: {
+                        value: 10,
+                        message: "Phone must be at least 10 digits",
+                      },
+                      maxLength: {
+                        value: 12,
+                        message: "Phone must be at most 12 digits",
+                      },
+                      pattern: {
+                        value: /^\d+$/,
+                        message: "Phone must contain only digits",
+                      },
+                    })}
                     id="phone"
                     placeholder="Enter Phone number"
                     type="tel"
@@ -350,29 +384,54 @@ const CheckoutAddressCard = ({
                       ).value.replace(/\D/g, ""))
                     }
                   />
+                  {errors.phone && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {errors.phone.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="street">Street Address</Label>
+                  <Label htmlFor="street">
+                    Street Address <span className="text-red-500">*</span>
+                  </Label>
                   <Input
-                    {...register("street")}
+                    {...register("street", {
+                      required: "Street address is required",
+                      minLength: {
+                        value: 3,
+                        message: "Street address is too short",
+                      },
+                    })}
                     id="street"
                     placeholder="Enter street address"
                     autoFocus={!!user?.name}
                   />
+                  {errors.street && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {errors.street.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="city">City</Label>
+                  <Label htmlFor="city">
+                    City <span className="text-red-500">*</span>
+                  </Label>
                   <Input
-                    {...register("city")}
+                    {...register("city", { required: "City is required" })}
                     id="city"
                     placeholder="Enter city"
                   />
+                  {errors.city && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {errors.city.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <Label htmlFor="landMark">Landmark</Label>
+                  <Label htmlFor="landMark">Landmark (optional)</Label>
                   <Input
                     {...register("landMark")}
                     id="landMark"
@@ -381,9 +440,17 @@ const CheckoutAddressCard = ({
                 </div>
 
                 <div>
-                  <Label htmlFor="pincode">PIN Code</Label>
+                  <Label htmlFor="pincode">
+                    PIN Code <span className="text-red-500">*</span>
+                  </Label>
                   <Input
-                    {...register("pincode")}
+                    {...register("pincode", {
+                      required: "PIN code is required",
+                      pattern: {
+                        value: /^\d{6}$/,
+                        message: "PIN code must be 6 digits",
+                      },
+                    })}
                     id="pincode"
                     placeholder="Enter PIN code"
                     type="tel"
@@ -396,104 +463,100 @@ const CheckoutAddressCard = ({
                       ).value.replace(/\D/g, ""))
                     }
                   />
+                  {errors.pincode && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {errors.pincode.message}
+                    </p>
+                  )}
                 </div>
 
-                {/* Optional Location Section */}
-                <div className="mt-6 p-4 border rounded-xl bg-gradient-to-br from-gray-50 to-white space-y-3">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xs font-semibold">
-                      i
-                    </span>
-                    <p className="text-sm font-medium text-gray-800">
-                      Pickup Location (Optional)
-                    </p>
-                  </div>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Share your approximate location to help us plan a faster
-                    pickup. You can skip this step if you prefer.
-                  </p>
-                  {location && (
-                    <div className="text-xs text-gray-700 bg-blue-50 border border-blue-100 rounded-md p-2 flex items-center justify-between gap-2">
-                      <div>
-                        <p>
-                          Lat:{" "}
-                          <span className="font-medium">
-                            {location.latitude.toFixed(5)}
-                          </span>
-                          , Lng:{" "}
-                          <span className="font-medium">
-                            {location.longitude.toFixed(5)}
-                          </span>
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setLocation(null)}
-                        className="text-blue-600 hover:underline shrink-0"
-                      >
-                        Clear
-                      </button>
-                    </div>
-                  )}
-                  {locationError && (
-                    <p className="text-xs text-red-600">{locationError}</p>
-                  )}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    disabled={locating}
-                    onClick={() => {
-                      setLocationError(null);
-                      if (!navigator.geolocation) {
-                        setLocationError(
-                          "Geolocation not supported by this browser."
-                        );
-                        return;
-                      }
-                      setLocating(true);
-                      navigator.geolocation.getCurrentPosition(
-                        (pos) => {
-                          setLocation({
-                            latitude: pos.coords.latitude,
-                            longitude: pos.coords.longitude,
-                          });
-                          setLocating(false);
-                        },
-                        (err) => {
-                          let msg = "Failed to get location.";
-                          if (err.code === err.PERMISSION_DENIED)
-                            msg =
-                              "Permission denied. You can still continue without it.";
-                          else if (err.code === err.POSITION_UNAVAILABLE)
-                            msg = "Location unavailable right now.";
-                          else if (err.code === err.TIMEOUT)
-                            msg = "Request timed out. Try again.";
-                          setLocationError(msg);
-                          setLocating(false);
-                        },
-                        {
-                          enableHighAccuracy: true,
-                          timeout: 10000,
-                          maximumAge: 0,
+                {/* Pickup Location (Optional) simplified */}
+                <div>
+                  <Label htmlFor="pickupLocation">
+                    Pickup Location (optional)
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="pickupLocation"
+                      placeholder="Use my current location (optional)"
+                      value={location ? "Location set" : ""}
+                      readOnly
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      disabled={locating}
+                      onClick={() => {
+                        setLocationError(null);
+                        if (!navigator.geolocation) {
+                          setLocationError(
+                            "Geolocation not supported by this browser."
+                          );
+                          return;
                         }
-                      );
-                    }}
-                    className="w-full"
-                  >
-                    {locating
-                      ? "Detecting..."
-                      : location
-                      ? "Update Location"
-                      : "Use My Current Location"}
-                  </Button>
+                        setLocating(true);
+                        navigator.geolocation.getCurrentPosition(
+                          (pos) => {
+                            setLocation({
+                              latitude: pos.coords.latitude,
+                              longitude: pos.coords.longitude,
+                            });
+                            setLocating(false);
+                          },
+                          (err) => {
+                            let msg = "Failed to get location.";
+                            if (err.code === err.PERMISSION_DENIED)
+                              msg =
+                                "Permission denied. You can still continue without it.";
+                            else if (err.code === err.POSITION_UNAVAILABLE)
+                              msg = "Location unavailable right now.";
+                            else if (err.code === err.TIMEOUT)
+                              msg = "Request timed out. Try again.";
+                            setLocationError(msg);
+                            setLocating(false);
+                          },
+                          {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0,
+                          }
+                        );
+                      }}
+                      className="absolute right-1 top-1/2 -translate-y-1/2"
+                    >
+                      {locating
+                        ? "Detecting..."
+                        : location
+                        ? "Update"
+                        : "Detect"}
+                    </Button>
+                  </div>
+                  {locationError && (
+                    <p className="text-xs text-red-600 mt-1">{locationError}</p>
+                  )}
+                  {location && (
+                    <button
+                      type="button"
+                      onClick={() => setLocation(null)}
+                      className="text-xs text-blue-600 hover:underline mt-1"
+                    >
+                      Clear location
+                    </button>
+                  )}
                 </div>
 
                 <div>
                   <Label htmlFor="alternateNumber">
-                    Alternate Phone Number
+                    Alternate Phone Number (optional)
                   </Label>
                   <Input
-                    {...register("alternateNumber")}
+                    {...register("alternateNumber", {
+                      validate: (v) =>
+                        !v ||
+                        /^(\d){10,12}$/.test(v) ||
+                        "Alternate number must be 10-12 digits",
+                    })}
                     id="alternateNumber"
                     placeholder="Enter alternate phone number"
                     type="tel"
@@ -506,9 +569,18 @@ const CheckoutAddressCard = ({
                       ).value.replace(/\D/g, ""))
                     }
                   />
+                  {errors.alternateNumber && (
+                    <p className="text-xs text-red-600 mt-1">
+                      {errors.alternateNumber.message as string}
+                    </p>
+                  )}
                 </div>
 
-                <Button type="submit" className="w-full mt-4">
+                <Button
+                  type="submit"
+                  className="w-full mt-4"
+                  disabled={!isValid || loading}
+                >
                   Continue
                 </Button>
               </div>
