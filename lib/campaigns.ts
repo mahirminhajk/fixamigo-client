@@ -15,9 +15,9 @@ export const campaigns: Campaign[] = [
   },
   {
     cname: "the-guy",
-    title: "Yes, This Is The Guy 😎",
+    title: "Everyone’s Talking About Her 📣",
     description:
-      "The guy who saves phones. Fixamigo is ready to repair yours today.",
+      "She’s already leveling up with Fixamigo—fast, reliable repairs that bring your phone back to life.",
   },
   {
     cname: "phone-wants-you",
