@@ -11,31 +11,31 @@ export const campaigns: Campaign[] = [
     cname: "zaras-secret",
     title: "Meet Zara’s Secret 👀",
     description:
-      "Zara already found the fix — it’s Fixamigo. Scan, book, and save your phone.",
+      "Zara ഇപ്പേൾ tension free 👀 Fixamigo വന്നു വീട്ടിൽ നിന്ന് free pickup, turbo repair, പിന്നെ phone fresh ആയി back to hand!",
   },
   {
     cname: "the-guy",
     title: "Everyone’s Talking About Her 📣",
     description:
-      "She’s already leveling up with Fixamigo—fast, reliable repairs that bring your phone back to life.",
+      "അവളെ കുറിച്ച് ടൗൺ മുഴുവൻ buzz ആണ് 📱 Fixamigo വരും വീട്ടിൽ നിന്ന് free pickup, കിടിലൻ repair, പിന്നെ fresh look കൊണ്ട് phone തിരികെ delivery!",
   },
   {
     cname: "phone-wants-you",
     title: "Your Phone Wants You ❤️",
     description:
-      "It’s crying for care — Fixamigo is the answer. Quick, reliable repairs.",
+      "Phone crying for you da ❤️ Fixamigo ഉണ്ടെങ്കിൽ tension off – free home pickup, കിടിലൻ repair, വീട്ടിലേയ്ക്ക് delivery ready!",
   },
   {
     cname: "ammu-right",
     title: "അമ്മു ശരിയായിരുന്നു 📱",
     description:
-      "അമ്മു പറഞ്ഞത് കേട്ടല്ലോ? സ്കാൻ ചെയ്‌താൽ ഫോൺ മിനുക്കി കിട്ടും. Fixamigo ഉണ്ടല്ലോ, ആശങ്ക വേണ്ട!",
+      "അമ്മു പറഞ്ഞതൊക്കെ ശരിയാണ്! ഫോൺ കേടായപ്പോൾ Fixamigo വീട്ടിൽ വന്ന് ഫ്രീയായി പിക്കപ്പ് ചെയ്തു, പിന്നെ കിടിലനായി റിപ്പയർ ചെയ്ത് വീട്ടിലേക്ക് തന്നെ ഫ്രീ ഡെലിവറി ചെയ്തു തന്നു.",
   },
   {
     cname: "need-company",
     title: "കൂട്ടുകാരെ വേണോ? 🤝",
     description:
-      "കമ്പനി വേണോ? Fixamigo ഉണ്ടല്ലോ! ഒന്ന് സ്കാൻ ചെയ്‌താൽ ഫോൺ കിടിലൻ ആയി തിരികെ കിട്ടും 😎✨",
+      "കൂട്ടുകാരെ വേണോ? Fixamigo ഉണ്ടല്ലോ! ഫോൺ പൊട്ടിയാലും വീട്ടിൽ തന്നെ ഫ്രീ പിക്കപ്പ്, കിടിലൻ റിപയർ, പിന്നെ വീട്ടിലേയ്ക്ക് തന്നെ ഡെലിവറി 😎✨",
   },
 ];
 
