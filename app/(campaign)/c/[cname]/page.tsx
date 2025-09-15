@@ -4,6 +4,7 @@ import ProductSearch from "@/components/search/ProductSearch";
 import BrandsList from "@/components/list/brandsList";
 import Footer from "@/components/core/footer";
 import HighlightedBrand from "@/components/HighlightedBrand";
+import Navbar from "@/components/core/navbar";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,6 +46,7 @@ export default async function CampaignPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen flex flex-col pb-16">
+      <Navbar />
       <section className="w-full bg-gradient-to-br from-orange-50 via-white to-white pt-12 pb-8 md:pt-16 md:pb-12 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-gray-900 mb-4">
