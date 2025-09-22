@@ -5,10 +5,12 @@ import OtherServices from "@/components/list/OtherServices";
 import ShowModel from "@/components/others/showModel";
 import WhyChooseUs from "@/components/others/whyChooseUs";
 import OtherPhones from "@/components/others/otherPhones";
+import DeviceOffersSection from "@/components/others/DeviceOffersSection";
 import { IDevice } from "@/types/device";
 import { ISparePart } from "@/types";
 import ModelCart from "../others/modelCart";
 import Link from "next/link";
+import { hasActiveOffers } from "@/lib/offers";
 
 interface DeviceDetailsContentProps {
   deviceData: IDevice;
@@ -53,6 +55,23 @@ export default async function DeviceDetailsContent({
           renderHeadingAsH1={false}
           only="mobile"
         />
+
+        {/* Device Offers Section - Mobile */}
+        {hasActiveOffers(deviceData.slug) && (
+          <DeviceOffersSection
+            deviceSlug={deviceData.slug}
+            spareParts={deviceData.spareParts}
+            cartDevice={{
+              _id: deviceData._id,
+              name: deviceData.name,
+              slug: deviceData.slug,
+              company: deviceData.company,
+              images: deviceData.images,
+            }}
+            className="mt-8"
+          />
+        )}
+
         <ListSpareParts
           spareParts={deviceData.spareParts}
           cartDevice={{
@@ -155,6 +174,21 @@ export default async function DeviceDetailsContent({
               renderHeadingAsH1={true}
               only="desktop"
             />
+
+            {/* Device Offers Section - Desktop */}
+            {hasActiveOffers(deviceData.slug) && (
+              <DeviceOffersSection
+                deviceSlug={deviceData.slug}
+                spareParts={deviceData.spareParts}
+                cartDevice={{
+                  _id: deviceData._id,
+                  name: deviceData.name,
+                  slug: deviceData.slug,
+                  company: deviceData.company,
+                  images: deviceData.images,
+                }}
+              />
+            )}
 
             {/* Spare Parts Section */}
             <ListSpareParts

@@ -15,6 +15,8 @@ import { useAuthSheet } from "@/hooks/useAuthSheet";
 import { useUserStore } from "@/stores/userStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useState } from "react";
+import { FreeOfferBadge } from "../ui/OfferBadge";
+import { getDiagnosisOffer } from "@/lib/offers";
 
 interface DiagnosisServicesProps {
   existingSpareParts: ISparePart[];
@@ -24,7 +26,7 @@ interface DiagnosisServicesProps {
 // Mapping original raw names (could come from backend) to optimized labels & icon components
 type IconType = React.ComponentType<{ className?: string }>;
 const RAW_TO_OPTIMIZED: Record<string, { label: string; Icon: IconType }> = {
-  "Dead Phone": { label: "No Power", Icon: Power },
+  "Dead Phone": { label: "Dead Phone", Icon: Power },
   "Water damage": { label: "Liquid Damage", Icon: Droplet },
   "No network signal": { label: "No Signal", Icon: Radio },
   "Wifi or Bluetooth not turning on": {
@@ -106,24 +108,63 @@ export default function DiagnosisServices({
             (k) => RAW_TO_OPTIMIZED[k].label === item.label
           );
           const LucideIcon = raw ? RAW_TO_OPTIMIZED[raw].Icon : HelpCircle;
-          // FallbackIcon reserved for future network icon swap if lucide fails
+
+          // Check if this diagnosis service has a free offer
+          const diagnosisOffer = getDiagnosisOffer(cartDevice.slug, item.label);
+          const hasFreeOffer = !!diagnosisOffer;
+
           return (
             <div
               key={item._id}
-              className="bg-gray-100 py-4 pr-2 rounded-[6px] shadow-sm"
+              className={`p-4 rounded-[6px] shadow-sm ${
+                hasFreeOffer
+                  ? "bg-gradient-to-r from-green-50 to-green-100 border border-green-200"
+                  : "bg-gray-100"
+              }`}
             >
-              <div className="flex items-center justify-between px-4">
-                <div className="flex items-center">
+              {/* Top row: Icon + Title + Badge */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-center flex-1">
                   <span className="mr-3">
-                    <LucideIcon className="w-12 h-12 text-[#D2691E]" />
+                    <LucideIcon
+                      className={`w-10 h-10 ${
+                        hasFreeOffer ? "text-green-600" : "text-[#D2691E]"
+                      }`}
+                    />
                   </span>
-                  <div>
-                    <p className="font-medium text-black">{item.label}</p>
-                    <p className="text-xs text-amber-700 font-medium">
-                      Price after diagnosis
+                  <div className="flex-1">
+                    <p
+                      className={`font-medium text-sm ${
+                        hasFreeOffer ? "text-green-800" : "text-black"
+                      }`}
+                    >
+                      {item.label}
                     </p>
+                    {hasFreeOffer ? (
+                      <p className="text-xs text-green-600 font-bold mt-1">
+                        Usually ₹{diagnosisOffer.freeAmount} - Now FREE!
+                      </p>
+                    ) : (
+                      <p className="text-xs text-amber-700 font-medium mt-1">
+                        Price after diagnosis
+                      </p>
+                    )}
                   </div>
                 </div>
+
+                {/* Free offer badge */}
+                {hasFreeOffer && (
+                  <div className="ml-2">
+                    <FreeOfferBadge
+                      value={diagnosisOffer.freeAmount}
+                      className="text-xs"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom row: Button */}
+              <div className="flex justify-end">
                 {(() => {
                   const selected = cartItems.some(
                     (ci) =>
@@ -149,7 +190,7 @@ export default function DiagnosisServices({
                         }
                       }}
                       variant="destructive"
-                      className="text-[10px] px-3 py-1 h-7 rounded"
+                      className="text-xs px-4 py-2 h-8 rounded"
                     >
                       Remove
                     </Button>
@@ -167,9 +208,13 @@ export default function DiagnosisServices({
                           `/repair/checkout?device=${cartDevice.slug}`
                         );
                       }}
-                      className="bg-black hover:bg-black/80 text-white font-semibold text-[10px] px-3 py-1 h-7 rounded"
+                      className={`font-semibold text-xs px-4 py-2 h-8 rounded ${
+                        hasFreeOffer
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "bg-black hover:bg-black/80 text-white"
+                      }`}
                     >
-                      Book Now
+                      {hasFreeOffer ? "Book FREE" : "Book Now"}
                     </Button>
                   );
                 })()}
@@ -186,77 +231,121 @@ export default function DiagnosisServices({
             (k) => RAW_TO_OPTIMIZED[k].label === item.label
           );
           const LucideIcon = raw ? RAW_TO_OPTIMIZED[raw].Icon : HelpCircle;
-          // FallbackIcon reserved for future network icon swap if lucide fails
+
+          // Check if this diagnosis service has a free offer
+          const diagnosisOffer = getDiagnosisOffer(cartDevice.slug, item.label);
+          const hasFreeOffer = !!diagnosisOffer;
+
           return (
             <div
               key={item._id}
-              className="bg-gray-100 p-4 rounded-[6px] shadow-sm hover:shadow-md transition-shadow duration-200"
+              className={`p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200 min-h-[140px] flex flex-col ${
+                hasFreeOffer
+                  ? "bg-gradient-to-br from-green-50 to-green-100 border border-green-200 ring-1 ring-green-300"
+                  : "bg-gray-100"
+              }`}
             >
-              <div className="flex flex-col space-y-3">
-                <div className="flex items-center">
+              {/* Top section: Icon + Title + Badge */}
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex items-start flex-1">
                   <span className="mr-3">
-                    <LucideIcon className="w-10 h-10 text-[#D2691E]" />
+                    <LucideIcon
+                      className={`w-10 h-10 ${
+                        hasFreeOffer ? "text-green-600" : "text-[#D2691E]"
+                      }`}
+                    />
                   </span>
                   <div className="flex-1">
-                    <p className="font-medium text-black text-sm">
+                    <p
+                      className={`font-medium text-sm ${
+                        hasFreeOffer ? "text-green-800" : "text-black"
+                      }`}
+                    >
                       {item.label}
                     </p>
-                    <p className="text-[10px] text-amber-700 font-medium">
-                      Price after diagnosis
-                    </p>
+                    {hasFreeOffer ? (
+                      <div className="space-y-1 mt-1">
+                        <p className="text-xs text-green-600 font-bold">
+                          Usually ₹{diagnosisOffer.freeAmount}
+                        </p>
+                        <p className="text-xs text-green-600 font-medium">
+                          Now FREE! Limited time offer
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-amber-700 font-medium mt-1">
+                        Price after diagnosis
+                      </p>
+                    )}
                   </div>
                 </div>
-                <div className="flex items-center justify-end">
-                  {(() => {
-                    const selected = cartItems.some(
-                      (ci) =>
-                        ci.device._id === cartDevice._id &&
-                        ci.spareParts.some(
-                          (sp) =>
-                            sp.type === SparePartType.DIAGNOSIS &&
-                            sp.label === item.label
-                        )
-                    );
-                    return selected ? (
-                      <Button
-                        onClick={() => {
-                          const target = cartItems
-                            .find((ci) => ci.device._id === cartDevice._id)
-                            ?.spareParts.find(
-                              (sp) =>
-                                sp.type === SparePartType.DIAGNOSIS &&
-                                sp.label === item.label
-                            );
-                          if (target) {
-                            removeFromCart(cartDevice._id, target._id);
-                          }
-                        }}
-                        variant="destructive"
-                        className="text-xs px-3 py-1 h-7 rounded"
-                      >
-                        Remove
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={() => {
-                          if (!user?._id) {
-                            setPendingItem(item);
-                            openAuth({ onCompleted });
-                            return;
-                          }
-                          clearCart();
-                          addToCart(cartDevice, item);
-                          router.push(
-                            `/repair/checkout?device=${cartDevice.slug}`
+
+                {/* Free offer badge */}
+                {hasFreeOffer && (
+                  <div className="ml-2">
+                    <FreeOfferBadge
+                      value={diagnosisOffer.freeAmount}
+                      className="text-xs"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom section: Button - pushed to bottom */}
+              <div className="mt-auto">
+                {(() => {
+                  const selected = cartItems.some(
+                    (ci) =>
+                      ci.device._id === cartDevice._id &&
+                      ci.spareParts.some(
+                        (sp) =>
+                          sp.type === SparePartType.DIAGNOSIS &&
+                          sp.label === item.label
+                      )
+                  );
+                  return selected ? (
+                    <Button
+                      onClick={() => {
+                        const target = cartItems
+                          .find((ci) => ci.device._id === cartDevice._id)
+                          ?.spareParts.find(
+                            (sp) =>
+                              sp.type === SparePartType.DIAGNOSIS &&
+                              sp.label === item.label
                           );
-                        }}
-                        className="bg-black hover:bg-black/80 text-white text-xs font-semibold"
-                      >
-                        Book Now
-                      </Button>
-                    );
-                  })()}
-                </div>
+                        if (target) {
+                          removeFromCart(cartDevice._id, target._id);
+                        }
+                      }}
+                      variant="destructive"
+                      className="text-xs px-3 py-2 h-8 rounded w-full"
+                    >
+                      Remove
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        if (!user?._id) {
+                          setPendingItem(item);
+                          openAuth({ onCompleted });
+                          return;
+                        }
+                        clearCart();
+                        addToCart(cartDevice, item);
+                        router.push(
+                          `/repair/checkout?device=${cartDevice.slug}`
+                        );
+                      }}
+                      className={`text-xs font-semibold px-3 py-2 h-8 rounded w-full ${
+                        hasFreeOffer
+                          ? "bg-green-600 hover:bg-green-700 text-white"
+                          : "bg-black hover:bg-black/80 text-white"
+                      }`}
+                    >
+                      {hasFreeOffer ? "Book FREE" : "Book Now"}
+                    </Button>
+                  );
+                })()}
               </div>
             </div>
           );
