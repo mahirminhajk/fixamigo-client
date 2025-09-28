@@ -2,7 +2,8 @@ import DeviceDetailsContent from "@/components/contents/DeviceDetailsContent";
 import { brands } from "@/constants";
 import {
   getDeviceMetadata,
-  getDeviceStructuredData,
+  getDeviceStructuredDataScript,
+  getDevicePerformanceMetadata,
 } from "@/lib/seo/deviceMetadata";
 import { IDevice } from "@/types/device";
 import { Metadata } from "next";
@@ -73,197 +74,23 @@ export default async function Page({
     );
   }
 
-  // Enhanced structured data with multiple schemas
-  const baseStructuredData = getDeviceStructuredData(deviceData, brand, device);
-  const deviceName = deviceData.name;
-  const brandName = deviceData.company || brand;
-  
-  // Create comprehensive structured data
-  const enhancedStructuredData = {
-    "@context": "https://schema.org",
-    "@graph": [
-      // Include base structured data
-      ...(Array.isArray(baseStructuredData["@graph"]) ? baseStructuredData["@graph"] : [baseStructuredData]),
-      
-      // Add Product schema
-      {
-        "@type": "Product",
-        "@id": `https://fixamigo.com/repair/mobile-phone/${brand}/${device}#product`,
-        "name": deviceName,
-        "brand": {
-          "@type": "Brand",
-          "name": brandName
-        },
-        "category": "Mobile Phone",
-        "description": `${deviceName} - Professional repair services available`,
-        "image": deviceData.images?.length ? deviceData.images[0] : "https://fixamigo.com/default-device.jpg",
-        "offers": {
-          "@type": "Offer",
-          "availability": "https://schema.org/InStock",
-          "price": "999",
-          "priceCurrency": "INR",
-          "priceSpecification": {
-            "@type": "PriceSpecification",
-            "minPrice": "99",
-            "maxPrice": "15000",
-            "priceCurrency": "INR"
-          },
-          "seller": {
-            "@type": "Organization",
-            "name": "Fixamigo"
-          }
-        }
-      },
-      
-      // Add FAQ schema for device-specific questions
-      {
-        "@type": "FAQPage",
-        "@id": `https://fixamigo.com/repair/mobile-phone/${brand}/${device}#faq`,
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": `How much does ${deviceName} screen repair cost?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": `${deviceName} screen repair typically costs between ₹1,500 to ₹8,000 depending on the display type and model. We provide upfront pricing with no hidden charges.`
-            }
-          },
-          {
-            "@type": "Question",
-            "name": `How long does ${deviceName} repair take?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": `Most ${deviceName} repairs are completed within 2-4 hours. Complex issues may take up to 24 hours. We provide estimated completion time when you book.`
-            }
-          },
-          {
-            "@type": "Question",
-            "name": `Do you use genuine parts for ${deviceName} repair?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": `Yes, we use only genuine and high-quality compatible parts for ${deviceName} repairs. All parts come with 6-month warranty.`
-            }
-          },
-          {
-            "@type": "Question",
-            "name": `Is pickup and delivery available for ${deviceName} repair?`,
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": `Yes, we provide free pickup and delivery services for ${deviceName} repair across Kerala. Book online and we'll collect your device from your location.`
-            }
-          }
-        ]
-      },
-      
-      // Add Service schema for device repair
-      {
-        "@type": "Service",
-        "@id": `https://fixamigo.com/repair/mobile-phone/${brand}/${device}#repair-service`,
-        "name": `${deviceName} Repair Service`,
-        "description": `Professional repair services for ${deviceName} including screen replacement, battery change, camera repair, and more.`,
-        "provider": {
-          "@type": "LocalBusiness",
-          "name": "Fixamigo",
-          "telephone": "+91-9876543210",
-          "email": "support@fixamigo.com"
-        },
-        "serviceType": "Mobile Phone Repair",
-        "areaServed": [
-          { "@type": "State", "name": "Kerala" }
-        ],
-        "offers": {
-          "@type": "Offer",
-          "availability": "https://schema.org/InStock",
-          "priceRange": "₹99-₹15000"
-        },
-        "hasOfferCatalog": {
-          "@type": "OfferCatalog",
-          "name": `${deviceName} Repair Services`,
-          "itemListElement": [
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service",
-                "name": `${deviceName} Screen Repair`
-              }
-            },
-            {
-              "@type": "Offer", 
-              "itemOffered": {
-                "@type": "Service",
-                "name": `${deviceName} Battery Replacement`
-              }
-            },
-            {
-              "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service", 
-                "name": `${deviceName} Camera Repair`
-              }
-            }
-          ]
-        }
-      },
-      
-      // Add BreadcrumbList schema
-      {
-        "@type": "BreadcrumbList",
-        "@id": `https://fixamigo.com/repair/mobile-phone/${brand}/${device}#breadcrumb`,
-        "itemListElement": [
-          {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "Home",
-            "item": "https://fixamigo.com"
-          },
-          {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "Mobile Repair",
-            "item": "https://fixamigo.com/repair/mobile-phone"
-          },
-          {
-            "@type": "ListItem",
-            "position": 3,
-            "name": `${brandName} Repair`,
-            "item": `https://fixamigo.com/repair/mobile-phone/${brand}`
-          },
-          {
-            "@type": "ListItem",
-            "position": 4,
-            "name": `${deviceName} Repair`,
-            "item": `https://fixamigo.com/repair/mobile-phone/${brand}/${device}`
-          }
-        ]
-      }
-    ]
-  };
+  // Get structured data and performance metadata from SEO functions
+  const structuredDataScript = getDeviceStructuredDataScript(
+    deviceData,
+    brand,
+    device
+  );
+  const performanceLinks = getDevicePerformanceMetadata(deviceData);
 
   return (
     <>
       {/* Enhanced JSON-LD Structured Data */}
-      <Script
-        id="enhanced-device-structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(enhancedStructuredData),
-        }}
-        strategy="beforeInteractive"
-      />
+      <Script {...structuredDataScript} />
 
       {/* Performance optimizations */}
-      <link rel="preconnect" href="https://fixamigo.s3.ap-south-1.amazonaws.com" />
-      <link rel="dns-prefetch" href="https://fixamigo.s3.ap-south-1.amazonaws.com" />
-      
-      {/* Preload critical device images */}
-      {deviceData.images?.length && (
-        <link
-          rel="preload"
-          as="image"
-          href={deviceData.images[0]}
-          fetchPriority="high"
-        />
-      )}
+      {performanceLinks.map((link, index) => (
+        <link key={index} {...link} />
+      ))}
 
       <main className="relative min-h-screen bg-gray-50 lg:bg-white">
         <section className="lg:py-8">

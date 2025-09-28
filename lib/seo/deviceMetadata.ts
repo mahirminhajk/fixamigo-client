@@ -350,7 +350,7 @@ export async function getDeviceMetadata(
   }
 }
 
-// Enhanced structured data generation for device pages
+// Enhanced structured data generation for device pages with comprehensive SEO schemas
 export function getDeviceStructuredData(
   deviceData: IDevice,
   brand: string,
@@ -364,7 +364,7 @@ export function getDeviceStructuredData(
   return {
     "@context": "https://schema.org",
     "@graph": [
-      // Enhanced Product schema
+      // Enhanced Product schema with comprehensive details
       {
         "@type": "Product",
         "@id": `${canonicalUrl}#product`,
@@ -374,7 +374,9 @@ export function getDeviceStructuredData(
           name: brandName,
         },
         category: "Mobile Phone",
-        image: deviceData.images || [],
+        image: deviceData.images?.length
+          ? deviceData.images[0]
+          : `${baseUrl}/default-device.jpg`,
         description: `${deviceName} - Professional repair services including display, battery, camera, charging port and other components with 6-month warranty.`,
         offers: {
           "@type": "AggregateOffer",
@@ -387,6 +389,12 @@ export function getDeviceStructuredData(
             "@type": "Organization",
             name: INFO.name,
           },
+          priceSpecification: {
+            "@type": "PriceSpecification",
+            minPrice: "99",
+            maxPrice: "15000",
+            priceCurrency: "INR",
+          },
         },
         review: {
           "@type": "AggregateRating",
@@ -397,7 +405,7 @@ export function getDeviceStructuredData(
         },
       },
 
-      // Enhanced Service schema
+      // Enhanced Service schema with detailed repair offerings
       {
         "@type": "Service",
         "@id": `${canonicalUrl}#service`,
@@ -472,38 +480,10 @@ export function getDeviceStructuredData(
         name: `${deviceName} Repair Services`,
         description: `Get your ${deviceName} repaired by certified technicians with warranty. Professional service with genuine parts.`,
         mainEntity: `${canonicalUrl}#product`,
-        breadcrumb: {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            {
-              "@type": "ListItem",
-              position: 1,
-              name: "Home",
-              item: baseUrl,
-            },
-            {
-              "@type": "ListItem",
-              position: 2,
-              name: "Mobile Repair",
-              item: `${baseUrl}/repair/mobile-phone`,
-            },
-            {
-              "@type": "ListItem",
-              position: 3,
-              name: `${brandName} Repair`,
-              item: `${baseUrl}/repair/mobile-phone/${brand}`,
-            },
-            {
-              "@type": "ListItem",
-              position: 4,
-              name: `${deviceName} Repair`,
-              item: canonicalUrl,
-            },
-          ],
-        },
+        breadcrumb: `${canonicalUrl}#breadcrumb`,
       },
 
-      // FAQ schema for device-specific questions
+      // Comprehensive FAQ schema for device-specific questions
       {
         "@type": "FAQPage",
         "@id": `${canonicalUrl}#faq`,
@@ -543,7 +523,39 @@ export function getDeviceStructuredData(
         ],
       },
 
-      // Organization schema
+      // Enhanced BreadcrumbList schema
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${canonicalUrl}#breadcrumb`,
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Home",
+            item: baseUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Mobile Repair",
+            item: `${baseUrl}/repair/mobile-phone`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: `${brandName} Repair`,
+            item: `${baseUrl}/repair/mobile-phone/${brand}`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: `${deviceName} Repair`,
+            item: canonicalUrl,
+          },
+        ],
+      },
+
+      // Enhanced Organization schema
       {
         "@type": "LocalBusiness",
         "@id": `${baseUrl}#business`,
@@ -586,5 +598,59 @@ export function getDeviceStructuredData(
         paymentAccepted: "Cash, UPI, Card",
       },
     ],
+  };
+}
+
+// Generate performance optimization metadata for device pages
+export function getDevicePerformanceMetadata(deviceData: IDevice) {
+  const preloadLinks: Array<{
+    rel: string;
+    as: string;
+    href: string;
+    fetchPriority?: "high" | "low" | "auto";
+  }> = [];
+
+  // Add preconnect for S3 bucket
+  preloadLinks.push({
+    rel: "preconnect",
+    as: "fetch",
+    href: "https://fixamigo.s3.ap-south-1.amazonaws.com",
+  });
+
+  // Add DNS prefetch for S3 bucket
+  preloadLinks.push({
+    rel: "dns-prefetch",
+    as: "fetch",
+    href: "https://fixamigo.s3.ap-south-1.amazonaws.com",
+  });
+
+  // Preload critical device images
+  if (deviceData.images?.length) {
+    preloadLinks.push({
+      rel: "preload",
+      as: "image",
+      href: deviceData.images[0],
+      fetchPriority: "high",
+    });
+  }
+
+  return preloadLinks;
+}
+
+// Generate the complete structured data script for device pages
+export function getDeviceStructuredDataScript(
+  deviceData: IDevice,
+  brand: string,
+  device: string
+) {
+  const structuredData = getDeviceStructuredData(deviceData, brand, device);
+
+  return {
+    id: "enhanced-device-structured-data",
+    type: "application/ld+json",
+    dangerouslySetInnerHTML: {
+      __html: JSON.stringify(structuredData),
+    },
+    strategy: "beforeInteractive" as const,
   };
 }
