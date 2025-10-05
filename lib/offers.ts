@@ -26,73 +26,17 @@ export const DEVICE_OFFERS: DeviceOffers[] = [
   // Universal offers that apply to most devices
   {
     deviceSlug: "universal", // Special slug for universal offers
-    sparePartOffers: [
-      {
-        category: "DISPLAY",
-        discountPercentage: 12,
-        description: "Limited time 12% OFF on display replacement",
-      },
-    ],
+    sparePartOffers: [],
     diagnosisOffers: [
       {
         serviceType: "Dead Phone",
         freeAmount: 299,
-        description: "FREE diagnosis for dead devices - Save ₹299",
+        description: "FREE repair for dead devices - Save ₹299",
       },
     ],
     isActive: true,
     validUntil: "2025-12-31T23:59:59.999Z",
   },
-
-  // Example configuration - you can modify these as needed
-  {
-    deviceSlug: "iphone-14", // Example device
-    sparePartOffers: [
-      {
-        category: "DISPLAY",
-        discountPercentage: 12,
-        description: "Special offer on iPhone 14 display replacement",
-      },
-      {
-        category: "BATTERY",
-        discountPercentage: 10,
-        description: "Limited time battery replacement offer",
-      },
-    ],
-    diagnosisOffers: [
-      {
-        serviceType: "Dead Phone",
-        freeAmount: 299,
-        description: "Free diagnosis for dead iPhone 14",
-      },
-      {
-        serviceType: "Water Damage",
-        freeAmount: 499,
-        description: "Free water damage diagnosis",
-      },
-    ],
-    isActive: true,
-    validUntil: "2024-12-31T23:59:59.999Z",
-  },
-  {
-    deviceSlug: "samsung-galaxy-s23",
-    sparePartOffers: [
-      {
-        category: "CAMERA",
-        discountPercentage: 10,
-        description: "Camera repair special offer",
-      },
-    ],
-    diagnosisOffers: [
-      {
-        serviceType: "Dead Phone",
-        freeAmount: 299,
-        description: "Free dead phone diagnosis",
-      },
-    ],
-    isActive: true,
-  },
-  // Add more device offers here...
 ];
 
 // Utility functions to get offers for a specific device
