@@ -4,8 +4,6 @@ import { getDiscountPercentage, getSparePartsIcon } from "@/lib/utils";
 import { ICartDevice, ISparePart } from "@/types";
 // import Link from "next/link"; // Removed support/help card from here; now rendered in DeviceDetailsContent
 import PriceRangeInfo from "./PriceRangeInfo";
-import { CornerOfferBadge } from "../ui/OfferBadge";
-import { getSparePartOffer, calculateDiscountedPrice } from "@/lib/offers";
 
 interface ListSparePartsProps {
   spareParts: ISparePart[];
@@ -13,7 +11,6 @@ interface ListSparePartsProps {
 }
 
 function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
-  // Check if any spare part has price range
   const hasPriceRange = spareParts.some(
     (item) => item.price.range && item.price.startPrice && item.price.endPrice
   );
@@ -38,32 +35,25 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
         {!isEmpty && (
           <div className="lg:hidden space-y-3">
             {spareParts.map((item) => {
-              // Check if this spare part has an offer
-              const sparePartOffer = getSparePartOffer(
-                cartDevice.slug,
-                item.category
+              const isRange =
+                item.price.range &&
+                item.price.startPrice &&
+                item.price.endPrice;
+              const rawDiscount = getDiscountPercentage(
+                item.price.total,
+                item.price.final
               );
-              const hasOffer = !!sparePartOffer;
-
+              const discount = Number(rawDiscount) || 0;
+              const highlight = !isRange && discount > 10; // highlight only real priced items above 10%
               return (
                 <div
                   key={item._id}
-                  className={`relative py-4 pr-2 rounded-[6px] shadow-sm ${
-                    hasOffer
+                  className={`relative py-4 pr-2 rounded-[6px] shadow-sm transition-colors duration-200 ${
+                    highlight
                       ? "bg-gradient-to-r from-green-50 to-green-100 border border-green-200"
                       : "bg-gray-100"
                   }`}
                 >
-                  {/* Show offer badge if available */}
-                  {hasOffer && (
-                    <CornerOfferBadge
-                      type="percentage"
-                      value={sparePartOffer.discountPercentage}
-                      position="top-right"
-                      size="sm"
-                    />
-                  )}
-
                   <div className="flex items-center justify-between px-4">
                     <div className="flex items-center">
                       <Image
@@ -77,83 +67,38 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                       <div>
                         <p
                           className={`font-medium ${
-                            hasOffer ? "text-green-800" : "text-black"
+                            highlight ? "text-green-800" : "text-black"
                           }`}
                         >
                           {item.label}
                         </p>
                         <div className="flex items-center space-x-2 text-sm">
-                          {hasOffer ? (
-                            // Show special offer pricing
-                            <>
-                              <span className="text-green-600 font-bold text-xs bg-green-100 px-2 py-1 rounded">
-                                EXTRA {sparePartOffer.discountPercentage}% OFF
-                              </span>
-                              <span className="line-through text-gray-500">
-                                ₹{item.price.final}
-                              </span>
-                              <span className="font-bold text-green-700">
-                                ₹
-                                {
-                                  calculateDiscountedPrice(
-                                    item.price.final,
-                                    sparePartOffer.discountPercentage
-                                  ).discountedPrice
-                                }
-                              </span>
-                            </>
-                          ) : (
-                            // Regular pricing display
-                            <>
-                              <span className="text-blue-600 font-semibold">
-                                -
-                                {getDiscountPercentage(
-                                  item.price.total,
-                                  item.price.final
-                                )}
-                                %
-                              </span>
-                              {!(
-                                item.price.range &&
-                                item.price.startPrice &&
-                                item.price.endPrice
-                              ) && (
-                                <span className="line-through text-gray-500">
-                                  ₹{item.price.total}
-                                </span>
-                              )}
-                              <span
-                                className="font-bold"
-                                style={{
-                                  color:
-                                    item.price.range &&
-                                    item.price.startPrice &&
-                                    item.price.endPrice
-                                      ? "#D2691E"
-                                      : "black",
-                                }}
-                              >
-                                {item.price.range &&
-                                item.price.startPrice &&
-                                item.price.endPrice
-                                  ? `₹${item.price.startPrice} - ₹${item.price.endPrice}`
-                                  : `₹${item.price.final}`}
-                              </span>
-                            </>
+                          <span
+                            className={`font-semibold ${
+                              highlight ? "text-green-700" : "text-blue-600"
+                            }`}
+                          >
+                            -{discount}%
+                          </span>
+                          {!isRange && (
+                            <span className="line-through text-gray-500">
+                              ₹{item.price.total}
+                            </span>
                           )}
+                          <span
+                            className={`font-bold ${
+                              isRange
+                                ? "text-amber-700"
+                                : highlight
+                                ? "text-green-800"
+                                : "text-black"
+                            }`}
+                          >
+                            {isRange
+                              ? `₹${item.price.startPrice} - ₹${item.price.endPrice}`
+                              : `₹${item.price.final}`}
+                          </span>
                         </div>
-                        {hasOffer && (
-                          <p className="text-xs text-green-600 font-medium mt-1">
-                            Save extra ₹
-                            {
-                              calculateDiscountedPrice(
-                                item.price.final,
-                                sparePartOffer.discountPercentage
-                              ).savedAmount
-                            }{" "}
-                            with this offer!
-                          </p>
-                        )}
                       </div>
                     </div>
                     <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
@@ -168,32 +113,25 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
         {!isEmpty && (
           <div className="hidden lg:grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {spareParts.map((item) => {
-              // Check if this spare part has an offer
-              const sparePartOffer = getSparePartOffer(
-                cartDevice.slug,
-                item.category
+              const isRange =
+                item.price.range &&
+                item.price.startPrice &&
+                item.price.endPrice;
+              const rawDiscount = getDiscountPercentage(
+                item.price.total,
+                item.price.final
               );
-              const hasOffer = !!sparePartOffer;
-
+              const discount = Number(rawDiscount) || 0;
+              const highlight = !isRange && discount > 10;
               return (
                 <div
                   key={item._id}
                   className={`relative p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200 ${
-                    hasOffer
+                    highlight
                       ? "bg-gradient-to-br from-green-50 to-green-100 border border-green-200 ring-1 ring-green-300"
                       : "bg-gray-100"
                   }`}
                 >
-                  {/* Show offer badge if available */}
-                  {hasOffer && (
-                    <CornerOfferBadge
-                      type="percentage"
-                      value={sparePartOffer.discountPercentage}
-                      position="top-right"
-                      size="sm"
-                    />
-                  )}
-
                   <div className="flex flex-col space-y-3">
                     <div className="flex items-center">
                       <Image
@@ -207,7 +145,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                       <div className="flex-1">
                         <p
                           className={`font-medium text-sm ${
-                            hasOffer ? "text-green-800" : "text-black"
+                            highlight ? "text-green-800" : "text-black"
                           }`}
                         >
                           {item.label}
@@ -217,80 +155,33 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
 
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col space-y-1">
-                        {hasOffer ? (
-                          // Show special offer pricing
-                          <>
-                            <div className="flex items-center space-x-2 text-sm">
-                              <span className="text-green-600 font-bold text-xs bg-green-100 px-2 py-1 rounded">
-                                EXTRA {sparePartOffer.discountPercentage}% OFF
-                              </span>
-                            </div>
-                            <div className="flex items-center space-x-2 text-sm">
-                              <span className="line-through text-gray-500">
-                                ₹{item.price.final}
-                              </span>
-                              <span className="font-bold text-green-700">
-                                ₹
-                                {
-                                  calculateDiscountedPrice(
-                                    item.price.final,
-                                    sparePartOffer.discountPercentage
-                                  ).discountedPrice
-                                }
-                              </span>
-                            </div>
-                            <p className="text-xs text-green-600 font-medium">
-                              Save extra ₹
-                              {
-                                calculateDiscountedPrice(
-                                  item.price.final,
-                                  sparePartOffer.discountPercentage
-                                ).savedAmount
-                              }
-                              !
-                            </p>
-                          </>
-                        ) : (
-                          // Regular pricing display
-                          <>
-                            <div className="flex items-center space-x-2 text-sm">
-                              <span className="text-blue-600 font-semibold">
-                                -
-                                {getDiscountPercentage(
-                                  item.price.total,
-                                  item.price.final
-                                )}
-                                %
-                              </span>
-                              {!(
-                                item.price.range &&
-                                item.price.startPrice &&
-                                item.price.endPrice
-                              ) && (
-                                <span className="line-through text-gray-500">
-                                  ₹{item.price.total}
-                                </span>
-                              )}
-                            </div>
-                            <span
-                              className="font-bold"
-                              style={{
-                                color:
-                                  item.price.range &&
-                                  item.price.startPrice &&
-                                  item.price.endPrice
-                                    ? "#D2691E"
-                                    : "black",
-                              }}
-                            >
-                              {item.price.range &&
-                              item.price.startPrice &&
-                              item.price.endPrice
-                                ? `₹${item.price.startPrice} - ₹${item.price.endPrice}`
-                                : `₹${item.price.final}`}
+                        <div className="flex items-center space-x-2 text-sm">
+                          <span
+                            className={`font-semibold ${
+                              highlight ? "text-green-700" : "text-blue-600"
+                            }`}
+                          >
+                            -{discount}%
+                          </span>
+                          {!isRange && (
+                            <span className="line-through text-gray-500">
+                              ₹{item.price.total}
                             </span>
-                          </>
-                        )}
+                          )}
+                        </div>
+                        <span
+                          className={`font-bold ${
+                            isRange
+                              ? "text-amber-700"
+                              : highlight
+                              ? "text-green-800"
+                              : "text-black"
+                          }`}
+                        >
+                          {isRange
+                            ? `₹${item.price.startPrice} - ₹${item.price.endPrice}`
+                            : `₹${item.price.final}`}
+                        </span>
                       </div>
                       <AddToCartBtn sparePart={item} cartDevice={cartDevice} />
                     </div>
