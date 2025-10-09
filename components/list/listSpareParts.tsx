@@ -48,11 +48,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
               return (
                 <div
                   key={item._id}
-                  className={`relative py-4 pr-2 rounded-[6px] shadow-sm transition-colors duration-200 ${
-                    highlight
-                      ? "bg-gradient-to-r from-green-50 to-green-100 border border-green-200"
-                      : "bg-gray-100"
-                  }`}
+                  className="relative py-4 pr-2 rounded-[6px] shadow-sm transition-colors duration-200 bg-gray-100"
                 >
                   <div className="flex items-center justify-between px-4">
                     <div className="flex items-center">
@@ -64,18 +60,36 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                         height={48}
                         className="mr-3"
                       />
-                      <div>
-                        <p
-                          className={`font-medium ${
-                            highlight ? "text-green-800" : "text-black"
-                          }`}
-                        >
-                          {item.label}
-                        </p>
+                      <div className="flex-1">
+                        <p className="font-medium text-black">{item.label}</p>
+
+                        {/* Quality and Warranty badges for mobile */}
+                        <div className="flex items-center gap-1 mb-1">
+                          {item.quality && (
+                            <span
+                              className={`px-2 py-0.5 text-[10px] font-medium rounded ${
+                                item.quality === "original"
+                                  ? "bg-blue-600 text-white"
+                                  : item.quality === "best"
+                                  ? "bg-green-600 text-white"
+                                  : "bg-gray-600 text-white"
+                              }`}
+                            >
+                              {item.quality.toUpperCase()}
+                            </span>
+                          )}
+                          {item.warranty && item.warranty.duration && (
+                            <span className="px-2 py-0.5 text-[10px] font-medium rounded bg-green-100 text-green-700 border border-green-200">
+                              {item.warranty.duration}{" "}
+                              {item.warranty.unit || "months"} warranty
+                            </span>
+                          )}
+                        </div>
+
                         <div className="flex items-center space-x-2 text-sm">
                           <span
                             className={`font-semibold ${
-                              highlight ? "text-green-700" : "text-blue-600"
+                              highlight ? "text-green-600" : "text-blue-600"
                             }`}
                           >
                             -{discount}%
@@ -87,11 +101,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                           )}
                           <span
                             className={`font-bold ${
-                              isRange
-                                ? "text-amber-700"
-                                : highlight
-                                ? "text-green-800"
-                                : "text-black"
+                              isRange ? "text-amber-700" : "text-black"
                             }`}
                           >
                             {isRange
@@ -126,11 +136,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
               return (
                 <div
                   key={item._id}
-                  className={`relative p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200 ${
-                    highlight
-                      ? "bg-gradient-to-br from-green-50 to-green-100 border border-green-200 ring-1 ring-green-300"
-                      : "bg-gray-100"
-                  }`}
+                  className="relative p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200 bg-gray-100"
                 >
                   <div className="flex flex-col space-y-3">
                     <div className="flex items-center">
@@ -143,13 +149,32 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                         className="mr-3"
                       />
                       <div className="flex-1">
-                        <p
-                          className={`font-medium text-sm ${
-                            highlight ? "text-green-800" : "text-black"
-                          }`}
-                        >
+                        <p className="font-medium text-sm text-black">
                           {item.label}
                         </p>
+
+                        {/* Quality and Warranty badges for desktop */}
+                        <div className="flex items-center gap-1 mt-1 mb-2">
+                          {item.quality && (
+                            <span
+                              className={`px-2 py-0.5 text-xs font-medium rounded ${
+                                item.quality === "original"
+                                  ? "bg-blue-600 text-white"
+                                  : item.quality === "best"
+                                  ? "bg-green-600 text-white"
+                                  : "bg-gray-600 text-white"
+                              }`}
+                            >
+                              {item.quality.toUpperCase()}
+                            </span>
+                          )}
+                          {item.warranty && item.warranty.duration && (
+                            <span className="px-2 py-0.5 text-xs font-medium rounded bg-green-100 text-green-700 border border-green-200">
+                              {item.warranty.duration}{" "}
+                              {item.warranty.unit || "months"} warranty
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -158,7 +183,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                         <div className="flex items-center space-x-2 text-sm">
                           <span
                             className={`font-semibold ${
-                              highlight ? "text-green-700" : "text-blue-600"
+                              highlight ? "text-green-600" : "text-blue-600"
                             }`}
                           >
                             -{discount}%
@@ -171,11 +196,7 @@ function ListSpareParts({ spareParts, cartDevice }: ListSparePartsProps) {
                         </div>
                         <span
                           className={`font-bold ${
-                            isRange
-                              ? "text-amber-700"
-                              : highlight
-                              ? "text-green-800"
-                              : "text-black"
+                            isRange ? "text-amber-700" : "text-black"
                           }`}
                         >
                           {isRange

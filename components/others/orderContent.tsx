@@ -270,9 +270,32 @@ function SparePartsCard({ order }: { order: IOrder }) {
                 <h3 className="font-bold text-gray-900 text-sm lg:text-base truncate">
                   {spare.name.toUpperCase()}
                 </h3>
-                <p className="text-gray-600 text-xs lg:text-sm">
+                <p className="text-gray-600 text-xs lg:text-sm mb-1">
                   <span className="font-medium">{spare.category}</span>
                 </p>
+
+                {/* Quality and Warranty badges for order spare parts */}
+                <div className="flex items-center gap-1">
+                  {spare.quality && (
+                    <span
+                      className={`px-2 py-0.5 text-[10px] lg:text-xs font-medium rounded ${
+                        spare.quality === "original"
+                          ? "bg-blue-600 text-white"
+                          : spare.quality === "best"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-600 text-white"
+                      }`}
+                    >
+                      {spare.quality.toUpperCase()}
+                    </span>
+                  )}
+                  {spare.warranty && spare.warranty.duration && (
+                    <span className="px-2 py-0.5 text-[10px] lg:text-xs font-medium rounded bg-green-100 text-green-700 border border-green-200">
+                      {spare.warranty.duration}{" "}
+                      {spare.warranty.unit || "months"} warranty
+                    </span>
+                  )}
+                </div>
               </div>
               <div className="text-right">
                 {awaitingText ? (

@@ -83,9 +83,34 @@ const CheckoutOrderSummary = ({
                 height={32}
                 className="object-contain flex-shrink-0 lg:w-8 lg:h-8"
               />
-              <span className="text-sm lg:text-base text-gray-700 truncate">
-                {item.label}
-              </span>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm lg:text-base text-gray-700 truncate">
+                  {item.label}
+                </div>
+
+                {/* Quality and Warranty badges for checkout */}
+                <div className="flex items-center gap-1 mt-1">
+                  {item.quality && (
+                    <span
+                      className={`px-2 py-0.5 text-[10px] lg:text-xs font-medium rounded ${
+                        item.quality === "original"
+                          ? "bg-blue-600 text-white"
+                          : item.quality === "best"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-600 text-white"
+                      }`}
+                    >
+                      {item.quality.toUpperCase()}
+                    </span>
+                  )}
+                  {item.warranty && item.warranty.duration && (
+                    <span className="px-2 py-0.5 text-[10px] lg:text-xs font-medium rounded bg-green-100 text-green-700 border border-green-200">
+                      {item.warranty.duration} {item.warranty.unit || "months"}{" "}
+                      warranty
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
             {item.type === SparePartType.UNKNOWN ||
             item.type === SparePartType.DIAGNOSIS ? (

@@ -18,6 +18,11 @@ export interface IOrder {
     name: string;
     category: string;
     type?: SparePartType;
+    quality?: "original" | "best" | "quality";
+    warranty?: {
+      duration?: number;
+      unit?: "days" | "weeks" | "months" | "years";
+    };
     price: {
       repair: number;
       total: number;
