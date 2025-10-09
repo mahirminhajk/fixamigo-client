@@ -78,6 +78,30 @@ export default function CartDeviceDesktop({
                   <p className="text-gray-900 font-semibold text-base mb-1">
                     {item.label}
                   </p>
+
+                  {/* Quality and Warranty badges for cart desktop */}
+                  <div className="flex items-center gap-1 mb-2">
+                    {item.quality && (
+                      <span
+                        className={`px-2 py-0.5 text-xs font-medium rounded ${
+                          item.quality === "original"
+                            ? "bg-blue-600 text-white"
+                            : item.quality === "best"
+                            ? "bg-green-600 text-white"
+                            : "bg-gray-600 text-white"
+                        }`}
+                      >
+                        {item.quality.toUpperCase()}
+                      </span>
+                    )}
+                    {item.warranty && item.warranty.duration && (
+                      <span className="px-2 py-0.5 text-xs font-medium rounded bg-green-100 text-green-700 border border-green-200">
+                        {item.warranty.duration}{" "}
+                        {item.warranty.unit || "months"} warranty
+                      </span>
+                    )}
+                  </div>
+
                   <div className="flex items-center space-x-2">
                     {item.type === SparePartType.UNKNOWN ? (
                       <span className="text-[#D2691E] font-semibold text-sm">

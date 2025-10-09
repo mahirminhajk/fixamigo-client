@@ -85,6 +85,30 @@ export default function CartDeviceMobile({
               />
               <div className="flex-1 text-sm">
                 <p className="text-gray-800 font-medium">{item.label}</p>
+
+                {/* Quality and Warranty badges for cart mobile */}
+                <div className="flex items-center gap-1 mb-1">
+                  {item.quality && (
+                    <span
+                      className={`px-2 py-0.5 text-[10px] font-medium rounded ${
+                        item.quality === "original"
+                          ? "bg-blue-600 text-white"
+                          : item.quality === "best"
+                          ? "bg-green-600 text-white"
+                          : "bg-gray-600 text-white"
+                      }`}
+                    >
+                      {item.quality.toUpperCase()}
+                    </span>
+                  )}
+                  {item.warranty && item.warranty.duration && (
+                    <span className="px-2 py-0.5 text-[10px] font-medium rounded bg-green-100 text-green-700 border border-green-200">
+                      {item.warranty.duration} {item.warranty.unit || "months"}{" "}
+                      warranty
+                    </span>
+                  )}
+                </div>
+
                 <div className="flex items-center space-x-2">
                   <SparePartPriceDisplay part={item} />
                 </div>
