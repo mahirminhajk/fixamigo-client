@@ -156,25 +156,6 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
 
   return (
     <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-4">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-          <svg
-            className="w-4 h-4 text-blue-600"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-            />
-          </svg>
-        </div>
-        <h3 className="text-lg font-bold text-gray-900">Other Phones</h3>
-      </div>
-
       {/* Same Brand Section */}
       {sameBrand.length > 0 && (
         <div className="mb-8">
@@ -240,7 +221,6 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
       {randomBrands.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-5 h-5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
             <h4 className="text-sm font-bold text-gray-700 uppercase">
               Other Brands
             </h4>
