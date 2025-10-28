@@ -30,45 +30,47 @@ export default function CheckoutStepWrapper({
   hideBackButton = false,
 }: CheckoutStepWrapperProps) {
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-3xl mx-auto">
       {/* Step Content */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-6">
+      <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
         {children}
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex items-center justify-between gap-4 mb-8">
+      {/* Navigation Buttons - Enhanced Design */}
+      <div className="flex items-center justify-between gap-4 mb-12 px-2">
         {/* Back Button */}
         {!hideBackButton && currentStep > 1 ? (
           <Button
             onClick={onBack}
             variant="outline"
-            className="flex items-center gap-2 px-6 py-3 text-base"
+            size="lg"
+            className="flex items-center gap-2 px-8 py-6 text-base font-semibold border-2 hover:bg-gray-50 transition-all"
             disabled={isNextLoading}
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" />
             {backLabel}
           </Button>
         ) : (
           <div /> // Spacer for alignment
         )}
 
-        {/* Next/Continue Button */}
+        {/* Next/Continue Button - More Prominent */}
         {!hideNextButton && (
           <Button
             onClick={onNext}
             disabled={isNextDisabled || isNextLoading}
-            className="flex items-center gap-2 px-8 py-3 text-base bg-blue-600 hover:bg-blue-700 ml-auto"
+            size="lg"
+            className="flex items-center gap-3 px-10 py-6 text-base font-bold bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl transition-all ml-auto transform hover:scale-105 disabled:transform-none disabled:opacity-50"
           >
             {isNextLoading ? (
               <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Processing...
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <span>Processing...</span>
               </>
             ) : (
               <>
-                {nextLabel}
-                {currentStep < totalSteps && <ArrowRight className="w-4 h-4" />}
+                <span className="text-lg">{nextLabel}</span>
+                {currentStep < totalSteps && <ArrowRight className="w-5 h-5" />}
               </>
             )}
           </Button>
