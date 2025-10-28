@@ -1,8 +1,8 @@
 "use client";
 import CheckoutAddressCard from "@/components/checkoutComps/checkoutAddressCard";
-import CheckoutPaymentMethodCard from "@/components/checkoutComps/checkoutPaymentMethodCard";
 import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
-import CheckoutServiceMethodCard from "@/components/checkoutComps/checkoutServiceMethodCard";
+import InlineServiceMethod from "@/components/checkoutComps/InlineServiceMethod";
+import InlinePaymentMethod from "@/components/checkoutComps/InlinePaymentMethod";
 import CheckoutOrderSummary from "@/components/checkoutComps/checkoutOrderSummary";
 import CheckoutNoteCard from "@/components/checkoutComps/checkoutNoteCard";
 import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
@@ -207,12 +207,6 @@ function CheckoutPageContent() {
       }
       return prev;
     });
-  };
-
-  //* onServiceMethodChange
-  const onServiceMethodChange = async () => {
-    console.log("Service method changed");
-    // No functionality needed for now as per requirement
   };
 
   //* Step navigation handlers
@@ -456,14 +450,12 @@ function CheckoutPageContent() {
               onBack={handleBackStep}
               isNextDisabled={!selectedAddress && !order?.address}
             >
-              <div className="space-y-6">
-                <CheckoutServiceMethodCard
-                  onServiceMethodChange={onServiceMethodChange}
-                />
-                <div className="border-t border-gray-200 pt-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Delivery Address
-                  </h3>
+              <div className="space-y-8">
+                {/* Inline Service Method */}
+                <InlineServiceMethod />
+
+                {/* Delivery Address */}
+                <div className="border-t-2 border-gray-200 pt-8">
                   <CheckoutAddressCard
                     address={selectedAddress || order?.address}
                     onAddressSubmit={onAddressSubmit}
@@ -485,7 +477,8 @@ function CheckoutPageContent() {
               onBack={handleBackStep}
               isNextDisabled={!order?.schedules?.pickupDate || !order?.payment}
             >
-              <div className="space-y-6">
+              <div className="space-y-8">
+                {/* Pickup Date - Keep as sheet */}
                 <CheckoutPickupDateCard
                   pickupAvailableDates={pickupAvailableDates}
                   pickupDate={
@@ -496,15 +489,23 @@ function CheckoutPageContent() {
                   onPickupDateChange={onPickupDateChange}
                   loading={loading}
                 />
-                <CheckoutPaymentMethodCard
-                  onPaymentMethodChange={onPaymentMethodChange}
-                />
-                <CheckoutNoteCard
-                  order={order}
-                  onNoteSaved={(note) =>
-                    setOrder((prev) => (prev ? { ...prev, note } : prev))
-                  }
-                />
+
+                {/* Inline Payment Method */}
+                <div className="border-t-2 border-gray-200 pt-8">
+                  <InlinePaymentMethod
+                    onPaymentMethodChange={onPaymentMethodChange}
+                  />
+                </div>
+
+                {/* Optional Note */}
+                <div className="border-t-2 border-gray-200 pt-8">
+                  <CheckoutNoteCard
+                    order={order}
+                    onNoteSaved={(note) =>
+                      setOrder((prev) => (prev ? { ...prev, note } : prev))
+                    }
+                  />
+                </div>
               </div>
             </CheckoutStepWrapper>
           )}
