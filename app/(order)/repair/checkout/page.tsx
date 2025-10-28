@@ -9,6 +9,7 @@ import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import CheckoutStepper from "@/components/checkoutComps/CheckoutStepper";
 import CheckoutStepWrapper from "@/components/checkoutComps/CheckoutStepWrapper";
 import CheckoutReviewStep from "@/components/checkoutComps/CheckoutReviewStep";
+import Footer from "@/components/core/footer";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import api from "@/lib/axiosInstance";
 import { useCartStore } from "@/stores/cartStore";
@@ -35,14 +36,17 @@ function CheckoutPageContent() {
 
   //* Step configuration
   const steps = [
-    { number: 1, title: "Service Details", description: "Choose your service" },
-    { number: 2, title: "Address", description: "Delivery location" },
     {
-      number: 3,
+      number: 1,
+      title: "Delivery Details",
+      description: "Service & address",
+    },
+    {
+      number: 2,
       title: "Schedule & Payment",
       description: "Date and payment",
     },
-    { number: 4, title: "Review", description: "Confirm your order" },
+    { number: 3, title: "Review & Confirm", description: "Check your order" },
   ];
 
   //* hooks
@@ -215,16 +219,13 @@ function CheckoutPageContent() {
   const handleNextStep = () => {
     // Validation before moving to next step
     if (currentStep === 1) {
-      // Service method is auto-selected, just move forward
-      setCurrentStep(2);
-    } else if (currentStep === 2) {
-      // Validate address is selected
+      // Validate address is selected (service method is auto-selected)
       if (!selectedAddress && !order?.address) {
         setGeneralError("Please select or add a delivery address");
         return;
       }
-      setCurrentStep(3);
-    } else if (currentStep === 3) {
+      setCurrentStep(2);
+    } else if (currentStep === 2) {
       // Validate pickup date and payment
       if (!order?.schedules?.pickupDate) {
         setGeneralError("Please select a pickup date");
@@ -234,7 +235,7 @@ function CheckoutPageContent() {
         setGeneralError("Please select a payment method");
         return;
       }
-      setCurrentStep(4);
+      setCurrentStep(3);
     }
     // Clear any errors when successfully moving forward
     setGeneralError(null);
@@ -395,175 +396,154 @@ function CheckoutPageContent() {
 
   //* render
   return (
-    <section className="min-h-screen bg-gray-50 py-6">
-      <div className="container mx-auto px-4 max-w-7xl">
-        <PopupLoading show={loading} />
+    <>
+      <section className="min-h-screen bg-gray-50 py-6 pb-0">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <PopupLoading show={loading} />
 
-        {/* Header */}
-        <div className="mb-6 text-center">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Checkout
-          </h1>
-          <p className="text-gray-600">Complete your service booking</p>
-        </div>
+          {/* Header */}
+          <div className="mb-6 text-center">
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+              Checkout
+            </h1>
+            <p className="text-gray-600">Complete your service booking</p>
+          </div>
 
-        {/* General Error Message */}
-        {generalError && (
-          <div className="p-4 mb-6 bg-red-50 border border-red-200 rounded-lg max-w-2xl mx-auto">
-            <div className="flex items-start">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-red-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3 flex-1">
-                <h3 className="text-sm font-medium text-red-800">Error</h3>
-                <p className="mt-1 text-sm text-red-700">{generalError}</p>
-                <button
-                  onClick={() => setGeneralError(null)}
-                  className="mt-2 text-sm font-medium text-red-800 hover:text-red-900"
-                >
-                  Dismiss
-                </button>
+          {/* General Error Message */}
+          {generalError && (
+            <div className="p-4 mb-6 bg-red-50 border border-red-200 rounded-lg max-w-2xl mx-auto">
+              <div className="flex items-start">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3 flex-1">
+                  <h3 className="text-sm font-medium text-red-800">Error</h3>
+                  <p className="mt-1 text-sm text-red-700">{generalError}</p>
+                  <button
+                    onClick={() => setGeneralError(null)}
+                    className="mt-2 text-sm font-medium text-red-800 hover:text-red-900"
+                  >
+                    Dismiss
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="lg:grid lg:grid-cols-3 lg:gap-8">
-          {/* Left/Center Column - Steps */}
-          <div className="lg:col-span-2">
-            {/* Stepper */}
-            <CheckoutStepper
+          {/* Stepper */}
+          <CheckoutStepper
+            currentStep={currentStep}
+            totalSteps={steps.length}
+            steps={steps}
+          />
+
+          {/* Step 1: Service Method + Address (Combined) */}
+          {currentStep === 1 && (
+            <CheckoutStepWrapper
               currentStep={currentStep}
               totalSteps={steps.length}
-              steps={steps}
-            />
-
-            {/* Step 1: Service Details */}
-            {currentStep === 1 && (
-              <CheckoutStepWrapper
-                currentStep={currentStep}
-                totalSteps={steps.length}
-                onNext={handleNextStep}
-                onBack={handleBackStep}
-              >
-                <div className="space-y-6">
-                  <CheckoutServiceMethodCard
-                    onServiceMethodChange={onServiceMethodChange}
+              onNext={handleNextStep}
+              onBack={handleBackStep}
+              isNextDisabled={!selectedAddress && !order?.address}
+            >
+              <div className="space-y-6">
+                <CheckoutServiceMethodCard
+                  onServiceMethodChange={onServiceMethodChange}
+                />
+                <div className="border-t border-gray-200 pt-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Delivery Address
+                  </h3>
+                  <CheckoutAddressCard
+                    address={selectedAddress || order?.address}
+                    onAddressSubmit={onAddressSubmit}
+                    onAddressSelect={onAddressSelect}
+                    loading={loading}
+                    error={addressError}
                   />
-                  <div className="pt-4 border-t border-gray-200">
-                    <h3 className="text-sm font-medium text-gray-700 mb-4">
-                      Order Summary
-                    </h3>
-                    <CheckoutOrderSummary
-                      order={order}
-                      deviceSlug={deviceSlug}
-                    />
-                  </div>
                 </div>
-              </CheckoutStepWrapper>
-            )}
+              </div>
+            </CheckoutStepWrapper>
+          )}
 
-            {/* Step 2: Address */}
-            {currentStep === 2 && (
-              <CheckoutStepWrapper
-                currentStep={currentStep}
-                totalSteps={steps.length}
-                onNext={handleNextStep}
-                onBack={handleBackStep}
-                isNextDisabled={!selectedAddress && !order?.address}
-              >
-                <CheckoutAddressCard
-                  address={selectedAddress || order?.address}
-                  onAddressSubmit={onAddressSubmit}
-                  onAddressSelect={onAddressSelect}
+          {/* Step 2: Schedule & Payment */}
+          {currentStep === 2 && (
+            <CheckoutStepWrapper
+              currentStep={currentStep}
+              totalSteps={steps.length}
+              onNext={handleNextStep}
+              onBack={handleBackStep}
+              isNextDisabled={!order?.schedules?.pickupDate || !order?.payment}
+            >
+              <div className="space-y-6">
+                <CheckoutPickupDateCard
+                  pickupAvailableDates={pickupAvailableDates}
+                  pickupDate={
+                    order?.schedules?.pickupDate
+                      ? order.schedules.pickupDate
+                      : null
+                  }
+                  onPickupDateChange={onPickupDateChange}
                   loading={loading}
-                  error={addressError}
                 />
-              </CheckoutStepWrapper>
-            )}
-
-            {/* Step 3: Schedule & Payment */}
-            {currentStep === 3 && (
-              <CheckoutStepWrapper
-                currentStep={currentStep}
-                totalSteps={steps.length}
-                onNext={handleNextStep}
-                onBack={handleBackStep}
-                isNextDisabled={
-                  !order?.schedules?.pickupDate || !order?.payment
-                }
-              >
-                <div className="space-y-6">
-                  <CheckoutPickupDateCard
-                    pickupAvailableDates={pickupAvailableDates}
-                    pickupDate={
-                      order?.schedules?.pickupDate
-                        ? order.schedules.pickupDate
-                        : null
-                    }
-                    onPickupDateChange={onPickupDateChange}
-                    loading={loading}
-                  />
-                  <CheckoutPaymentMethodCard
-                    onPaymentMethodChange={onPaymentMethodChange}
-                  />
-                  <CheckoutNoteCard
-                    order={order}
-                    onNoteSaved={(note) =>
-                      setOrder((prev) => (prev ? { ...prev, note } : prev))
-                    }
-                  />
-                </div>
-              </CheckoutStepWrapper>
-            )}
-
-            {/* Step 4: Review & Confirm */}
-            {currentStep === 4 && (
-              <CheckoutStepWrapper
-                currentStep={currentStep}
-                totalSteps={steps.length}
-                onBack={handleBackStep}
-                hideNextButton={true}
-              >
-                <CheckoutReviewStep
+                <CheckoutPaymentMethodCard
+                  onPaymentMethodChange={onPaymentMethodChange}
+                />
+                <CheckoutNoteCard
                   order={order}
-                  selectedAddress={selectedAddress || order?.address || null}
-                  onEditStep={handleEditStep}
+                  onNoteSaved={(note) =>
+                    setOrder((prev) => (prev ? { ...prev, note } : prev))
+                  }
                 />
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <PlaceServiceBtn
-                    order={order}
-                    bookOrder={handleBookOrder}
-                    loading={loading}
-                    deviceSlug={deviceSlug}
-                  />
-                </div>
-              </CheckoutStepWrapper>
-            )}
-          </div>
+              </div>
+            </CheckoutStepWrapper>
+          )}
 
-          {/* Right Column - Order Summary (Desktop) */}
-          <div className="hidden lg:block lg:col-span-1">
-            <div className="sticky top-4 bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Order Summary
-              </h3>
-              <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
-            </div>
-          </div>
+          {/* Step 3: Review & Confirm */}
+          {currentStep === 3 && (
+            <CheckoutStepWrapper
+              currentStep={currentStep}
+              totalSteps={steps.length}
+              onBack={handleBackStep}
+              hideNextButton={true}
+            >
+              <CheckoutReviewStep
+                order={order}
+                selectedAddress={selectedAddress || order?.address || null}
+                onEditStep={handleEditStep}
+              />
+              {/* Order Summary in Review Step */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Order Summary
+                </h3>
+                <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
+              </div>
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <PlaceServiceBtn
+                  order={order}
+                  bookOrder={handleBookOrder}
+                  loading={loading}
+                  deviceSlug={deviceSlug}
+                />
+              </div>
+            </CheckoutStepWrapper>
+          )}
         </div>
-      </div>
-    </section>
+      </section>
+      {/* Footer */}
+      <Footer />
+    </>
   );
 }
 
