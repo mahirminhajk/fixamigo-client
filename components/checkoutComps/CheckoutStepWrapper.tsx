@@ -31,8 +31,8 @@ export default function CheckoutStepWrapper({
 }: CheckoutStepWrapperProps) {
   return (
     <div className="w-full max-w-3xl mx-auto">
-      {/* Step Content */}
-      <div className="bg-white rounded-2xl shadow-lg p-6 lg:p-8 mb-8">
+      {/* Step Content - Flat Design */}
+      <div className="bg-white border-2 border-gray-200 rounded-lg p-6 lg:p-8 mb-8 hover:border-gray-300 transition-colors">
         {children}
       </div>
 
