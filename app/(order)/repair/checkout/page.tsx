@@ -218,6 +218,21 @@ function CheckoutPageContent() {
         setGeneralError("Please select or add a delivery address");
         return;
       }
+      // Initialize payment method when moving to step 2
+      if (!order?.payment) {
+        setOrder((prev) => {
+          if (prev) {
+            return {
+              ...prev,
+              payment: {
+                mode: PaymentMode.COD,
+                transactionId: undefined,
+              },
+            };
+          }
+          return prev;
+        });
+      }
       setCurrentStep(2);
     } else if (currentStep === 2) {
       // Validate pickup date and payment
