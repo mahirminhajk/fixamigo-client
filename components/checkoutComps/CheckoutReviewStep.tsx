@@ -118,7 +118,7 @@ export default function CheckoutReviewStep({
             </div>
           </div>
           <button
-            onClick={() => onEditStep(3)}
+            onClick={() => onEditStep(2)}
             className="text-blue-600 hover:text-blue-700 flex items-center gap-1 text-sm font-medium"
           >
             <Edit2 className="w-4 h-4" />
