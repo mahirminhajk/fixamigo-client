@@ -15,7 +15,8 @@ export default function InlinePaymentMethod({
     if (onPaymentMethodChange) {
       onPaymentMethodChange();
     }
-  }, [onPaymentMethodChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run once on mount
 
   const handleMethodSelect = (method: string) => {
     setSelectedMethod(method);

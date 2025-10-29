@@ -35,12 +35,11 @@ const CheckoutOrderSummary = ({
 
   return (
     <div className="bg-white p-4 lg:p-6 rounded-xl shadow-md space-y-4 w-full max-w-md lg:max-w-none mx-auto lg:mx-0">
-      <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-lg lg:text-xl">Order Summary</h3>
-        {hasRangeItemsForDevice && (
+      {hasRangeItemsForDevice && (
+        <div className="flex justify-end">
           <PriceRangeInfo hasPriceRange={hasRangeItemsForDevice} />
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Device Info */}
       <div className="border-b border-gray-200 pb-3">

@@ -40,6 +40,7 @@ function CheckoutPageContent() {
     "NO_ZONES" | "BAD_REQUEST" | null
   >(null);
   const [generalError, setGeneralError] = useState<string | null>(null);
+  const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true);
 
   //* Step configuration
   const steps = [
@@ -292,6 +293,30 @@ function CheckoutPageContent() {
         setLoading(false);
       });
   };
+
+  //* Intersection Observer for Place Service Button visibility
+  useEffect(() => {
+    if (currentStep !== 3) return;
+
+    const buttonElement = document.getElementById("place-service-button");
+    if (!buttonElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsButtonVisible(entry.isIntersecting);
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -100px 0px", // Trigger slightly before fully visible
+      }
+    );
+
+    observer.observe(buttonElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [currentStep]);
 
   //* handle hydration - show loading state while cart is undefined
   if (!cart) {
@@ -554,30 +579,69 @@ function CheckoutPageContent() {
               onBack={handleBackStep}
               hideNextButton={true}
             >
-              <CheckoutReviewStep
-                order={order}
-                selectedAddress={selectedAddress || order?.address || null}
-                onEditStep={handleEditStep}
-              />
-              {/* Order Summary in Review Step */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Order Summary
-                </h3>
+              {/* Review Your Order Heading */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                  Review Your Order
+                </h2>
+              </div>
+
+              {/* Order Summary at Top */}
+              <div className="mb-6">
                 <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
               </div>
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <PlaceServiceBtn
+
+              {/* Review Details */}
+              <div className="border-t-2 border-gray-200 pt-6">
+                <CheckoutReviewStep
                   order={order}
-                  bookOrder={handleBookOrder}
-                  loading={loading}
-                  deviceSlug={deviceSlug}
+                  selectedAddress={selectedAddress || order?.address || null}
+                  onEditStep={handleEditStep}
                 />
+              </div>
+
+              {/* Place Service Button with Conditional Indicator */}
+              <div className="mt-6 pt-6 border-t-2 border-gray-200">
+                <div id="place-service-button">
+                  <PlaceServiceBtn
+                    order={order}
+                    bookOrder={handleBookOrder}
+                    loading={loading}
+                    deviceSlug={deviceSlug}
+                  />
+                </div>
               </div>
             </CheckoutStepWrapper>
           )}
         </div>
       </section>
+
+      {/* Fixed Bottom Indicator - Only show in Step 3 when button is not visible */}
+      {currentStep === 3 && !isButtonVisible && (
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent pb-4 pt-8 z-20 pointer-events-none">
+          <div className="container mx-auto px-4 max-w-5xl">
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center gap-2 text-blue-600 animate-bounce">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+                <span className="text-sm font-bold bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg">
+                  Complete Your Order Below
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <Footer />
     </>
