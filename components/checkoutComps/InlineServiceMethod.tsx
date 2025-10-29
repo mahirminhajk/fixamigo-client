@@ -55,8 +55,8 @@ export default function InlineServiceMethod() {
           />
         </svg>
         <p>
-          Our technician will visit your address to collect the device at your
-          selected pickup time.
+          Our delivery partner will visit your address to collect the device at
+          your selected pickup time.
         </p>
       </div>
     </div>
