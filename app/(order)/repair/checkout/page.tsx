@@ -435,17 +435,9 @@ function CheckoutPageContent() {
           </a>
         </div>
       </header>
-      <section className="min-h-screen bg-gray-50 py-6 pb-0">
+      <section className="min-h-screen bg-gray-50 py-4 pb-0">
         <div className="container mx-auto px-4 max-w-5xl">
           <PopupLoading show={loading} />
-
-          {/* Header */}
-          <div className="mb-6 text-center">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-              Checkout
-            </h1>
-            <p className="text-gray-600">Complete your service booking</p>
-          </div>
 
           {/* General Error Message */}
           {generalError && (

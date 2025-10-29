@@ -18,20 +18,20 @@ export default function CheckoutStepper({
   const progressPercentage = (currentStep / totalSteps) * 100;
 
   return (
-    <div className="w-full mb-8">
-      {/* Progress Bar */}
-      <div className="mb-6">
+    <div className="w-full mb-6">
+      {/* Progress Bar - More Compact */}
+      <div className="mb-5">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-600">
+          <span className="text-xs font-medium text-gray-600">
             Step {currentStep} of {totalSteps}
           </span>
-          <span className="text-sm font-medium text-blue-600">
+          <span className="text-xs font-medium text-blue-600">
             {Math.round(progressPercentage)}% Complete
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden relative">
+        <div className="w-full bg-gray-200 rounded-full h-1.5 overflow-hidden relative">
           <div
-            className={`bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500 ease-out absolute top-0 left-0 ${
+            className={`bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 rounded-full transition-all duration-500 ease-out absolute top-0 left-0 ${
               currentStep === 1
                 ? "w-1/4"
                 : currentStep === 2
@@ -44,7 +44,7 @@ export default function CheckoutStepper({
         </div>
       </div>
 
-      {/* Desktop Stepper - Horizontal */}
+      {/* Desktop Stepper - Horizontal - More Compact */}
       <div className="hidden md:block">
         <div className="flex items-center justify-between">
           {steps.map((step, index) => {
@@ -54,10 +54,10 @@ export default function CheckoutStepper({
             return (
               <div key={step.number} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
-                  {/* Circle */}
+                  {/* Circle - Smaller */}
                   <div
                     className={`
-                      w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm
+                      w-9 h-9 rounded-full flex items-center justify-center font-semibold text-sm
                       transition-all duration-300
                       ${
                         isCompleted
@@ -68,13 +68,13 @@ export default function CheckoutStepper({
                       }
                     `}
                   >
-                    {isCompleted ? <Check className="w-5 h-5" /> : step.number}
+                    {isCompleted ? <Check className="w-4 h-4" /> : step.number}
                   </div>
-                  {/* Label */}
-                  <div className="mt-3 text-center">
+                  {/* Label - More Compact */}
+                  <div className="mt-2 text-center">
                     <div
                       className={`
-                        text-sm font-semibold
+                        text-xs font-semibold
                         ${
                           isCurrent
                             ? "text-blue-600"
@@ -86,16 +86,13 @@ export default function CheckoutStepper({
                     >
                       {step.title}
                     </div>
-                    <div className="text-xs text-gray-500 mt-1 max-w-[120px]">
-                      {step.description}
-                    </div>
                   </div>
                 </div>
                 {/* Connector Line */}
                 {index < steps.length - 1 && (
                   <div
                     className={`
-                      h-0.5 flex-1 mx-2 -mt-12 transition-all duration-300
+                      h-0.5 flex-1 mx-2 -mt-10 transition-all duration-300
                       ${isCompleted ? "bg-green-500" : "bg-gray-200"}
                     `}
                   />
@@ -117,7 +114,7 @@ export default function CheckoutStepper({
               <div
                 key={step.number}
                 className={`
-                  w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold
+                  w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold
                   transition-all duration-300
                   ${
                     isCompleted
@@ -128,17 +125,14 @@ export default function CheckoutStepper({
                   }
                 `}
               >
-                {isCompleted ? <Check className="w-4 h-4" /> : step.number}
+                {isCompleted ? <Check className="w-3 h-3" /> : step.number}
               </div>
             );
           })}
         </div>
-        <div className="text-center mt-3">
-          <div className="text-base font-semibold text-gray-900">
+        <div className="text-center mt-2">
+          <div className="text-sm font-semibold text-gray-900">
             {steps[currentStep - 1].title}
-          </div>
-          <div className="text-sm text-gray-500">
-            {steps[currentStep - 1].description}
           </div>
         </div>
       </div>

@@ -31,13 +31,13 @@ export default function CheckoutStepWrapper({
 }: CheckoutStepWrapperProps) {
   return (
     <div className="w-full max-w-3xl mx-auto">
-      {/* Step Content - Flat Design */}
-      <div className="bg-white border-2 border-gray-200 rounded-lg p-6 lg:p-8 mb-8 hover:border-gray-300 transition-colors">
+      {/* Step Content - Flat Design, Minimal Padding */}
+      <div className="bg-white border-2 border-gray-200 rounded-lg p-5 lg:p-6 mb-6 hover:border-gray-300 transition-colors">
         {children}
       </div>
 
       {/* Navigation Buttons - Enhanced Design */}
-      <div className="flex items-center justify-between gap-4 mb-12 px-2">
+      <div className="flex items-center justify-between gap-4 mb-8 px-2">
         {/* Back Button */}
         {!hideBackButton && currentStep > 1 ? (
           <Button
