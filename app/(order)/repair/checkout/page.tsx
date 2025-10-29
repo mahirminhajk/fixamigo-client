@@ -22,6 +22,10 @@ import { PopupLoading } from "@/components/others/popupLoading";
 
 function CheckoutPageContent() {
   //*state
+  // Always scroll to top on mount (fixes scroll bug when navigating from Book Now)
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, []);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [order, setOrder] = useState<IOrder | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<IAddress | null>(null);
