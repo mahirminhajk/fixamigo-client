@@ -17,11 +17,10 @@ import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
 import { IOrder, PaymentMode } from "@/types/order";
 import { Suspense, useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { INFO } from "@/constants";
+// Header moved to (order) layout via MinimalHeader
 import { useRouter, useSearchParams } from "next/navigation";
 import { PopupLoading } from "@/components/others/popupLoading";
+import { useHelpHeaderStore } from "@/stores/helpHeaderStore";
 
 function CheckoutPageContent() {
   //*state
@@ -29,6 +28,12 @@ function CheckoutPageContent() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "auto" });
   }, []);
+  // Set help message for header
+  const setHelpMessage = useHelpHeaderStore((s) => s.setHelpMessage);
+  useEffect(() => {
+    setHelpMessage("Hi, I need help with my order");
+    return () => setHelpMessage(null);
+  }, [setHelpMessage]);
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [order, setOrder] = useState<IOrder | null>(null);
   const [selectedAddress, setSelectedAddress] = useState<IAddress | null>(null);
@@ -467,28 +472,7 @@ function CheckoutPageContent() {
   //* render
   return (
     <>
-      {/* Minimal Header for Checkout */}
-      <header className="w-full bg-white border-b border-gray-200 py-3 mb-2 sticky top-0 z-30">
-        <div className="container mx-auto px-4 max-w-5xl flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2" prefetch={false}>
-            <Image
-              src="/logos/text.png"
-              alt="Fixamigo Logo"
-              width={100}
-              height={40}
-              className="h-8 w-auto"
-            />
-          </Link>
-          <a
-            href={INFO.waLink("Hi, I need help with my order")}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-green-600 hover:underline text-sm font-medium flex items-center gap-1"
-          >
-            Need Help?
-          </a>
-        </div>
-      </header>
+      {/* Minimal header is provided by the (order) layout */}
       <section className="min-h-screen bg-gray-50 py-4 pb-0">
         <div className="container mx-auto px-4 max-w-5xl">
           <PopupLoading show={loading} />

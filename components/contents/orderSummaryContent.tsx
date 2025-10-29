@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { AUTH_COMPLETED_EVENT } from "@/lib/authEvents";
+import { useHelpHeaderStore } from "@/stores/helpHeaderStore";
 
 export default function OrderSummaryContent() {
   //* state
@@ -58,6 +59,15 @@ export default function OrderSummaryContent() {
     window.addEventListener(AUTH_COMPLETED_EVENT, handler);
     return () => window.removeEventListener(AUTH_COMPLETED_EVENT, handler);
   }, [fetchOrder]);
+
+  // Update header help message with order code when available
+  const setHelpMessage = useHelpHeaderStore((s) => s.setHelpMessage);
+  useEffect(() => {
+    if (order?.code) {
+      setHelpMessage(`Hi, I need help with this order ${order.code}`);
+    }
+    return () => setHelpMessage(null);
+  }, [order?.code, setHelpMessage]);
 
   if (!orderId) {
     return (
