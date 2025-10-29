@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CreditCard, Banknote } from "lucide-react";
 
 interface InlinePaymentMethodProps {
@@ -9,6 +9,13 @@ export default function InlinePaymentMethod({
   onPaymentMethodChange,
 }: InlinePaymentMethodProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("cod");
+
+  // Trigger payment method change on mount to sync with parent state
+  useEffect(() => {
+    if (onPaymentMethodChange) {
+      onPaymentMethodChange();
+    }
+  }, [onPaymentMethodChange]);
 
   const handleMethodSelect = (method: string) => {
     setSelectedMethod(method);
