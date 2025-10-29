@@ -186,7 +186,16 @@ function CheckoutPageContent() {
           "new order pickup date",
           res.data.data.order.schedules.pickupDate
         );
-        setOrder(res.data.data.order);
+        // Preserve client-side payment selection if API response omits it
+        const incoming = res.data.data.order as IOrder;
+        setOrder((prev) => {
+          if (!prev) return incoming;
+          return {
+            ...prev,
+            ...incoming,
+            payment: prev.payment ?? incoming.payment,
+          };
+        });
       })
       .catch((err) => {
         console.error("Pickup date update failed:", err);
@@ -299,7 +308,16 @@ function CheckoutPageContent() {
     if (currentStep !== 3) return;
 
     const buttonElement = document.getElementById("place-service-button");
-    if (!buttonElement) return;
+    if (!buttonElement) {
+      // If not found yet, assume not visible so indicator can show
+      setIsButtonVisible(false);
+      return;
+    }
+
+    // Compute initial visibility immediately to avoid waiting for first IO tick
+    const rect = buttonElement.getBoundingClientRect();
+    const initiallyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+    setIsButtonVisible(initiallyVisible);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
