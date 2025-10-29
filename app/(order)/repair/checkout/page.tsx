@@ -487,18 +487,18 @@ function CheckoutPageContent() {
               isNextDisabled={!selectedAddress && !order?.address}
             >
               <div className="space-y-8">
-                {/* Inline Service Method */}
-                <InlineServiceMethod />
-
                 {/* Delivery Address */}
+                <CheckoutAddressCard
+                  address={selectedAddress || order?.address}
+                  onAddressSubmit={onAddressSubmit}
+                  onAddressSelect={onAddressSelect}
+                  loading={loading}
+                  error={addressError}
+                />
+
+                {/* Inline Service Method */}
                 <div className="border-t-2 border-gray-200 pt-8">
-                  <CheckoutAddressCard
-                    address={selectedAddress || order?.address}
-                    onAddressSubmit={onAddressSubmit}
-                    onAddressSelect={onAddressSelect}
-                    loading={loading}
-                    error={addressError}
-                  />
+                  <InlineServiceMethod />
                 </div>
               </div>
             </CheckoutStepWrapper>
