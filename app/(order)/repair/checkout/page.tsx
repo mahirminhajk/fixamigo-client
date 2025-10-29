@@ -318,6 +318,17 @@ function CheckoutPageContent() {
     };
   }, [currentStep]);
 
+  //* Scroll to Place Service Button
+  const scrollToPlaceServiceButton = () => {
+    const buttonElement = document.getElementById("place-service-button");
+    if (buttonElement) {
+      buttonElement.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
   //* handle hydration - show loading state while cart is undefined
   if (!cart) {
     return (
@@ -618,10 +629,14 @@ function CheckoutPageContent() {
 
       {/* Fixed Bottom Indicator - Only show in Step 3 when button is not visible */}
       {currentStep === 3 && !isButtonVisible && (
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent pb-4 pt-8 z-20 pointer-events-none">
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent pb-4 pt-8 z-20">
           <div className="container mx-auto px-4 max-w-5xl">
             <div className="flex items-center justify-center">
-              <div className="flex flex-col items-center gap-2 text-blue-600 animate-bounce">
+              <button
+                onClick={scrollToPlaceServiceButton}
+                className="flex flex-col items-center gap-2 text-blue-600 animate-bounce cursor-pointer hover:scale-105 transition-transform focus:outline-none"
+                aria-label="Scroll to Place Service button"
+              >
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -636,7 +651,7 @@ function CheckoutPageContent() {
                 <span className="text-sm font-bold bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg">
                   Complete Your Order Below
                 </span>
-              </div>
+              </button>
             </div>
           </div>
         </div>
