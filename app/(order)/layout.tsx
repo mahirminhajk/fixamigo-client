@@ -1,10 +1,11 @@
 "use client";
 import { ReactNode } from "react";
+import MinimalHeader from "@/components/core/MinimalHeader";
 
 function Layout({ children }: Readonly<{ children?: ReactNode }>) {
   return (
     <>
-      {/* UserNavbar removed for checkout and order pages */}
+      <MinimalHeader />
       <main className="min-h-screen bg-gray-50">{children}</main>
     </>
   );
