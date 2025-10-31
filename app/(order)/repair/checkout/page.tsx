@@ -1,26 +1,29 @@
 "use client";
 import CheckoutAddressCard from "@/components/checkoutComps/checkoutAddressCard";
-import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
-import InlineServiceMethod from "@/components/checkoutComps/InlineServiceMethod";
-import InlinePaymentMethod from "@/components/checkoutComps/InlinePaymentMethod";
-import CheckoutOrderSummary from "@/components/checkoutComps/checkoutOrderSummary";
+import CheckoutCouponCard from "@/components/checkoutComps/checkoutCouponCard";
 import CheckoutNoteCard from "@/components/checkoutComps/checkoutNoteCard";
-import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
+import CheckoutOrderSummary from "@/components/checkoutComps/checkoutOrderSummary";
+import CheckoutPickupDateCard from "@/components/checkoutComps/checkoutPickupDateCard";
+import CheckoutReviewStep from "@/components/checkoutComps/CheckoutReviewStep";
 import CheckoutStepper from "@/components/checkoutComps/CheckoutStepper";
 import CheckoutStepWrapper from "@/components/checkoutComps/CheckoutStepWrapper";
-import CheckoutReviewStep from "@/components/checkoutComps/CheckoutReviewStep";
+import CheckoutWalletCard from "@/components/checkoutComps/checkoutWalletCard";
+import InlinePaymentMethod from "@/components/checkoutComps/InlinePaymentMethod";
+import InlineServiceMethod from "@/components/checkoutComps/InlineServiceMethod";
+import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import Footer from "@/components/core/footer";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import api from "@/lib/axiosInstance";
+import { calculateCheckoutTotal } from "@/lib/couponApi";
 import { useCartStore } from "@/stores/cartStore";
 import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
 import { IOrder, PaymentMode } from "@/types/order";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 // Header moved to (order) layout via MinimalHeader
-import { useRouter, useSearchParams } from "next/navigation";
 import { PopupLoading } from "@/components/others/popupLoading";
 import { useHelpHeaderStore } from "@/stores/helpHeaderStore";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function CheckoutPageContent() {
   //*state
@@ -46,6 +49,8 @@ function CheckoutPageContent() {
   >(null);
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true);
+  const [walletAmount, setWalletAmount] = useState<number>(0); // Amount in rupees
+  const [calculatedTotal, setCalculatedTotal] = useState<number | null>(null);
 
   //* Step configuration
   const steps = [
@@ -230,6 +235,61 @@ function CheckoutPageContent() {
       return prev;
     });
   };
+
+  //* Recalculate checkout total with coupons and wallet
+  const recalculateTotal = useCallback(async () => {
+    if (!order?._id || !order?.price?.original) return;
+
+    try {
+      // Get coupon codes from applied coupons in order
+      const couponCodes = order.coupons?.map((c) => c.code) || [];
+      const walletCoins = walletAmount; // Convert rupees to coins (1:1)
+
+      const result = await calculateCheckoutTotal({
+        orderValue: order.price.original,
+        walletCoins,
+        couponCodes,
+      });
+
+      setCalculatedTotal(result.totals.final);
+
+      // Update order with latest calculation
+      setOrder((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          price: {
+            ...prev.price,
+            breakdown: {
+              subtotal: result.totals.original,
+              couponsTotal: result.totals.couponDiscount,
+              walletDeduction: result.totals.walletDiscount,
+            },
+            final: result.totals.final,
+          },
+        };
+      });
+    } catch (error) {
+      console.error("Failed to recalculate total:", error);
+    }
+  }, [order?._id, order?.price?.original, order?.coupons, walletAmount]);
+
+  //* Handle coupon applied/removed
+  const handleCouponChange = () => {
+    recalculateTotal();
+  };
+
+  //* Handle wallet amount change
+  const handleWalletChange = (amount: number) => {
+    setWalletAmount(amount);
+  };
+
+  //* Recalculate when wallet amount changes
+  useEffect(() => {
+    if (order?._id && walletAmount >= 0) {
+      recalculateTotal();
+    }
+  }, [walletAmount, order?._id, recalculateTotal]);
 
   //* Step navigation handlers
   const handleNextStep = () => {
@@ -568,6 +628,36 @@ function CheckoutPageContent() {
                 <div className="border-t-2 border-gray-200 pt-8">
                   <InlinePaymentMethod
                     onPaymentMethodChange={onPaymentMethodChange}
+                  />
+                </div>
+
+                {/* Coupon Card */}
+                <div className="border-t-2 border-gray-200 pt-8">
+                  <CheckoutCouponCard
+                    orderId={order?._id || ""}
+                    orderValue={order?.price?.original || 0}
+                    appliedCoupons={order?.coupons?.map((c) => ({
+                      code: c.code,
+                      couponId: c.couponId,
+                      type: c.type,
+                      value: c.value,
+                      discount: c.discount,
+                    })) || []}
+                    onCouponApplied={handleCouponChange}
+                    onCouponRemoved={handleCouponChange}
+                    orderData={{
+                      deviceId: order?.device?._id,
+                      sparePartIds: order?.sparePartsDetails?.map((sp) => sp._id).filter(Boolean),
+                    }}
+                  />
+                </div>
+
+                {/* Wallet Card */}
+                <div className="border-t-2 border-gray-200 pt-8">
+                  <CheckoutWalletCard
+                    orderValue={order?.price?.original || 0}
+                    onWalletChange={handleWalletChange}
+                    initialWalletAmount={walletAmount}
                   />
                 </div>
 
