@@ -43,7 +43,34 @@ export interface IOrder {
     total: number;
     final: number;
     delivery: number;
+    breakdown?: {
+      subtotal?: number;
+      tax?: number;
+      couponsTotal?: number;
+      walletDeduction?: number;
+    };
   };
+
+  coupons?: Array<{
+    code: string;
+    couponId: string;
+    type: string;
+    value: number;
+    discount: number;
+    applyOrderStage?: string;
+  }>;
+
+  walletUsed?: {
+    amount: number;
+    holdId?: string;
+    transactionId?: string;
+  };
+
+  loyaltyCoins?: {
+    earned: number;
+    transactionId?: string;
+  };
+
   payment?: {
     mode: PaymentMode;
     transactionId?: string;
