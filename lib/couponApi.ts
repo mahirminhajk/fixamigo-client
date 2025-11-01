@@ -27,15 +27,11 @@ export const validateCoupon = async (
  */
 export const applyCoupon = async (
   code: string,
-  orderId: string,
-  orderValue: number,
-  orderData?: any
-): Promise<{ redemption: any }> => {
+  orderId: string
+): Promise<{ redemption: any; price?: any }> => {
   const response = await api.post("/order/apply-coupon", {
     code,
     orderId,
-    orderValue,
-    orderData,
   });
   return response.data.data;
 };

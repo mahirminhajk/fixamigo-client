@@ -51,14 +51,15 @@ export interface IOrder {
     };
   };
 
-  coupons?: Array<{
+  // Single applied coupon (if any)
+  coupon?: {
     code: string;
     couponId: string;
     type: string;
     value: number;
     discount: number;
     applyOrderStage?: string;
-  }>;
+  };
 
   walletUsed?: {
     amount: number;
