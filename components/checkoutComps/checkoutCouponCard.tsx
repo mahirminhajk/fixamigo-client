@@ -2,69 +2,31 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { applyCoupon, removeCoupon, validateCoupon } from "@/lib/couponApi";
+import { applyCoupon, removeCoupon } from "@/lib/couponApi";
 import { IAppliedCoupon } from "@/types/coupon";
 import { AlertCircle, CheckCircle2, Loader2, Tag, X } from "lucide-react";
 import { useState } from "react";
 
 interface CheckoutCouponCardProps {
   orderId: string;
-  orderValue: number;
   appliedCoupons: IAppliedCoupon[];
-  onCouponApplied: () => void;
-  onCouponRemoved: () => void;
-  orderData?: any;
+  onCouponApplied: (code: string, discount: number) => void;
+  onCouponRemoved: (code: string) => void;
 }
 
 export default function CheckoutCouponCard({
   orderId,
-  orderValue,
   appliedCoupons,
   onCouponApplied,
   onCouponRemoved,
-  orderData,
 }: CheckoutCouponCardProps) {
   const [couponCode, setCouponCode] = useState("");
-  const [isValidating, setIsValidating] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [isRemoving, setIsRemoving] = useState<string | null>(null);
   const [validationMessage, setValidationMessage] = useState<{
     type: "success" | "error";
     text: string;
   } | null>(null);
-
-  const handleValidate = async () => {
-    if (!couponCode.trim()) {
-      setValidationMessage({ type: "error", text: "Please enter a coupon code" });
-      return;
-    }
-
-    setIsValidating(true);
-    setValidationMessage(null);
-
-    try {
-      const result = await validateCoupon(couponCode.toUpperCase(), orderValue, orderData);
-      
-      if (result.isValid && result.discount !== undefined) {
-        setValidationMessage({
-          type: "success",
-          text: `Valid! You'll save ₹${result.discount.toFixed(2)}`,
-        });
-      } else {
-        setValidationMessage({
-          type: "error",
-          text: result.message || result.errors?.join(", ") || "Invalid coupon code",
-        });
-      }
-    } catch (error: any) {
-      setValidationMessage({
-        type: "error",
-        text: error.response?.data?.message || "Failed to validate coupon",
-      });
-    } finally {
-      setIsValidating(false);
-    }
-  };
 
   const handleApply = async () => {
     if (!couponCode.trim()) return;
@@ -73,13 +35,15 @@ export default function CheckoutCouponCard({
     setValidationMessage(null);
 
     try {
-      await applyCoupon(couponCode.toUpperCase(), orderId, orderValue, orderData);
+      const resp = await applyCoupon(couponCode.toUpperCase(), orderId);
       setCouponCode("");
       setValidationMessage({
         type: "success",
         text: "Coupon applied successfully!",
       });
-      onCouponApplied();
+      // Prefer discount from API response if available
+      const appliedDiscount = (resp as any)?.redemption?.discount ?? 0;
+      onCouponApplied(couponCode.toUpperCase(), appliedDiscount);
     } catch (error: any) {
       setValidationMessage({
         type: "error",
@@ -100,7 +64,7 @@ export default function CheckoutCouponCard({
         type: "success",
         text: "Coupon removed",
       });
-      onCouponRemoved();
+      onCouponRemoved(code);
     } catch (error: any) {
       setValidationMessage({
         type: "error",
@@ -164,22 +128,11 @@ export default function CheckoutCouponCard({
               setValidationMessage(null);
             }}
             className="flex-1 font-mono"
-            disabled={isValidating || isApplying}
+            disabled={isApplying}
           />
           <Button
-            onClick={handleValidate}
-            disabled={isValidating || isApplying || !couponCode.trim()}
-            variant="outline"
-          >
-            {isValidating ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              "Validate"
-            )}
-          </Button>
-          <Button
             onClick={handleApply}
-            disabled={isValidating || isApplying || !couponCode.trim()}
+            disabled={isApplying || !couponCode.trim()}
           >
             {isApplying ? (
               <Loader2 className="h-4 w-4 animate-spin" />

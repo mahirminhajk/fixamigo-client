@@ -241,41 +241,80 @@ function CheckoutPageContent() {
     if (!order?._id || !order?.price?.original) return;
 
     try {
-      // Get coupon codes from applied coupons in order
-      const couponCodes = order.coupons?.map((c) => c.code) || [];
-      const walletCoins = walletAmount; // Convert rupees to coins (1:1)
+      // If a coupon is already applied, trust the order state to compute totals locally
+      if (order.coupon) {
+        const couponDiscount = order.coupon.discount || 0;
+        const walletDiscount = walletAmount || 0;
+        const delivery = order.price.delivery || 0;
+        const final = Math.max(0, order.price.original + delivery - couponDiscount - walletDiscount);
+        setCalculatedTotal(final);
+        setOrder((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            price: {
+              ...prev.price,
+              breakdown: {
+                subtotal: prev.price.original,
+                couponsTotal: couponDiscount,
+                walletDeduction: walletDiscount,
+              },
+              final,
+            },
+          };
+        });
+      } else {
+        // No coupon applied yet: use server calculator for wallet-only scenario
+        const walletCoins = walletAmount; // Convert rupees to coins (1:1)
+        const result = await calculateCheckoutTotal({
+          orderValue: order.price.original,
+          walletCoins,
+          couponCodes: [],
+        });
+        setCalculatedTotal(result.totals.final);
+        setOrder((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            price: {
+              ...prev.price,
+              breakdown: {
+                subtotal: result.totals.original,
+                couponsTotal: result.totals.couponDiscount,
+                walletDeduction: result.totals.walletDiscount,
+              },
+              final: result.totals.final,
+            },
+          };
+        });
+      }
+    } catch (error) {
+      console.error("Failed to recalculate total:", error);
+    }
+  }, [order?._id, order?.price?.original, order?.coupon, walletAmount]);
 
-      const result = await calculateCheckoutTotal({
-        orderValue: order.price.original,
-        walletCoins,
-        couponCodes,
-      });
-
-      setCalculatedTotal(result.totals.final);
-
-      // Update order with latest calculation
+  //* Handle coupon applied/removed
+  const handleCouponChange = (code?: string, discount?: number) => {
+    // Update local order state immediately for better UX
+    if (code) {
       setOrder((prev) => {
         if (!prev) return prev;
         return {
           ...prev,
-          price: {
-            ...prev.price,
-            breakdown: {
-              subtotal: result.totals.original,
-              couponsTotal: result.totals.couponDiscount,
-              walletDeduction: result.totals.walletDiscount,
-            },
-            final: result.totals.final,
+          coupon: {
+            code,
+            couponId: prev.coupon?.couponId || "",
+            type: prev.coupon?.type || "",
+            value: prev.coupon?.value || 0,
+            discount: discount || prev.coupon?.discount || 0,
+            applyOrderStage: prev.coupon?.applyOrderStage,
           },
-        };
+        } as any;
       });
-    } catch (error) {
-      console.error("Failed to recalculate total:", error);
+    } else {
+      // removal
+      setOrder((prev) => (prev ? { ...prev, coupon: undefined } : prev));
     }
-  }, [order?._id, order?.price?.original, order?.coupons, walletAmount]);
-
-  //* Handle coupon applied/removed
-  const handleCouponChange = () => {
     recalculateTotal();
   };
 
@@ -631,27 +670,6 @@ function CheckoutPageContent() {
                   />
                 </div>
 
-                {/* Coupon Card */}
-                <div className="border-t-2 border-gray-200 pt-8">
-                  <CheckoutCouponCard
-                    orderId={order?._id || ""}
-                    orderValue={order?.price?.original || 0}
-                    appliedCoupons={order?.coupons?.map((c) => ({
-                      code: c.code,
-                      couponId: c.couponId,
-                      type: c.type,
-                      value: c.value,
-                      discount: c.discount,
-                    })) || []}
-                    onCouponApplied={handleCouponChange}
-                    onCouponRemoved={handleCouponChange}
-                    orderData={{
-                      deviceId: order?.device?._id,
-                      sparePartIds: order?.sparePartsDetails?.map((sp) => sp._id).filter(Boolean),
-                    }}
-                  />
-                </div>
-
                 {/* Wallet Card */}
                 <div className="border-t-2 border-gray-200 pt-8">
                   <CheckoutWalletCard
@@ -692,6 +710,22 @@ function CheckoutPageContent() {
               {/* Order Summary at Top */}
               <div className="mb-6">
                 <CheckoutOrderSummary order={order} deviceSlug={deviceSlug} />
+              </div>
+
+              {/* Apply Coupon Section */}
+              <div className="mb-6">
+                <CheckoutCouponCard
+                  orderId={order?._id || ""}
+                  appliedCoupons={order?.coupon ? [{
+                    code: order.coupon.code,
+                    couponId: order.coupon.couponId,
+                    type: order.coupon.type,
+                    value: order.coupon.value,
+                    discount: order.coupon.discount,
+                  }] : []}
+                  onCouponApplied={handleCouponChange}
+                  onCouponRemoved={(code) => handleCouponChange(undefined)}
+                />
               </div>
 
               {/* Review Details */}

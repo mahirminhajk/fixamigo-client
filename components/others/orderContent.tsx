@@ -435,33 +435,31 @@ function PaymentDetailsCard({
             </span>
           </div>
 
-          {/* Coupon Discounts */}
-          {order.coupons && order.coupons.length > 0 && (
+          {/* Coupon Discount */}
+          {order.coupon && (
             <div className="space-y-2">
-              {order.coupons.map((coupon, index) => (
-                <div key={index} className="flex justify-between items-center">
-                  <span className="text-green-600 text-sm lg:text-base flex items-center gap-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-                      />
-                    </svg>
-                    Coupon ({coupon.code})
-                  </span>
-                  <span className="font-bold text-sm lg:text-base text-green-600">
-                    - ₹{coupon.discount}
-                  </span>
-                </div>
-              ))}
+              <div className="flex justify-between items-center">
+                <span className="text-green-600 text-sm lg:text-base flex items-center gap-1">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                    />
+                  </svg>
+                  Coupon ({order.coupon.code})
+                </span>
+                <span className="font-bold text-sm lg:text-base text-green-600">
+                  - ₹{order.coupon.discount}
+                </span>
+              </div>
             </div>
           )}
 
@@ -515,7 +513,7 @@ function PaymentDetailsCard({
           </div>
 
           {/* Savings Summary */}
-          {((order.coupons && order.coupons.length > 0) || (order.walletUsed && order.walletUsed.amount > 0)) && (
+          {((order.coupon) || (order.walletUsed && order.walletUsed.amount > 0)) && (
             <div className="mt-3 pt-3 border-t border-amber-300 bg-green-50 rounded-lg p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-green-700 flex items-center gap-1">
@@ -534,10 +532,7 @@ function PaymentDetailsCard({
                   You saved
                 </span>
                 <span className="text-lg font-bold text-green-700">
-                  ₹{(
-                    (order.coupons?.reduce((sum, c) => sum + c.discount, 0) || 0) +
-                    (order.walletUsed?.amount || 0)
-                  ).toLocaleString()}
+                  ₹{(((order.coupon?.discount || 0)) + (order.walletUsed?.amount || 0)).toLocaleString()}
                 </span>
               </div>
             </div>
