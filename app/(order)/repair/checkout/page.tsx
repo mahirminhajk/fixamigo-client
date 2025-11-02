@@ -14,12 +14,12 @@ import PlaceServiceBtn from "@/components/checkoutComps/placeServiceBtn";
 import Footer from "@/components/core/footer";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import api from "@/lib/axiosInstance";
-import { calculateCheckoutTotal } from "@/lib/couponApi";
+// removed local calculator; server drives totals now
 import { useCartStore } from "@/stores/cartStore";
 import { useUserStore } from "@/stores/userStore";
 import { IAddress } from "@/types/address";
 import { IOrder, PaymentMode } from "@/types/order";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 // Header moved to (order) layout via MinimalHeader
 import { PopupLoading } from "@/components/others/popupLoading";
 import { useHelpHeaderStore } from "@/stores/helpHeaderStore";
@@ -49,8 +49,7 @@ function CheckoutPageContent() {
   >(null);
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isButtonVisible, setIsButtonVisible] = useState<boolean>(true);
-  const [walletAmount, setWalletAmount] = useState<number>(0); // Amount in rupees
-  const [calculatedTotal, setCalculatedTotal] = useState<number | null>(null);
+  // Wallet totals are driven by server now; keep minimal local state
 
   //* Step configuration
   const steps = [
@@ -236,62 +235,7 @@ function CheckoutPageContent() {
     });
   };
 
-  //* Recalculate checkout total with coupons and wallet
-  const recalculateTotal = useCallback(async () => {
-    if (!order?._id || !order?.price?.original) return;
-
-    try {
-      // If a coupon is already applied, trust the order state to compute totals locally
-      if (order.coupon) {
-        const couponDiscount = order.coupon.discount || 0;
-        const walletDiscount = walletAmount || 0;
-        const delivery = order.price.delivery || 0;
-        const final = Math.max(0, order.price.original + delivery - couponDiscount - walletDiscount);
-        setCalculatedTotal(final);
-        setOrder((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            price: {
-              ...prev.price,
-              breakdown: {
-                subtotal: prev.price.original,
-                couponsTotal: couponDiscount,
-                walletDeduction: walletDiscount,
-              },
-              final,
-            },
-          };
-        });
-      } else {
-        // No coupon applied yet: use server calculator for wallet-only scenario
-        const walletCoins = walletAmount; // Convert rupees to coins (1:1)
-        const result = await calculateCheckoutTotal({
-          orderValue: order.price.original,
-          walletCoins,
-          couponCodes: [],
-        });
-        setCalculatedTotal(result.totals.final);
-        setOrder((prev) => {
-          if (!prev) return prev;
-          return {
-            ...prev,
-            price: {
-              ...prev.price,
-              breakdown: {
-                subtotal: result.totals.original,
-                couponsTotal: result.totals.couponDiscount,
-                walletDeduction: result.totals.walletDiscount,
-              },
-              final: result.totals.final,
-            },
-          };
-        });
-      }
-    } catch (error) {
-      console.error("Failed to recalculate total:", error);
-    }
-  }, [order?._id, order?.price?.original, order?.coupon, walletAmount]);
+  // Remove client-side recomputation in favor of server updates when coins/coupons change
 
   //* Handle coupon applied/removed
   const handleCouponChange = (code?: string, discount?: number) => {
@@ -309,26 +253,21 @@ function CheckoutPageContent() {
             discount: discount || prev.coupon?.discount || 0,
             applyOrderStage: prev.coupon?.applyOrderStage,
           },
-        } as any;
+        };
       });
     } else {
       // removal
       setOrder((prev) => (prev ? { ...prev, coupon: undefined } : prev));
     }
-    recalculateTotal();
   };
 
-  //* Handle wallet amount change
-  const handleWalletChange = (amount: number) => {
-    setWalletAmount(amount);
+  // When coins are applied/removed, trust server response price
+  const handleCoinsApplied = (price: IOrder["price"]) => {
+    setOrder((prev) => (prev ? { ...prev, price } : prev));
   };
-
-  //* Recalculate when wallet amount changes
-  useEffect(() => {
-    if (order?._id && walletAmount >= 0) {
-      recalculateTotal();
-    }
-  }, [walletAmount, order?._id, recalculateTotal]);
+  const handleCoinsRemoved = (price: IOrder["price"]) => {
+    setOrder((prev) => (prev ? { ...prev, price } : prev));
+  };
 
   //* Step navigation handlers
   const handleNextStep = () => {
@@ -673,9 +612,9 @@ function CheckoutPageContent() {
                 {/* Wallet Card */}
                 <div className="border-t-2 border-gray-200 pt-8">
                   <CheckoutWalletCard
-                    orderValue={order?.price?.original || 0}
-                    onWalletChange={handleWalletChange}
-                    initialWalletAmount={walletAmount}
+                    orderId={order?._id || ""}
+                    onApplied={handleCoinsApplied}
+                    onRemoved={handleCoinsRemoved}
                   />
                 </div>
 
@@ -724,7 +663,7 @@ function CheckoutPageContent() {
                     discount: order.coupon.discount,
                   }] : []}
                   onCouponApplied={handleCouponChange}
-                  onCouponRemoved={(code) => handleCouponChange(undefined)}
+                  onCouponRemoved={() => handleCouponChange(undefined)}
                 />
               </div>
 
