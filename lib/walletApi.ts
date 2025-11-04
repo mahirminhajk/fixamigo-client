@@ -1,4 +1,4 @@
-import { IWalletBalance, IWalletTransaction } from "@/types/wallet";
+import { IWalletBalance, IWalletSummary, IWalletTransaction } from "@/types/wallet";
 import api from "./axiosInstance";
 
 /**
@@ -36,4 +36,17 @@ export const getWalletTransactionById = async (
 ): Promise<IWalletTransaction> => {
   const response = await api.get(`/wallet/transactions/${id}`);
   return response.data.data || response.data;
+};
+
+/**
+ * Get wallet summary (balance + recent transactions)
+ */
+export const getWalletSummary = async (): Promise<IWalletSummary> => {
+  const response = await api.get("/wallet/summary");
+  const payload = response.data?.data || response.data;
+  // Normalize to IWalletSummary shape
+  return {
+    balance: payload.balance as IWalletBalance,
+    recentTransactions: (payload.recentTransactions || payload.transactions || []) as IWalletTransaction[],
+  };
 };

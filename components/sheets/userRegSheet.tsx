@@ -1,20 +1,21 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { InputOTP } from "@/components/ui/inputOtp";
 import {
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { InputOTP } from "@/components/ui/inputOtp";
-import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { InputOTPGroup, InputOTPSlot } from "../ui/inputOtp";
-import { useEffect, useState } from "react";
 import api from "@/lib/axiosInstance";
-import { AxiosError } from "axios";
-import { useUserStore } from "@/stores/userStore";
-import { FaWhatsapp } from "react-icons/fa";
 import { useAuthSheetStore } from "@/stores/authSheetStore";
+import { useUserStore } from "@/stores/userStore";
+import { useWalletStore } from "@/stores/walletStore";
+import { AxiosError } from "axios";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useEffect, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
+import { InputOTPGroup, InputOTPSlot } from "../ui/inputOtp";
 
 interface UserRegSheetProps {
   onCompleted: () => void;
@@ -23,6 +24,7 @@ interface UserRegSheetProps {
 const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
   //* user-store
   const setUser = useUserStore((state) => state.setUser);
+  const fetchWalletBalance = useWalletStore((s) => s.fetchBalance);
   const closeSheet = useAuthSheetStore((s) => s.closeSheet);
 
   const [step, setStep] = useState(1);
@@ -109,6 +111,10 @@ const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
           name: user.name,
           phoneNo: user.phone,
         });
+        // Fetch wallet balance on successful login
+        try {
+          await fetchWalletBalance();
+        } catch { }
         onCompleted();
         closeSheet();
         // Reset internal state so next open starts from phone step
@@ -169,6 +175,10 @@ const UserRegSheet = ({ onCompleted }: UserRegSheetProps) => {
         name: user.name,
         phoneNo: user.phone,
       });
+      // Fetch wallet balance on successful login (after name submission)
+      try {
+        await fetchWalletBalance();
+      } catch { }
       onCompleted();
       closeSheet();
       // Reset internal state so next open starts from phone step

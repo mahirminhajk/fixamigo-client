@@ -1,9 +1,9 @@
 "use client";
-import Link from "next/link";
-import Image from "next/image";
 import { INFO } from "@/constants";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { useHelpHeaderStore } from "@/stores/helpHeaderStore";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function MinimalHeader() {
   const helpMessage = useHydratedStore(
@@ -16,7 +16,7 @@ export default function MinimalHeader() {
   return (
     <header className="w-full bg-white border-b border-gray-200 py-3 mb-2 sticky top-0 z-30">
       <div className="container mx-auto px-4 max-w-5xl flex items-center justify-between">
-        <Link href="/home" className="flex items-center gap-2" prefetch={false}>
+        <Link href="/" className="flex items-center gap-2" prefetch={false}>
           <Image
             src="/logos/text.png"
             alt="Fixamigo Logo"
