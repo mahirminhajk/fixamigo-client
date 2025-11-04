@@ -4,9 +4,11 @@
  */
 
 export interface IWalletBalance {
+  balance: number;
   available: number;
-  held: number;
-  lifetime: number;
+  locked: number;
+  lifetimeEarned: number;
+  lifetimeSpent: number;
 }
 
 export interface IWalletTransaction {
