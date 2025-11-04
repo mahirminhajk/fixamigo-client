@@ -11,7 +11,8 @@ import api from "./axiosInstance";
  */
 export const getWalletBalance = async (): Promise<IWalletBalance> => {
   const response = await api.get("/wallet/balance");
-  return response.data.data;
+  // Backend returns: { success: true, message: string, data: balance }
+  return response.data.data || response.data;
 };
 
 /**
@@ -23,7 +24,8 @@ export const getWalletTransactions = async (params?: {
   type?: string;
 }): Promise<{ transactions: IWalletTransaction[]; total: number }> => {
   const response = await api.get("/wallet/transactions", { params });
-  return response.data.data;
+  // Backend returns: { success: true, message: string, data: { transactions, total, page, totalPages } }
+  return response.data.data || response.data;
 };
 
 /**
@@ -33,5 +35,5 @@ export const getWalletTransactionById = async (
   id: string
 ): Promise<IWalletTransaction> => {
   const response = await api.get(`/wallet/transactions/${id}`);
-  return response.data.data;
+  return response.data.data || response.data;
 };

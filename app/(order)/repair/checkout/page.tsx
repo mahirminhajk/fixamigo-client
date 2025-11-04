@@ -609,15 +609,6 @@ function CheckoutPageContent() {
                   />
                 </div>
 
-                {/* Wallet Card */}
-                <div className="border-t-2 border-gray-200 pt-8">
-                  <CheckoutWalletCard
-                    orderId={order?._id || ""}
-                    onApplied={handleCoinsApplied}
-                    onRemoved={handleCoinsRemoved}
-                  />
-                </div>
-
                 {/* Optional Note */}
                 <div className="border-t-2 border-gray-200 pt-8">
                   <CheckoutNoteCard
@@ -664,6 +655,15 @@ function CheckoutPageContent() {
                   }] : []}
                   onCouponApplied={handleCouponChange}
                   onCouponRemoved={() => handleCouponChange(undefined)}
+                />
+              </div>
+
+              {/* Wallet Coins Section */}
+              <div className="mb-6">
+                <CheckoutWalletCard
+                  orderId={order?._id || ""}
+                  onApplied={handleCoinsApplied}
+                  onRemoved={handleCoinsRemoved}
                 />
               </div>
 
