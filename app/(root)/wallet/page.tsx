@@ -1,13 +1,12 @@
 "use client";
 
-import Footer from "@/components/core/footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getWalletTransactions } from "@/lib/walletApi";
 import { useWalletStore } from "@/stores/walletStore";
 import { IWalletTransaction } from "@/types/wallet";
 import { Coins, Filter, Loader2, TrendingDown, TrendingUp, Wallet } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function WalletPage() {
   const { balance, isLoading: balanceLoading, fetchBalance } = useWalletStore();
@@ -16,11 +15,18 @@ export default function WalletPage() {
   const [filter, setFilter] = useState<"all" | "credit" | "debit">("all");
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
-  const limit = 20;
+  // Show last 10 per page to match design requirements
+  const limit = 10;
 
+  // Force-refresh balance here only if it's missing (e.g., direct visit without prior login fetch)
+  const requestedBalanceRef = useRef(false);
   useEffect(() => {
-    fetchBalance();
-  }, [fetchBalance]);
+    if (!requestedBalanceRef.current && !balance && !balanceLoading) {
+      requestedBalanceRef.current = true;
+      fetchBalance().catch(() => { });
+    }
+  }, [balance, balanceLoading, fetchBalance]);
+  // Load transactions for this page
 
   useEffect(() => {
     loadTransactions();
@@ -97,41 +103,42 @@ export default function WalletPage() {
           <div className="mb-6">
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2 flex items-center gap-2">
               <Wallet className="h-8 w-8 text-blue-600" />
-              My Wallet
+              Fixcoin Wallet
             </h1>
-            <p className="text-gray-600">Manage your coins and view transaction history</p>
+            <p className="text-gray-600">Manage your Fixcoins and view transaction history</p>
           </div>
 
-          {/* Balance Cards */}
+          {/* Balance Cards */
+          }
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            {/* Available Balance */}
+            {/* Available Fixcoins */}
             <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-blue-100 text-sm">Available Balance</span>
+                <span className="text-blue-100 text-sm">Available Fixcoins</span>
                 <Coins className="h-5 w-5 text-blue-100" />
               </div>
-              <p className="text-3xl font-bold">{balance?.available.toLocaleString() || 0}</p>
-              <p className="text-blue-100 text-xs mt-1">coins</p>
+              <p className="text-3xl font-bold">{balance?.available?.toLocaleString?.() || 0}</p>
+              <p className="text-blue-100 text-xs mt-1">Fixcoins</p>
             </Card>
 
-            {/* Held Balance */}
-            <Card className="bg-gradient-to-br from-amber-500 to-amber-600 text-white p-6">
+            {/* Lifetime Spent Fixcoins */}
+            <Card className="bg-gradient-to-br from-rose-500 to-rose-600 text-white p-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-amber-100 text-sm">Held Balance</span>
-                <Coins className="h-5 w-5 text-amber-100" />
+                <span className="text-rose-100 text-sm">Lifetime Spent</span>
+                <TrendingDown className="h-5 w-5 text-rose-100" />
               </div>
-              <p className="text-3xl font-bold">{balance?.held.toLocaleString() || 0}</p>
-              <p className="text-amber-100 text-xs mt-1">coins (in pending orders)</p>
+              <p className="text-3xl font-bold">{balance?.lifetimeSpent?.toLocaleString?.() || 0}</p>
+              <p className="text-rose-100 text-xs mt-1">total Fixcoins spent</p>
             </Card>
 
-            {/* Lifetime Earned */}
+            {/* Lifetime Earned Fixcoins */}
             <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white p-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-green-100 text-sm">Lifetime Earned</span>
                 <TrendingUp className="h-5 w-5 text-green-100" />
               </div>
-              <p className="text-3xl font-bold">{balance?.lifetime.toLocaleString() || 0}</p>
-              <p className="text-green-100 text-xs mt-1">total coins earned</p>
+              <p className="text-3xl font-bold">{balance?.lifetimeEarned?.toLocaleString?.() || 0}</p>
+              <p className="text-green-100 text-xs mt-1">total Fixcoins earned</p>
             </Card>
           </div>
 
@@ -142,10 +149,9 @@ export default function WalletPage() {
                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
               </svg>
               <div className="flex-1">
-                <p className="text-sm text-blue-900 font-semibold mb-1">How to earn coins?</p>
+                <p className="text-sm text-blue-900 font-semibold mb-1">How to earn Fixcoins?</p>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Complete service orders to earn loyalty coins</li>
-                  <li>• Refer friends and get bonus coins</li>
+                  <li>• Complete service orders to earn loyalty Fixcoins</li>
                   <li>• Participate in campaigns and promotions</li>
                 </ul>
               </div>
@@ -178,8 +184,8 @@ export default function WalletPage() {
             ) : transactions.length === 0 ? (
               <div className="text-center py-12">
                 <Coins className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">No transactions yet</p>
-                <p className="text-sm text-gray-400 mt-1">Start using your wallet to see transactions here</p>
+                  <p className="text-gray-500">No Fixcoin transactions yet</p>
+                  <p className="text-sm text-gray-400 mt-1">Start using your wallet to see Fixcoin transactions here</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -205,7 +211,7 @@ export default function WalletPage() {
                         {transaction.type === "CREDIT" || transaction.type === "RELEASE" ? "+" : "-"}
                         {transaction.amount.toLocaleString()}
                       </p>
-                      <p className="text-xs text-gray-500">coins</p>
+                      <p className="text-xs text-gray-500">Fixcoins</p>
                     </div>
                   </div>
                 ))}
@@ -235,7 +241,6 @@ export default function WalletPage() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }

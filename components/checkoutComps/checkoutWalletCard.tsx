@@ -122,7 +122,7 @@ export default function CheckoutWalletCard({
               <div className="flex items-center gap-2">
                 <Coins className="h-4 w-4 text-blue-600" />
                 <span className="font-medium text-gray-900">
-                  Use {maxWalletAmount.toLocaleString()} Wallet Coins
+                  Use {maxWalletAmount.toLocaleString()} Fixcoins
                 </span>
               </div>
               <p className="text-sm text-gray-600 mt-0.5">

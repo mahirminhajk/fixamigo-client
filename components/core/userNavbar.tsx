@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { ArrowLeft, Menu, Package, ShoppingCart, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { Menu, ArrowLeft, User, Package, ShoppingCart } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import CartBtn from "../buttons/cartBtn";
 import ProfileBtn from "../buttons/profileBtn";
-import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
 
 interface UserNavbarProps {
   title?: string;
@@ -24,6 +24,8 @@ export default function UserNavbar({
   // Determine active nav item
   const isCart = pathname.includes("/cart");
   const isOrders = pathname.includes("/my-services");
+
+  // Fixcoin balance moved to Profile popover
 
   return (
     <>

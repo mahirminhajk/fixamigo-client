@@ -1,14 +1,14 @@
 "use client";
-import { useState } from "react";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
+import { useUserStore } from "@/stores/userStore";
+import { MapPin, Menu, Search } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { Menu, Search, MapPin } from "lucide-react";
+import { usePathname } from "next/navigation"; // Import usePathname
+import { useState } from "react";
 import CartBtn from "../buttons/cartBtn";
 import ProfileBtn from "../buttons/profileBtn";
 import MobileNavMenu from "./mobileNavMenu";
-import Image from "next/image";
-import { usePathname } from "next/navigation"; // Import usePathname
-import { useHydratedStore } from "@/hooks/useHydratedStore";
-import { useUserStore } from "@/stores/userStore";
 
 interface NavbarProps {
   city?: string;
@@ -29,6 +29,8 @@ export default function Navbar({ city }: NavbarProps) {
   const isRepairSection = pathname.startsWith("/repair");
   const user = useHydratedStore(useUserStore, (state) => state.user);
   const isLoggedIn = Boolean(user?._id);
+
+  // Fixcoin balance is shown inside Profile menu instead
 
   let desktopNavLinks;
   if (isRepairSection) {
@@ -205,6 +207,7 @@ export default function Navbar({ city }: NavbarProps) {
               className="w-6 h-6 cursor-pointer"
               onClick={handleSearchClick}
             />
+            {/* Fixcoin balance moved to Profile popover */}
             <CartBtn />
             <ProfileBtn />
             {/* Improved tappable area for Menu icon */}
