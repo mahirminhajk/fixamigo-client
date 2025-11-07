@@ -152,34 +152,58 @@ const CheckoutOrderSummary = ({
         </div>
 
         {/* Coupon Discount */}
-        {order?.price?.breakdown?.couponsTotal && order.price.breakdown.couponsTotal > 0 && (
-          <div className="flex justify-between text-sm lg:text-base">
-            <span className="text-green-600 flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-              </svg>
-              Coupon Discount
-            </span>
-            <span className="font-semibold text-green-600">
-              - ₹{order.price.breakdown.couponsTotal.toLocaleString()}
-            </span>
-          </div>
-        )}
+        {order?.price?.breakdown?.couponsTotal &&
+          order.price.breakdown.couponsTotal > 0 && (
+            <div className="flex justify-between text-sm lg:text-base">
+              <span className="text-green-600 flex items-center gap-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                  />
+                </svg>
+                Coupon Discount
+              </span>
+              <span className="font-semibold text-green-600">
+                - ₹{order.price.breakdown.couponsTotal.toLocaleString()}
+              </span>
+            </div>
+          )}
 
         {/* Wallet Discount */}
-        {order?.price?.breakdown?.walletDeduction && order.price.breakdown.walletDeduction > 0 && (
-          <div className="flex justify-between text-sm lg:text-base">
-            <span className="text-blue-600 flex items-center gap-1">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
-              Wallet Coins Used
-            </span>
-            <span className="font-semibold text-blue-600">
-              - ₹{order.price.breakdown.walletDeduction.toLocaleString()}
-            </span>
-          </div>
-        )}
+        {order?.price?.breakdown?.walletDeduction &&
+          order.price.breakdown.walletDeduction > 0 && (
+            <div className="flex justify-between text-sm lg:text-base">
+              <span className="text-blue-600 flex items-center gap-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+                Wallet Coins Used
+              </span>
+              <span className="font-semibold text-blue-600">
+                - ₹{order.price.breakdown.walletDeduction.toLocaleString()}
+              </span>
+            </div>
+          )}
 
         <div className="flex justify-between text-sm lg:text-base">
           <span className="text-gray-600">Delivery</span>
@@ -195,11 +219,12 @@ const CheckoutOrderSummary = ({
               hasRangeItemsForDevice ? "text-[#D2691E]" : "text-blue-600"
             }
           >
-            ₹{(
-              totalCartPrice
-              - (order?.price?.breakdown?.couponsTotal || 0)
-              - (order?.price?.breakdown?.walletDeduction || 0)
-              + (order?.price?.delivery || 0)
+            ₹
+            {(
+              totalCartPrice -
+              (order?.price?.breakdown?.couponsTotal || 0) -
+              (order?.price?.breakdown?.walletDeduction || 0) +
+              (order?.price?.delivery || 0)
             ).toLocaleString()}
             {hasRangeItemsForDevice ? "*" : ""}
           </span>
@@ -220,17 +245,29 @@ const CheckoutOrderSummary = ({
         )}
 
         {/* Savings Summary */}
-        {((order?.price?.breakdown?.couponsTotal || 0) + (order?.price?.breakdown?.walletDeduction || 0)) > 0 && (
+        {(order?.price?.breakdown?.couponsTotal || 0) +
+          (order?.price?.breakdown?.walletDeduction || 0) >
+          0 && (
           <div className="mt-3 pt-3 border-t border-green-200 bg-green-50 rounded-lg p-3">
             <div className="flex items-center justify-between">
               <span className="text-sm font-semibold text-green-700 flex items-center gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-                You're saving
+                You&apos;re saving
               </span>
               <span className="text-lg font-bold text-green-700">
-                ₹{(
+                ₹
+                {(
                   (order?.price?.breakdown?.couponsTotal || 0) +
                   (order?.price?.breakdown?.walletDeduction || 0)
                 ).toLocaleString()}

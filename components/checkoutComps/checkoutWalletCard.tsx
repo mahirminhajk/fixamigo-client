@@ -62,8 +62,8 @@ export default function CheckoutWalletCard({
         setUseCoins(true);
         onApplied?.(resp.price);
       }
-    } catch (error) {
-    // Keep state unchanged on error
+    } catch {
+      // Keep state unchanged on error
     } finally {
       setActionLoading(false);
     }
@@ -91,18 +91,20 @@ export default function CheckoutWalletCard({
       <button
         onClick={handleToggleCoins}
         disabled={actionLoading}
-        className={`w-full p-4 text-left transition-all ${useCoins
+        className={`w-full p-4 text-left transition-all ${
+          useCoins
             ? "bg-green-50 hover:bg-green-100"
             : "bg-white hover:bg-gray-50"
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+        } disabled:opacity-50 disabled:cursor-not-allowed`}
       >
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div
-              className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${useCoins
+              className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                useCoins
                   ? "bg-green-600 border-green-600"
                   : "border-gray-300 bg-white"
-                }`}
+              }`}
             >
               {useCoins && (
                 <svg
@@ -130,7 +132,9 @@ export default function CheckoutWalletCard({
               </p>
             </div>
           </div>
-          {actionLoading && <Loader2 className="h-5 w-5 animate-spin text-blue-600" />}
+          {actionLoading && (
+            <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+          )}
         </div>
       </button>
     </div>

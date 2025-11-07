@@ -42,12 +42,15 @@ export default function CheckoutCouponCard({
         text: "Coupon applied successfully!",
       });
       // Prefer discount from API response if available
-      const appliedDiscount = (resp as any)?.redemption?.discount ?? 0;
+      const appliedDiscount =
+        (resp as { redemption?: { discount?: number } })?.redemption
+          ?.discount ?? 0;
       onCouponApplied(couponCode.toUpperCase(), appliedDiscount);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
       setValidationMessage({
         type: "error",
-        text: error.response?.data?.message || "Failed to apply coupon",
+        text: err.response?.data?.message || "Failed to apply coupon",
       });
     } finally {
       setIsApplying(false);
@@ -65,10 +68,11 @@ export default function CheckoutCouponCard({
         text: "Coupon removed",
       });
       onCouponRemoved(code);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { response?: { data?: { message?: string } } };
       setValidationMessage({
         type: "error",
-        text: error.response?.data?.message || "Failed to remove coupon",
+        text: err.response?.data?.message || "Failed to remove coupon",
       });
     } finally {
       setIsRemoving(null);
@@ -94,8 +98,12 @@ export default function CheckoutCouponCard({
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-4 w-4 text-green-600" />
                 <div>
-                  <p className="font-mono font-semibold text-sm">{coupon.code}</p>
-                  <p className="text-xs text-green-700">Saving ₹{coupon.discount}</p>
+                  <p className="font-mono font-semibold text-sm">
+                    {coupon.code}
+                  </p>
+                  <p className="text-xs text-green-700">
+                    Saving ₹{coupon.discount}
+                  </p>
                 </div>
               </div>
               <Button

@@ -6,9 +6,17 @@ import { Card } from "@/components/ui/card";
 import { getCampaignByCode, redeemCampaign } from "@/lib/campaignApi";
 import { useWalletStore } from "@/stores/walletStore";
 import { ICampaign, ICampaignRedemption } from "@/types/campaign";
-import { Calendar, CheckCircle2, Coins, Gift, Loader2, Tag, XCircle } from "lucide-react";
+import {
+  Calendar,
+  CheckCircle2,
+  Coins,
+  Gift,
+  Loader2,
+  Tag,
+  XCircle,
+} from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function CampaignRedeemPage() {
   const params = useParams();
@@ -20,34 +28,42 @@ export default function CampaignRedeemPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRedeeming, setIsRedeeming] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [redemption, setRedemption] = useState<ICampaignRedemption | null>(null);
+  const [redemption, setRedemption] = useState<ICampaignRedemption | null>(
+    null
+  );
   const [autoRedeemed, setAutoRedeemed] = useState(false);
+  const loadCampaign = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const campaignData = await getCampaignByCode(code.toUpperCase());
+      setCampaign(campaignData);
+
+      // Auto-redeem for QR code campaigns
+      if (
+        campaignData.type === "QR" &&
+        campaignData.isActive &&
+        !autoRedeemed
+      ) {
+        await handleRedeem(campaignData);
+        setAutoRedeemed(true);
+      }
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(
+        error.response?.data?.message || "Campaign not found or invalid"
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, [code, autoRedeemed]);
 
   useEffect(() => {
     if (code) {
       loadCampaign();
     }
-  }, [code]);
-
-  const loadCampaign = async () => {
-    setIsLoading(true);
-    setError(null);
-    
-    try {
-      const campaignData = await getCampaignByCode(code.toUpperCase());
-      setCampaign(campaignData);
-      
-      // Auto-redeem for QR code campaigns
-      if (campaignData.type === "QR" && campaignData.isActive && !autoRedeemed) {
-        await handleRedeem(campaignData);
-        setAutoRedeemed(true);
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Campaign not found or invalid");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [code, loadCampaign]);
 
   const handleRedeem = async (campaignToRedeem?: ICampaign) => {
     const targetCampaign = campaignToRedeem || campaign;
@@ -59,14 +75,17 @@ export default function CampaignRedeemPage() {
     try {
       const result = await redeemCampaign({ code: targetCampaign.refCode });
       setRedemption(result);
-      
+
       // Refresh wallet balance
       await fetchBalance();
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as {
+        response?: { data?: { message?: string; errors?: string[] } };
+      };
       setError(
-        err.response?.data?.message || 
-        err.response?.data?.errors?.join(", ") || 
-        "Failed to redeem campaign"
+        error.response?.data?.message ||
+          error.response?.data?.errors?.join(", ") ||
+          "Failed to redeem campaign"
       );
     } finally {
       setIsRedeeming(false);
@@ -105,7 +124,10 @@ export default function CampaignRedeemPage() {
                 Campaign Not Found
               </h1>
               <p className="text-gray-600 mb-6">{error}</p>
-              <Button onClick={() => router.push("/")} className="bg-blue-600 hover:bg-blue-700">
+              <Button
+                onClick={() => router.push("/")}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
                 Go to Home
               </Button>
             </Card>
@@ -130,7 +152,8 @@ export default function CampaignRedeemPage() {
                 🎉 Campaign Redeemed!
               </h1>
               <p className="text-gray-600 mb-6">
-                Congratulations! You've successfully redeemed this campaign.
+                Congratulations! You&apos;ve successfully redeemed this
+                campaign.
               </p>
 
               {/* Reward Display */}
@@ -141,28 +164,38 @@ export default function CampaignRedeemPage() {
                     +{redemption.coinsGranted || campaign?.rewardCoins || 0}
                   </p>
                 </div>
-                <p className="text-sm text-green-700">Coins added to your wallet</p>
+                <p className="text-sm text-green-700">
+                  Coins added to your wallet
+                </p>
               </div>
 
               {/* Campaign Details */}
               <div className="bg-gray-50 p-4 rounded-lg mb-6 text-left">
-                <h3 className="font-semibold text-gray-900 mb-3">Campaign Details:</h3>
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  Campaign Details:
+                </h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <Tag className="h-4 w-4 text-gray-500" />
                     <span className="text-gray-600">Code:</span>
-                    <span className="font-mono font-semibold">{campaign?.refCode}</span>
+                    <span className="font-mono font-semibold">
+                      {campaign?.refCode}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Gift className="h-4 w-4 text-gray-500" />
                     <span className="text-gray-600">Reward:</span>
-                    <span className="font-semibold">{campaign?.rewardCoins} coins</span>
+                    <span className="font-semibold">
+                      {campaign?.rewardCoins} coins
+                    </span>
                   </div>
                   {redemption.redeemedAt && (
                     <div className="flex items-center gap-2">
                       <Calendar className="h-4 w-4 text-gray-500" />
                       <span className="text-gray-600">Redeemed:</span>
-                      <span className="font-semibold">{formatDate(redemption.redeemedAt)}</span>
+                      <span className="font-semibold">
+                        {formatDate(redemption.redeemedAt)}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -213,19 +246,25 @@ export default function CampaignRedeemPage() {
 
             {/* Campaign Type Badge */}
             <div className="flex justify-center mb-6">
-              <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                campaign?.type === "QR" 
-                  ? "bg-blue-100 text-blue-700" 
-                  : "bg-purple-100 text-purple-700"
-              }`}>
-                {campaign?.type === "QR" ? "QR Code Campaign" : "Referral Campaign"}
+              <span
+                className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                  campaign?.type === "QR"
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-purple-100 text-purple-700"
+                }`}
+              >
+                {campaign?.type === "QR"
+                  ? "QR Code Campaign"
+                  : "Referral Campaign"}
               </span>
             </div>
 
             {/* Reward Info */}
             <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-6 rounded-xl border-2 border-yellow-300 mb-6">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">You'll receive</p>
+                <p className="text-sm text-gray-600 mb-2">
+                  You&apos;ll receive
+                </p>
                 <div className="flex items-center justify-center gap-2">
                   <Coins className="h-8 w-8 text-yellow-600" />
                   <p className="text-4xl font-bold text-yellow-600">
@@ -242,32 +281,42 @@ export default function CampaignRedeemPage() {
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Campaign Code:</span>
-                  <span className="font-mono font-semibold">{campaign?.refCode}</span>
+                  <span className="font-mono font-semibold">
+                    {campaign?.refCode}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Status:</span>
-                  <span className={`font-semibold ${
-                    campaign?.isActive ? "text-green-600" : "text-red-600"
-                  }`}>
+                  <span
+                    className={`font-semibold ${
+                      campaign?.isActive ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
                     {campaign?.isActive ? "Active" : "Inactive"}
                   </span>
                 </div>
                 {campaign?.startDate && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Valid From:</span>
-                    <span className="font-semibold">{formatDate(campaign.startDate)}</span>
+                    <span className="font-semibold">
+                      {formatDate(campaign.startDate)}
+                    </span>
                   </div>
                 )}
                 {campaign?.endDate && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Valid Until:</span>
-                    <span className="font-semibold">{formatDate(campaign.endDate)}</span>
+                    <span className="font-semibold">
+                      {formatDate(campaign.endDate)}
+                    </span>
                   </div>
                 )}
                 {campaign?.maxRedemptions && (
                   <div className="flex justify-between">
                     <span className="text-gray-600">Max Redemptions:</span>
-                    <span className="font-semibold">{campaign.maxRedemptions}</span>
+                    <span className="font-semibold">
+                      {campaign.maxRedemptions}
+                    </span>
                   </div>
                 )}
               </div>
