@@ -62,7 +62,7 @@ export default function CheckoutWalletCard({
         setUseCoins(true);
         onApplied?.(resp.price);
       }
-    } catch (error) {
+    } catch {
     // Keep state unchanged on error
     } finally {
       setActionLoading(false);

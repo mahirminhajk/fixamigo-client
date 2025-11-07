@@ -8,7 +8,7 @@ import { useWalletStore } from "@/stores/walletStore";
 import { ICampaign, ICampaignRedemption } from "@/types/campaign";
 import { Calendar, CheckCircle2, Coins, Gift, Loader2, Tag, XCircle } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function CampaignRedeemPage() {
   const params = useParams();
@@ -22,14 +22,7 @@ export default function CampaignRedeemPage() {
   const [error, setError] = useState<string | null>(null);
   const [redemption, setRedemption] = useState<ICampaignRedemption | null>(null);
   const [autoRedeemed, setAutoRedeemed] = useState(false);
-
-  useEffect(() => {
-    if (code) {
-      loadCampaign();
-    }
-  }, [code]);
-
-  const loadCampaign = async () => {
+  const loadCampaign = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     
@@ -42,12 +35,19 @@ export default function CampaignRedeemPage() {
         await handleRedeem(campaignData);
         setAutoRedeemed(true);
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Campaign not found or invalid");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || "Campaign not found or invalid");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [code, autoRedeemed]);
+
+  useEffect(() => {
+    if (code) {
+      loadCampaign();
+    }
+  }, [code, loadCampaign]);
 
   const handleRedeem = async (campaignToRedeem?: ICampaign) => {
     const targetCampaign = campaignToRedeem || campaign;
@@ -62,10 +62,11 @@ export default function CampaignRedeemPage() {
       
       // Refresh wallet balance
       await fetchBalance();
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string; errors?: string[] } } };
       setError(
-        err.response?.data?.message || 
-        err.response?.data?.errors?.join(", ") || 
+        error.response?.data?.message ||
+        error.response?.data?.errors?.join(", ") || 
         "Failed to redeem campaign"
       );
     } finally {
@@ -130,7 +131,7 @@ export default function CampaignRedeemPage() {
                 🎉 Campaign Redeemed!
               </h1>
               <p className="text-gray-600 mb-6">
-                Congratulations! You've successfully redeemed this campaign.
+                Congratulations! You&apos;ve successfully redeemed this campaign.
               </p>
 
               {/* Reward Display */}
@@ -225,7 +226,7 @@ export default function CampaignRedeemPage() {
             {/* Reward Info */}
             <div className="bg-gradient-to-r from-yellow-50 to-amber-50 p-6 rounded-xl border-2 border-yellow-300 mb-6">
               <div className="text-center">
-                <p className="text-sm text-gray-600 mb-2">You'll receive</p>
+                <p className="text-sm text-gray-600 mb-2">You&apos;ll receive</p>
                 <div className="flex items-center justify-center gap-2">
                   <Coins className="h-8 w-8 text-yellow-600" />
                   <p className="text-4xl font-bold text-yellow-600">

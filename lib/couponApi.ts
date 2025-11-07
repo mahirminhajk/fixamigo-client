@@ -12,7 +12,7 @@ import api from "./axiosInstance";
 export const validateCoupon = async (
   code: string,
   orderValue: number,
-  orderData?: any
+  orderData?: Record<string, unknown>
 ): Promise<ICouponValidation> => {
   const response = await api.post("/order/validate-coupon", {
     code,
@@ -28,7 +28,7 @@ export const validateCoupon = async (
 export const applyCoupon = async (
   code: string,
   orderId: string
-): Promise<{ redemption: any; price?: any }> => {
+): Promise<{ redemption: Record<string, unknown>; price?: Record<string, unknown> }> => {
   const response = await api.post("/order/apply-coupon", {
     code,
     orderId,
@@ -54,7 +54,7 @@ export const calculateCheckoutTotal = async (params: {
   orderValue: number;
   walletCoins?: number;
   couponCodes?: string[];
-  orderData?: any;
+  orderData?: Record<string, unknown>;
 }): Promise<{
   totals: {
     original: number;

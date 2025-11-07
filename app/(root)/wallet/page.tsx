@@ -166,7 +166,7 @@ export default function WalletPage() {
                 <Filter className="h-4 w-4 text-gray-500" />
                 <select
                   value={filter}
-                  onChange={(e) => handleFilterChange(e.target.value as any)}
+                  onChange={(e) => handleFilterChange(e.target.value as "all" | "credit" | "debit")}
                   className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="all">All Transactions</option>
