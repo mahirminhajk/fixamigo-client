@@ -203,7 +203,7 @@ export default function CampaignSignupPage() {
       await api.post("/auth/resend-otp");
       setCooldown(60);
     } catch (error) {
-      console.error("Failed to resend OTP");
+      console.error("Failed to resend OTP", error);
     }
   };
 
@@ -413,7 +413,7 @@ export default function CampaignSignupPage() {
             <CardHeader>
               <CardTitle>Enter OTP</CardTitle>
               <CardDescription>
-                We've sent an OTP to your WhatsApp
+                      We&apos;ve sent an OTP to your WhatsApp
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -447,7 +447,7 @@ export default function CampaignSignupPage() {
               {/* Resend controls */}
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-600">
-                  {cooldown > 0 ? `Resend in ${cooldown}s` : "Didn't receive?"}
+                        {cooldown > 0 ? `Resend in ${cooldown}s` : "Didn&apos;t receive?"}
                 </span>
                 <Button
                   type="button"
@@ -493,7 +493,7 @@ export default function CampaignSignupPage() {
                     Welcome to Fixamigo! 🎉
                   </h2>
                   <p className="text-gray-700 mb-4">
-                    You've successfully claimed your reward
+                          You&apos;ve successfully claimed your reward
                   </p>
                   <div className="bg-white border border-green-300 rounded-lg p-4 mb-4">
                     <div className="flex items-center justify-center gap-2">

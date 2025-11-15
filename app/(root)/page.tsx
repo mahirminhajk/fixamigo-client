@@ -27,12 +27,13 @@ export const viewport = {
 };
 
 interface PageProps {
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-const Home = ({ searchParams }: PageProps) => {
+const Home = async ({ searchParams }: PageProps) => {
   const structuredData = getHomepageStructuredData();
-  const toastParam = typeof searchParams?.toast === "string" ? searchParams?.toast : undefined;
+  const sp = (await searchParams) ?? {};
+  const toastParam = typeof sp.toast === "string" ? sp.toast : undefined;
   const shouldShowCampaignNotFound = toastParam === "campaign-not-found";
 
   return (
