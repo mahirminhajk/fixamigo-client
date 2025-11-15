@@ -1,27 +1,21 @@
 /**
- * Campaign Types
- * QR and Referral campaign types for marketing system
+ * Campaign Types - Simplified
+ * Campaign system for new customer signup bonuses
  */
 
 export interface ICampaign {
   _id: string;
   name: string;
   description?: string;
-  type: "QR" | "REFERRAL";
   refCode: string;
   rewardCoins: number;
-  referrerRewardCoins?: number;
+  rewardCoinsExpiryDays?: number;
   startDate?: Date;
   endDate?: Date;
   isActive: boolean;
   maxRedemptions?: number;
   currentRedemptions?: number;
-  maxRedemptionsPerUser?: number;
-  meta?: {
-    campaignId?: string;
-    imageUrl?: string;
-    termsAndConditions?: string;
-  };
+  meta?: Record<string, any>;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -30,7 +24,6 @@ export interface ICampaignValidation {
   valid: boolean;
   reason?: string;
   campaign?: ICampaign;
-  expectedReward?: number;
 }
 
 export interface ICampaignRedemption {
@@ -38,23 +31,10 @@ export interface ICampaignRedemption {
   userId: string;
   campaignId: string;
   refCode: string;
-  type: "QR" | "REFERRAL";
   coinsGranted?: number;
-  referrerId?: string;
-  referrerCoinsGranted?: number;
-  status: "PENDING" | "CREDITED" | "BLOCKED";
-  fraudScore?: number;
-  metadata?: {
-    ipAddress?: string;
-    userAgent?: string;
-    deviceId?: string;
-  };
+  status: "PENDING" | "CREDITED" | "FAILED";
+  walletTransactionId?: string;
+  metadata?: Record<string, any>;
   redeemedAt: Date;
   creditedAt?: Date;
-}
-
-export interface IReferralLink {
-  code: string;
-  referralLink: string;
-  campaignId: string;
 }

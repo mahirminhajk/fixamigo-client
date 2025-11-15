@@ -1,9 +1,10 @@
-import HeroCarousel from "@/components/others/carousel";
-import ProductSearch from "@/components/search/ProductSearch";
-import ListRepairCategory from "@/components/list/listRepairCategory";
 import BrandsList from "@/components/list/brandsList";
+import ListRepairCategory from "@/components/list/listRepairCategory";
+import InlineToast from "@/components/others/InlineToast";
 import ServiceSteps from "@/components/others/ServiceSteps";
 import AvailableServices from "@/components/others/availableServices";
+import HeroCarousel from "@/components/others/carousel";
+import ProductSearch from "@/components/search/ProductSearch";
 import {
   getHomepageMetadata,
   getHomepageStructuredData,
@@ -25,11 +26,21 @@ export const viewport = {
   ],
 };
 
-const Home = () => {
+interface PageProps {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+const Home = ({ searchParams }: PageProps) => {
   const structuredData = getHomepageStructuredData();
+  const toastParam = typeof searchParams?.toast === "string" ? searchParams?.toast : undefined;
+  const shouldShowCampaignNotFound = toastParam === "campaign-not-found";
 
   return (
     <>
+      {shouldShowCampaignNotFound && (
+        <InlineToast message="Campaign not found" variant="error" />
+      )}
+
       {/* JSON-LD Structured Data */}
       <Script
         id="homepage-structured-data"
