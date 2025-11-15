@@ -29,19 +29,13 @@ export default function CampaignRedeemPage() {
     try {
       const campaignData = await getCampaignByCode(code.toUpperCase());
       setCampaign(campaignData);
-      
-      // Auto-redeem for QR code campaigns
-      if (campaignData.type === "QR" && campaignData.isActive && !autoRedeemed) {
-        await handleRedeem(campaignData);
-        setAutoRedeemed(true);
-      }
     } catch (err: unknown) {
       const error = err as { response?: { data?: { message?: string } } };
       setError(error.response?.data?.message || "Campaign not found or invalid");
     } finally {
       setIsLoading(false);
     }
-  }, [code, autoRedeemed]);
+  }, [code]);
 
   useEffect(() => {
     if (code) {
@@ -212,14 +206,10 @@ export default function CampaignRedeemPage() {
               )}
             </div>
 
-            {/* Campaign Type Badge */}
+            {/* Campaign Badge */}
             <div className="flex justify-center mb-6">
-              <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                campaign?.type === "QR" 
-                  ? "bg-blue-100 text-blue-700" 
-                  : "bg-purple-100 text-purple-700"
-              }`}>
-                {campaign?.type === "QR" ? "QR Code Campaign" : "Referral Campaign"}
+              <span className="px-4 py-2 rounded-full text-sm font-semibold bg-orange-100 text-orange-700">
+                Campaign
               </span>
             </div>
 
@@ -296,24 +286,14 @@ export default function CampaignRedeemPage() {
               </div>
             )}
 
-            {/* Redeem Button - Only for REFERRAL type (QR auto-redeems) */}
-            {campaign?.type === "REFERRAL" && campaign?.isActive && (
+            {/* Go to campaign signup flow */}
+            {campaign?.isActive && (
               <Button
-                onClick={() => handleRedeem()}
-                disabled={isRedeeming}
+                onClick={() => router.push(`/campaign/${campaign?.refCode}`)}
                 className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-6 text-lg font-semibold"
               >
-                {isRedeeming ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
-                    Redeeming...
-                  </>
-                ) : (
-                  <>
-                    <Gift className="h-5 w-5 mr-2" />
-                    Redeem Campaign
-                  </>
-                )}
+                <Gift className="h-5 w-5 mr-2" />
+                Go to Signup
               </Button>
             )}
 
