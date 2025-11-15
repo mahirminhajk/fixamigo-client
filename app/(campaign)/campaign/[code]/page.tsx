@@ -1,5 +1,6 @@
 "use client";
 
+import Navbar from "@/components/core/navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -11,10 +12,27 @@ import { useWalletStore } from "@/stores/walletStore";
 import { ICampaign } from "@/types/campaign";
 import { AxiosError } from "axios";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
-import { CheckCircle2, Gift, Loader2, Sparkles } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock3,
+  Coins,
+  Compass,
+  Gift,
+  Key,
+  Loader2,
+  Phone,
+  ShieldCheck,
+  Sparkles,
+  Truck,
+  Wrench,
+} from "lucide-react";
+import dynamic from "next/dynamic";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
+
+// Client-only testimonials (uses simple client component)
+const TestimonialsSection = dynamic(() => import("@/components/others/Testimonials"), { ssr: false });
 
 export default function CampaignSignupPage() {
   const params = useParams();
@@ -192,12 +210,15 @@ export default function CampaignSignupPage() {
   // Loading state
   if (campaignLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin mx-auto text-orange-600" />
-          <p className="mt-4 text-gray-600">Loading campaign...</p>
+      <>
+        <Navbar />
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white">
+          <div className="text-center">
+            <Loader2 className="w-8 h-8 animate-spin mx-auto text-orange-600" />
+            <p className="mt-4 text-gray-600">Loading campaign...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
@@ -205,10 +226,12 @@ export default function CampaignSignupPage() {
   if (campaignError || !campaign) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Campaign Header */}
-        <div className="text-center mb-6">
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 py-8 px-4">
+          <div className="mx-auto max-w-6xl">
+              {/* Top header */}
+              <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full mb-4">
             <Gift className="w-8 h-8 text-orange-600" />
           </div>
@@ -216,17 +239,117 @@ export default function CampaignSignupPage() {
             {campaign.name}
           </h1>
           {campaign.description && (
-            <p className="text-gray-600 text-sm md:text-base">
+                      <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto">
               {campaign.description}
             </p>
           )}
-          <div className="mt-4 inline-flex items-center gap-2 bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold">
+                  <div className="mt-3 inline-flex items-center gap-2 bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold">
             <Sparkles className="w-4 h-4" />
             Get {campaign.rewardCoins} coins on signup!
           </div>
-        </div>
+              </div>
 
-        {/* Step 1: Phone + Name */}
+              {/* Content layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                  {/* Left: What we do + How it works */}
+                  <div className="space-y-6 order-2 lg:order-1">
+                      {/* What we do */}
+                      <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-6 shadow-sm">
+                          <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">What we do at Fixamigo</h2>
+                          <ul className="space-y-3">
+                              <li className="flex items-start gap-3">
+                                  <ShieldCheck className="w-5 h-5 text-green-600 mt-0.5" />
+                                  <div>
+                                      <p className="font-medium text-gray-900">Trusted Repairs</p>
+                                      <p className="text-sm text-gray-600">Genuine parts and skilled technicians with warranty support.</p>
+                                  </div>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                  <Wrench className="w-5 h-5 text-orange-600 mt-0.5" />
+                                  <div>
+                                      <p className="font-medium text-gray-900">Multi-brand Service</p>
+                                      <p className="text-sm text-gray-600">Phones and laptops — diagnostics to complete repair.</p>
+                                  </div>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                  <Truck className="w-5 h-5 text-blue-600 mt-0.5" />
+                                  <div>
+                                      <p className="font-medium text-gray-900">Doorstep Convenience</p>
+                                      <p className="text-sm text-gray-600">Pickup and delivery options across Kerala.</p>
+                                  </div>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                  <Clock3 className="w-5 h-5 text-gray-700 mt-0.5" />
+                                  <div>
+                                      <p className="font-medium text-gray-900">Fast Turnaround</p>
+                                      <p className="text-sm text-gray-600">Quick diagnosis and reliable, timely repairs.</p>
+                                  </div>
+                              </li>
+                          </ul>
+                      </div>
+
+                      {/* How it works */}
+                      <div className="bg-white border border-gray-200 rounded-xl p-5 md:p-6 shadow-sm">
+                          <h2 className="text-lg md:text-xl font-bold text-gray-900 mb-4">How this campaign works</h2>
+                          <ol className="space-y-3">
+                              <li className="flex items-start gap-3">
+                                  <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-xs mt-0.5">1</div>
+                                  <div className="flex items-start gap-2">
+                                      <Phone className="w-5 h-5 text-orange-600 mt-0.5" />
+                                      <div>
+                                          <p className="font-medium text-gray-900">Enter phone and name</p>
+                                          <p className="text-sm text-gray-600">Use your WhatsApp number to receive OTP.</p>
+                                      </div>
+                                  </div>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                  <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-xs mt-0.5">2</div>
+                                  <div className="flex items-start gap-2">
+                                      <Key className="w-5 h-5 text-orange-600 mt-0.5" />
+                                      <div>
+                                          <p className="font-medium text-gray-900">Verify OTP</p>
+                                          <p className="text-sm text-gray-600">Enter the 6-digit code we send to WhatsApp.</p>
+                                      </div>
+                                  </div>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                  <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-xs mt-0.5">3</div>
+                                  <div className="flex items-start gap-2">
+                                      <Coins className="w-5 h-5 text-orange-600 mt-0.5" />
+                                      <div>
+                                          <p className="font-medium text-gray-900">Instant reward for new users</p>
+                                          <p className="text-sm text-gray-600">If this is your first account, coins are auto-credited.</p>
+                                      </div>
+                                  </div>
+                              </li>
+                              <li className="flex items-start gap-3">
+                                  <div className="w-6 h-6 rounded-full bg-orange-100 text-orange-700 flex items-center justify-center font-bold text-xs mt-0.5">4</div>
+                                  <div className="flex items-start gap-2">
+                                      <Compass className="w-5 h-5 text-orange-600 mt-0.5" />
+                                      <div>
+                                          <p className="font-medium text-gray-900">Book a service anytime</p>
+                                          <p className="text-sm text-gray-600">Use your coins on eligible services in your wallet.</p>
+                                      </div>
+                                  </div>
+                              </li>
+                          </ol>
+                      </div>
+                  </div>
+
+                  {/* Right: Auth Card */}
+                  <div className="order-1 lg:order-2">
+                      {/* Step indicator */}
+                      <div className="mb-4">
+                          <div className="flex items-center justify-center gap-3 text-sm font-medium">
+                              <div className={`px-3 py-1 rounded-full ${step >= 1 ? "bg-orange-600 text-white" : "bg-gray-200 text-gray-700"}`}>1. Account</div>
+                              <span className="text-gray-400">→</span>
+                              <div className={`px-3 py-1 rounded-full ${step >= 2 ? "bg-orange-600 text-white" : "bg-gray-200 text-gray-700"}`}>2. Verify</div>
+                              <span className="text-gray-400">→</span>
+                              <div className={`px-3 py-1 rounded-full ${step >= 3 ? "bg-orange-600 text-white" : "bg-gray-200 text-gray-700"}`}>3. Reward</div>
+                          </div>
+                      </div>
+
+                      {/* Step 1: Phone + Name */}
         {step === 1 && (
           <Card>
             <CardHeader>
@@ -403,7 +526,13 @@ export default function CampaignSignupPage() {
             </CardContent>
           </Card>
         )}
+                  </div>
+              </div>
+
+              {/* Testimonials */}
+              <TestimonialsSection />
       </div>
     </div>
+    </>
   );
 }
