@@ -4,6 +4,7 @@ import InlineToast from "@/components/others/InlineToast";
 import ServiceSteps from "@/components/others/ServiceSteps";
 import AvailableServices from "@/components/others/availableServices";
 import HeroCarousel from "@/components/others/carousel";
+import CustomerReviews from "@/components/others/CustomerReviews";
 import ProductSearch from "@/components/search/ProductSearch";
 import {
   getHomepageMetadata,
@@ -57,6 +58,7 @@ const Home = async ({ searchParams }: PageProps) => {
         <ListRepairCategory />
         <AvailableServices />
         <BrandsList variant="min" />
+        <CustomerReviews />
         <ServiceSteps />
       </section>
     </>
