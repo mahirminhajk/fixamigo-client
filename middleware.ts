@@ -36,6 +36,11 @@ export function middleware(request: NextRequest) {
   // Extract the host without port
   const host = hostname.split(':')[0];
   
+  // Skip IP addresses (e.g., 192.168.1.100, localhost)
+  if (/^\d+\.\d+\.\d+\.\d+$/.test(host) || host === 'localhost') {
+    return NextResponse.next();
+  }
+  
   // Split hostname into parts (e.g., "myshop.fixamigo.com" → ["myshop", "fixamigo", "com"])
   const parts = host.split('.');
   

@@ -65,6 +65,34 @@ export default function FixerProfilePage() {
 
   const { supplier, branding, contact, featureFlags } = profile;
 
+  // Ensure supplier data exists
+  if (!supplier) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 px-4">
+        <Card className="max-w-md w-full border-red-200 bg-red-50">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-red-600">
+              <AlertCircle className="w-5 h-5" />
+              Profile Incomplete
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-red-700 mb-4">
+              This fixer profile is not properly configured. Please contact support.
+            </p>
+            <Button 
+              variant="outline" 
+              className="w-full"
+              onClick={() => router.push('/')}
+            >
+              Go back to home
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Hero Section with Cover Image */}
@@ -112,7 +140,7 @@ export default function FixerProfilePage() {
                   backgroundColor: branding?.primaryColor || '#0f172a',
                 }}
               >
-                {supplier.name.charAt(0).toUpperCase()}
+                {supplier?.name?.charAt(0)?.toUpperCase() || 'F'}
               </div>
             )}
           </div>
@@ -120,7 +148,7 @@ export default function FixerProfilePage() {
           {/* Profile Info */}
           <div className="flex-1 flex flex-col justify-end pb-2">
             <h1 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-              {supplier.name}
+              {supplier?.name || branding?.displayName || 'Fixer Profile'}
             </h1>
             {branding?.tagline && (
               <p className="text-lg text-slate-600 mb-4">
