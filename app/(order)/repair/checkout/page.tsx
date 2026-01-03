@@ -84,9 +84,11 @@ function CheckoutPageContent() {
   const sendCheckoutRequest = async () => {
     setLoading(true);
     setGeneralError(null); // Clear any previous errors
+    const { fixerSlug } = cart || {};
     const data = {
       device: cartItem?.device._id,
       spareParts: cartItem?.spareParts.map((sp) => sp._id),
+      ...(fixerSlug && { fixerSlug }), // Include fixerSlug if available
     };
     await api
       .post("/order/checkout", data)

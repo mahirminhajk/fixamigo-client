@@ -12,6 +12,8 @@ interface CartItem {
 interface CartState {
   cart: {
     items: CartItem[];
+    supplierId?: string; // Track supplier/fixer ID for fixer profile orders
+    fixerSlug?: string; // Track fixer slug for profile context
   };
   addToCart: (device: ICartDevice, sparePart: ISparePart) => void;
   removeFromCart: (deviceId: string, sparePartId: string) => void;
@@ -19,6 +21,8 @@ interface CartState {
   isCartEmpty: () => boolean;
   getTotalPrice: (deviceId?: string) => number;
   hasRangeItems: (deviceId?: string) => boolean;
+  setSupplierContext: (supplierId: string | undefined, fixerSlug: string | undefined) => void;
+  getSupplierContext: () => { supplierId?: string; fixerSlug?: string };
   clearCart: () => void;
 }
 
@@ -27,6 +31,8 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       cart: {
         items: [],
+        supplierId: undefined,
+        fixerSlug: undefined,
       },
 
       addToCart: (device, sparePart) =>
@@ -49,7 +55,12 @@ export const useCartStore = create<CartState>()(
             // New device entry
             items.push({ device, spareParts: [sparePart] });
           }
-          return { cart: { items } };
+          return { 
+            cart: { 
+              ...state.cart,
+              items 
+            } 
+          };
         }),
 
       removeFromCart: (deviceId, sparePartId) =>
@@ -69,7 +80,12 @@ export const useCartStore = create<CartState>()(
             : [];
           // Remove device entry if no spare parts left
           items = items.filter((item) => item.spareParts.length > 0);
-          return { cart: { items } };
+          return { 
+            cart: { 
+              ...state.cart,
+              items 
+            } 
+          };
         }),
 
       isInCart: (deviceId, sparePartId) => {
@@ -150,6 +166,23 @@ export const useCartStore = create<CartState>()(
       },
 
       clearCart: () => set({ cart: { items: [] } }),
+
+      setSupplierContext: (supplierId: string | undefined, fixerSlug: string | undefined) =>
+        set((state) => ({
+          cart: {
+            ...state.cart,
+            supplierId,
+            fixerSlug,
+          },
+        })),
+
+      getSupplierContext: () => {
+        const cart = get().cart;
+        return {
+          supplierId: cart?.supplierId,
+          fixerSlug: cart?.fixerSlug,
+        };
+      },
     }),
     {
       name: "cart-storage1", // ✅ LocalStorage Key
