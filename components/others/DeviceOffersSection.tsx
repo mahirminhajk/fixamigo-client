@@ -76,10 +76,10 @@ export default function DeviceOffersSection({
   return (
     <div className={`w-full max-w-md mx-auto lg:max-w-none ${className}`}>
       {/* Offers Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
         {/* Dead Phone Diagnosis Offer - Show First */}
         {diagnosisOffer && (
-          <div className="bg-gray-100 p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200">
+          <div className="rounded-[16px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
             <div className="flex items-start space-x-3">
               <div className="flex-shrink-0 bg-green-100 p-2 rounded-full">
                 <Stethoscope className="w-8 h-8 text-green-600" />
@@ -124,7 +124,7 @@ export default function DeviceOffersSection({
                     addToCart(cartDevice, diagnosisItem);
                     router.push(`/repair/checkout?device=${cartDevice.slug}`);
                   }}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold text-[10px] px-3 py-2 h-8 rounded"
+                  className="w-full rounded-full bg-gradient-to-r from-emerald-500 to-green-600 px-3 py-2 text-[10px] font-semibold text-white shadow-lg shadow-green-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-emerald-400 hover:to-green-500 h-8"
                 >
                   Book Free Diagnosis
                 </Button>
@@ -135,7 +135,7 @@ export default function DeviceOffersSection({
 
         {/* Display Spare Part Offer - Show Only if Available and Not Range */}
         {displayPart && displayOffer && (
-          <div className="relative bg-gray-100 p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200">
+          <div className="relative rounded-[16px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
             <CornerOfferBadge
               type="percentage"
               value={displayOffer.discountPercentage}
@@ -193,7 +193,7 @@ export default function DeviceOffersSection({
                   </div>
                 </div>
 
-                <Button className="w-full bg-black hover:bg-black/80 text-white font-semibold text-[10px] px-3 py-2 h-8 rounded mt-3">
+                <Button className="mt-3 h-8 w-full rounded-full bg-gradient-to-r from-sky-600 to-indigo-600 px-3 py-2 text-[10px] font-semibold text-white shadow-md shadow-sky-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-sky-500 hover:to-indigo-500">
                   Add to Cart
                 </Button>
               </div>

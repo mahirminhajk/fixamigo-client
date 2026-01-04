@@ -64,9 +64,9 @@ export default function DeviceCartBarClient() {
     : "text-black";
 
   return (
-    <div className="fixed bottom-0 left-0 w-full flex justify-center pointer-events-none z-50 lg:bottom-6 lg:right-6 lg:left-auto lg:w-auto transition-opacity duration-300 opacity-100">
+    <div className="fixed bottom-0 left-0 z-50 flex w-full justify-center pointer-events-none transition-opacity duration-300 opacity-100 lg:bottom-6 lg:left-auto lg:right-6 lg:w-auto">
       {/* Mobile Layout - Full width bottom bar */}
-      <div className="lg:hidden w-full max-w-[500px] bg-white py-3 px-4 border shadow-md flex justify-between items-center rounded-t-[12px] pointer-events-auto">
+      <div className="pointer-events-auto flex w-full max-w-[500px] items-center justify-between rounded-t-[16px] border border-slate-200 bg-white/95 px-4 py-3 shadow-[0_-10px_30px_rgba(15,23,42,0.08)] backdrop-blur-sm lg:hidden">
         <div className="flex flex-col justify-between h-full">
           <p className={`font-bold text-xl mb-1 ${priceColorClass}`}>
             ₹{total}
@@ -95,7 +95,7 @@ export default function DeviceCartBarClient() {
         </div>
         <button
           onClick={handleBookNow}
-          className="flex items-center gap-2 bg-black text-white py-3 px-5 rounded-[6px] font-semibold ml-4"
+          className="ml-4 flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-600 to-indigo-600 px-5 py-3 font-semibold text-white shadow-lg shadow-sky-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-sky-500 hover:to-indigo-500"
         >
           Book Now
           <span className="inline-block relative top-[2px]">&rarr;</span>
@@ -104,7 +104,7 @@ export default function DeviceCartBarClient() {
 
       {/* Desktop Layout - Floating action button */}
       <div className="hidden lg:block pointer-events-auto">
-        <div className="bg-white border border-gray-200 rounded-[12px] shadow-lg p-4 min-w-[280px]">
+        <div className="min-w-[300px] rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-[0_14px_40px_rgba(15,23,42,0.14)] backdrop-blur-sm">
           <div className="flex items-center justify-between mb-3">
             <div>
               <p className="text-sm text-gray-600">Total Amount</p>
@@ -127,7 +127,7 @@ export default function DeviceCartBarClient() {
               </p>
               <button
                 onClick={handleBookNow}
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-[6px] font-semibold transition-colors duration-200 inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-600 to-indigo-600 px-6 py-2 font-semibold text-white shadow-lg shadow-sky-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-sky-500 hover:to-indigo-500"
               >
                 Book Now
                 <span>&rarr;</span>

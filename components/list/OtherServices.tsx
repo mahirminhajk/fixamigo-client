@@ -108,7 +108,7 @@ export default function OtherServices({
           return (
             <div
               key={item._id}
-              className="bg-gray-100 py-4 pr-2 rounded-[6px] shadow-sm"
+              className="rounded-[16px] border border-slate-200 bg-white px-2 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
               <div className="flex items-center justify-between px-4">
                 <div className="flex items-center">
@@ -147,7 +147,7 @@ export default function OtherServices({
                         }
                       }}
                       variant="destructive"
-                      className="text-[10px] px-3 py-1 h-7 rounded"
+                      className="text-[10px] px-3 py-1 h-7 rounded-full"
                     >
                       Remove
                     </Button>
@@ -165,7 +165,7 @@ export default function OtherServices({
                           `/repair/checkout?device=${cartDevice.slug}`
                         );
                       }}
-                      className="bg-black hover:bg-black/80 text-white font-semibold text-[10px] px-3 py-1 h-7 rounded"
+                      className="h-7 rounded-full bg-gradient-to-r from-sky-600 to-indigo-600 px-3 py-1 text-[10px] font-semibold text-white shadow-md shadow-sky-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-sky-500 hover:to-indigo-500"
                     >
                       Book Now
                     </Button>
@@ -178,14 +178,14 @@ export default function OtherServices({
       </div>
 
       {/* Desktop */}
-      <div className="hidden lg:grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="hidden gap-4 lg:grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {services.map((item) => {
           const meta = OTHER_SERVICE_METAS.find((m) => m.label === item.label);
           const Icon = meta?.Icon || HardDrive;
           return (
             <div
               key={item._id}
-              className="bg-gray-100 p-4 rounded-[6px] shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="rounded-[16px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center">
@@ -227,7 +227,7 @@ export default function OtherServices({
                           }
                         }}
                         variant="destructive"
-                        className="text-xs px-3 py-1 h-7 rounded"
+                        className="text-xs px-3 py-1 h-7 rounded-full"
                       >
                         Remove
                       </Button>
@@ -245,7 +245,7 @@ export default function OtherServices({
                             `/repair/checkout?device=${cartDevice.slug}`
                           );
                         }}
-                        className="bg-black hover:bg-black/80 text-white text-xs font-semibold"
+                        className="rounded-full bg-gradient-to-r from-sky-600 to-indigo-600 px-3 py-1 text-xs font-semibold text-white shadow-md shadow-sky-600/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-sky-500 hover:to-indigo-500"
                       >
                         Book Now
                       </Button>

@@ -53,7 +53,7 @@ export default function UnknownSpareParts({
         {placeholderParts.map((item) => (
           <div
             key={item._id}
-            className="bg-gray-100 py-4 pr-2 rounded-[6px] shadow-sm"
+            className="rounded-[16px] border border-slate-200 bg-white px-2 py-4 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             <div className="flex items-center justify-between px-4">
               <div className="flex items-center">
@@ -79,11 +79,11 @@ export default function UnknownSpareParts({
       </div>
 
       {/* Desktop */}
-      <div className="hidden lg:grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="hidden gap-4 lg:grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {placeholderParts.map((item) => (
           <div
             key={item._id}
-            className="bg-gray-100 p-4 rounded-[6px] shadow-sm hover:shadow-md transition-shadow duration-200"
+            className="rounded-[16px] border border-slate-200 bg-white p-4 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
           >
             <div className="flex flex-col space-y-3">
               <div className="flex items-center">

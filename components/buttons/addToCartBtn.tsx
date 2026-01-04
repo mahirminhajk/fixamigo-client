@@ -39,7 +39,11 @@ export default function AddToCartBtn({
       size="icon" // Using "icon" size for a compact button, ensures 36x36px hit area
       onClick={handleToggleCart}
       aria-label={itemInCart ? "Remove from cart" : "Add to cart"}
-      className={itemInCart ? "" : "bg-black hover:bg-black/80"} // Custom black color for default state
+      className={
+        itemInCart
+          ? ""
+          : "bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-md shadow-sky-600/20 hover:from-sky-500 hover:to-indigo-500 transition-all duration-200"
+      }
     >
       {itemInCart ? (
         <FaTrash className="size-4" />

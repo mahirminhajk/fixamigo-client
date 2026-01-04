@@ -116,10 +116,10 @@ export default function DiagnosisServices({
           return (
             <div
               key={item._id}
-              className={`p-4 rounded-[6px] shadow-sm ${
+              className={`p-4 rounded-[16px] shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
                 hasFreeOffer
                   ? "bg-gradient-to-r from-green-50 to-green-100 border border-green-200"
-                  : "bg-gray-100"
+                  : "bg-white border border-slate-200"
               }`}
             >
               {/* Top row: Icon + Title + Badge */}
@@ -190,7 +190,7 @@ export default function DiagnosisServices({
                         }
                       }}
                       variant="destructive"
-                      className="text-xs px-4 py-2 h-8 rounded"
+                      className="text-xs px-4 py-2 h-8 rounded-full"
                     >
                       Remove
                     </Button>
@@ -208,10 +208,10 @@ export default function DiagnosisServices({
                           `/repair/checkout?device=${cartDevice.slug}`
                         );
                       }}
-                      className={`font-semibold text-xs px-4 py-2 h-8 rounded ${
+                      className={`font-semibold text-xs px-4 py-2 h-8 rounded-full transition-all duration-200 ${
                         hasFreeOffer
-                          ? "bg-green-600 hover:bg-green-700 text-white"
-                          : "bg-black hover:bg-black/80 text-white"
+                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-600/20 hover:from-emerald-400 hover:to-green-500"
+                          : "bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-600/20 hover:from-sky-500 hover:to-indigo-500"
                       }`}
                     >
                       {hasFreeOffer ? "Book FREE" : "Book Now"}
@@ -225,7 +225,7 @@ export default function DiagnosisServices({
       </div>
 
       {/* Desktop */}
-      <div className="hidden lg:grid lg:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="hidden gap-4 lg:grid lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {diagnosisParts.map((item) => {
           const raw = Object.keys(RAW_TO_OPTIMIZED).find(
             (k) => RAW_TO_OPTIMIZED[k].label === item.label
@@ -239,10 +239,10 @@ export default function DiagnosisServices({
           return (
             <div
               key={item._id}
-              className={`p-4 rounded-[6px] shadow-sm hover:shadow-md transition-all duration-200 min-h-[140px] flex flex-col ${
+              className={`p-4 rounded-[16px] shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-lg min-h-[140px] flex flex-col ${
                 hasFreeOffer
                   ? "bg-gradient-to-br from-green-50 to-green-100 border border-green-200 ring-1 ring-green-300"
-                  : "bg-gray-100"
+                  : "bg-white border border-slate-200"
               }`}
             >
               {/* Top section: Icon + Title + Badge */}
@@ -318,7 +318,7 @@ export default function DiagnosisServices({
                         }
                       }}
                       variant="destructive"
-                      className="text-xs px-3 py-2 h-8 rounded w-full"
+                      className="text-xs px-3 py-2 h-8 rounded-full w-full"
                     >
                       Remove
                     </Button>
@@ -336,10 +336,10 @@ export default function DiagnosisServices({
                           `/repair/checkout?device=${cartDevice.slug}`
                         );
                       }}
-                      className={`text-xs font-semibold px-3 py-2 h-8 rounded w-full ${
+                      className={`text-xs font-semibold px-3 py-2 h-8 rounded-full w-full transition-all duration-200 ${
                         hasFreeOffer
-                          ? "bg-green-600 hover:bg-green-700 text-white"
-                          : "bg-black hover:bg-black/80 text-white"
+                          ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-green-600/20 hover:from-emerald-400 hover:to-green-500"
+                          : "bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-lg shadow-sky-600/20 hover:from-sky-500 hover:to-indigo-500"
                       }`}
                     >
                       {hasFreeOffer ? "Book FREE" : "Book Now"}

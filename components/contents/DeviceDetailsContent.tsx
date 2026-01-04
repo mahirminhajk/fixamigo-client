@@ -43,9 +43,9 @@ export default async function DeviceDetailsContent({
   );
 
   return (
-    <section className="max-w-7xl mx-auto px-4">
+    <section className="mx-auto max-w-7xl px-4 pb-28 sm:px-6 lg:px-8 lg:pb-20">
       {/* Mobile Layout (unchanged) */}
-      <div className="lg:hidden">
+      <div className="space-y-6 lg:hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
         <ShowModel
           deviceData={{
             name: deviceData.name,
@@ -159,11 +159,11 @@ export default async function DeviceDetailsContent({
         <WhyChooseUs />
       </div>{" "}
       {/* Desktop Layout */}
-      <div className="hidden lg:block">
+      <div className="hidden lg:block animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,2.4fr)_minmax(320px,1fr)] xl:gap-10">
           {/* Left Column - Device Info and Spare Parts (3/4 width) */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="space-y-8">
             {/* Device Info Section */}
             <ShowModel
               deviceData={{
@@ -282,7 +282,7 @@ export default async function DeviceDetailsContent({
           </div>
 
           {/* Right Column - Other Phones (1/4 width) */}
-          <div className="lg:col-span-1">
+          <div className="xl:pt-2">
             <OtherPhones
               currentDevice={{
                 company: deviceData.company,
