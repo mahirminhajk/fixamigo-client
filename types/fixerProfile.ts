@@ -1,19 +1,44 @@
 export interface IFixerProfileBranding {
-  logo?: string;
-  coverImage?: string;
-  primaryColor?: string;
-  description?: string;
+  displayName?: string;
   tagline?: string;
+  description?: string;
+  bio?: string;
+  logoUrl?: string;
+  coverUrl?: string;
+  primaryColor?: string;
+  accentColor?: string;
+  ctaLabel?: string;
 }
 
 export interface IFixerProfileContact {
   phone?: string;
+  altPhone?: string;
   email?: string;
-  address?: string;
+  whatsapp?: string;
+  website?: string;
+}
+
+export interface IFixerProfileLocation {
+  primaryServiceLocation?: string;
   city?: string;
   state?: string;
-  pincode?: string;
-  website?: string;
+  country?: string;
+}
+
+export interface IFixerProfileSocial {
+  instagram?: string;
+  facebook?: string;
+}
+
+export interface IFixerProfileShopDetails {
+  name?: string;
+  googleMapLink?: string;
+}
+
+export interface IFixerProfileStats {
+  totalRepairs?: number;
+  rating?: number;
+  reviewCount?: number;
 }
 
 export interface IFixerProfileSubscription {
@@ -40,10 +65,14 @@ export interface IFixerProfilePublic {
   };
   status: 'DRAFT' | 'PUBLISHED' | 'SUSPENDED';
   isVisible: boolean;
-  branding: IFixerProfileBranding;
-  contact: IFixerProfileContact;
-  subscription: IFixerProfileSubscription;
-  featureFlags: IFixerProfileFeatureFlags;
+  branding?: IFixerProfileBranding;
+  contact?: IFixerProfileContact;
+  location?: IFixerProfileLocation;
+  social?: IFixerProfileSocial;
+  shopDetails?: IFixerProfileShopDetails;
+  stats?: IFixerProfileStats;
+  subscription?: IFixerProfileSubscription;
+  featureFlags?: IFixerProfileFeatureFlags;
   createdAt: string;
   updatedAt: string;
 }
