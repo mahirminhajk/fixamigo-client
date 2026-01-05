@@ -20,6 +20,7 @@ const RESERVED_SUBDOMAINS = new Set([
   'static',
   'assets',
   'localhost',
+  'provider',
 ]);
 
 /**
@@ -38,6 +39,23 @@ export function middleware(request: NextRequest) {
   
   // Skip IP addresses (e.g., 192.168.1.100, localhost)
   if (/^\d+\.\d+\.\d+\.\d+$/.test(host) || host === 'localhost') {
+    return NextResponse.next();
+  }
+
+  // Handle subdomains on .localhost (e.g., hello.localhost)
+  if (host.endsWith('.localhost')) {
+    const potentialSlug = host.split('.')[0];
+
+    // Skip reserved slugs and already routed paths
+    if (!RESERVED_SUBDOMAINS.has(potentialSlug)
+      && !url.pathname.startsWith('/fixer/')
+      && !url.pathname.startsWith('/api')
+      && /^[a-z0-9-]+$/.test(potentialSlug)
+      && potentialSlug.length >= 3) {
+      const rewriteUrl = new URL(`/fixer/${potentialSlug}${url.pathname === '/' ? '' : url.pathname}${url.search}`, request.url);
+      return NextResponse.rewrite(rewriteUrl);
+    }
+
     return NextResponse.next();
   }
   
