@@ -25,6 +25,17 @@ interface ProductSearchProps {
   subheading?: string;
 }
 
+const POPULAR_SEARCHES = [
+  "iPhone 15",
+  "Samsung Galaxy S24",
+  "OnePlus 12",
+  "Google Pixel 8",
+  "Xiaomi 14",
+  "Battery replacement",
+  "Screen repair",
+  "Charging issue",
+];
+
 const DEFAULT_HEADING = "Find Your Device";
 const DEFAULT_SUBHEADING =
   "Search for your device to get repair parts and services";
@@ -564,16 +575,15 @@ const ProductSearch: React.FC<ProductSearchProps> = ({
       </div>
 
       {/* Quick Search Suggestions */}
-      <div className="mt-8 text-center">
-        <p className="text-sm text-gray-500 mb-4">Popular searches:</p>
+      <div className="mt-10 rounded-3xl border border-slate-200 bg-white/90 p-4 shadow-lg shadow-slate-200/40 backdrop-blur-sm md:p-6">
+        <div className="mb-4 flex items-center justify-center gap-2 text-sm font-medium text-slate-600">
+          <span className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-blue-700">
+            Popular searches
+          </span>
+          <span className="hidden sm:inline text-slate-400">Tap to search faster</span>
+        </div>
         <div className="flex flex-wrap justify-center gap-2">
-          {[
-            "iPhone 14",
-            "Samsung Galaxy",
-            "OnePlus",
-            "Google Pixel",
-            "Xiaomi",
-          ].map((suggestion) => (
+          {POPULAR_SEARCHES.map((suggestion) => (
             <button
               key={suggestion}
               onClick={() => {
@@ -581,13 +591,15 @@ const ProductSearch: React.FC<ProductSearchProps> = ({
                 shouldMaintainFocusRef.current = true;
                 inputRef.current?.focus();
               }}
-              className="px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 
-                         rounded-full transition-colors duration-200 hover:shadow-md"
+              className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm text-slate-700 transition-all duration-200 hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 hover:shadow-md"
             >
               {suggestion}
             </button>
           ))}
         </div>
+        <p className="mt-4 text-center text-xs text-slate-500">
+          Search by device, brand, or common repair issue.
+        </p>
       </div>
     </section>
   );
