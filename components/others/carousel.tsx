@@ -85,7 +85,7 @@ export default function HeroCarousel() {
     <div className="relative w-full">
       <Carousel
         setApi={setApi}
-        className="w-full xl:px-16 2xl:px-24"
+        className="w-full"
         opts={{
           align: "start",
           loop: true,
