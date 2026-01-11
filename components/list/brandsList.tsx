@@ -5,14 +5,21 @@ import { brands } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 
+interface BrandDevicePreview {
+  name: string;
+  slug: string;
+}
+
 interface BrandsListProps {
   variant: "all" | "min";
   category?: string;
+  brandPreviews?: Record<string, BrandDevicePreview[]>;
 }
 
 const BrandsList = ({
   variant,
   category = "mobile-phone",
+  brandPreviews = {},
 }: BrandsListProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   // Track current grid columns based on Tailwind breakpoints to ensure full rows in "min" variant
@@ -166,15 +173,15 @@ const BrandsList = ({
                            flex flex-col items-center justify-center text-center p-4 md:p-6
                            transition-all duration-300 ease-in-out 
                            hover:shadow-2xl hover:scale-105 hover:-translate-y-1
-                           hover:border-[#D2691E] hover:bg-gradient-to-br hover:from-orange-50 hover:to-orange-100
-                           focus:outline-none focus:ring-4 focus:ring-[#D2691E]/50 focus:ring-opacity-50 
-                           aspect-[4/3] min-h-[120px] relative overflow-hidden"
+                           hover:border-sky-400 hover:bg-gradient-to-br hover:from-sky-50 hover:to-cyan-100
+                           focus:outline-none focus:ring-4 focus:ring-sky-300 focus:ring-opacity-50 
+                           aspect-[4/3] min-h-[180px] relative overflow-hidden"
                 title={`Repair ${brand.name} ${category.replace("-", " ")}`}
               >
                 {/* Background gradient overlay */}
                 <div
-                  className="absolute inset-0 bg-gradient-to-br from-[#D2691E]/0 to-[#121212]/0 
-                                group-hover:from-[#D2691E]/5 group-hover:to-[#121212]/5 
+                  className="absolute inset-0 bg-gradient-to-br from-sky-500/0 to-cyan-500/0 
+                                group-hover:from-sky-500/10 group-hover:to-cyan-500/15 
                                 transition-all duration-300 rounded-2xl"
                 ></div>
 
@@ -207,31 +214,36 @@ const BrandsList = ({
                 {/* Brand name */}
                 <p
                   className="relative z-10 text-sm md:text-base font-semibold text-gray-800 
-                               group-hover:text-[#D2691E] transition-colors duration-300
+                               group-hover:text-sky-700 transition-colors duration-300
                                leading-tight"
                 >
                   {brand.name}
                 </p>
 
-                {/* Hover indicator */}
+                {/* Hover preview */}
                 <div
-                  className="absolute bottom-2 right-2 w-6 h-6 bg-orange-100 rounded-full 
-                                flex items-center justify-center opacity-0 
-                                group-hover:opacity-100 transition-opacity duration-300"
+                  className="absolute inset-x-3 bottom-3 rounded-xl border border-sky-200 bg-white/95 p-3 shadow-lg opacity-0 translate-y-3 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0"
                 >
-                  <svg
-                    className="w-3 h-3 text-[#D2691E]"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
+                  <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-sky-700">
+                    Popular devices
+                  </p>
+                  {brandPreviews[brand.slug]?.length ? (
+                    <div className="flex flex-wrap gap-1.5">
+                      {brandPreviews[brand.slug].slice(0, 3).map((device) => (
+                        <span
+                          key={device.slug}
+                          className="inline-flex items-center rounded-full bg-sky-50 px-2.5 py-1 text-[11px] font-medium text-slate-700"
+                          title={device.name}
+                        >
+                          {device.name}
+                        </span>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-xs text-slate-500">
+                      Popular device suggestions coming soon.
+                    </p>
+                  )}
                 </div>
               </Link>
             ))}
