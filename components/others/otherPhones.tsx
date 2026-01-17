@@ -116,12 +116,12 @@ const getSuggestedDevices = async (
     const sameBrandSuggestions = devicesWithSimilarity
       .filter((device) => device.similarity > 0) // Only include devices with some similarity
       .sort((a, b) => b.similarity - a.similarity)
-      .slice(0, 2);
+      .slice(0, 6);
 
-    // Get 2 random different brands (excluding current brand)
+    // Get 6 random different brands (excluding current brand)
     const otherBrands = brands.filter((brand) => brand.slug !== currentCompany);
     const shuffledBrands = [...otherBrands].sort(() => 0.5 - Math.random());
-    const randomBrands = shuffledBrands.slice(0, 2);
+    const randomBrands = shuffledBrands.slice(0, 6);
 
     return {
       sameBrand: sameBrandSuggestions,
@@ -154,128 +154,114 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
 
   const currentBrandInfo = getBrandInfo(currentDevice.company);
 
+  const sectionShell =
+    "rounded-3xl border border-slate-200 bg-white p-4 shadow-sm md:p-5";
+
+  const cardShell =
+    "group flex h-full min-w-[220px] flex-col rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-all duration-200 hover:-translate-y-1 hover:border-sky-300 hover:bg-sky-50 hover:shadow-lg";
+
   return (
-    <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sticky top-4">
-      {/* Same Brand Section */}
+    <section className="space-y-6 lg:space-y-8">
       {sameBrand.length > 0 && (
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Image
-              src={currentBrandInfo.image}
-              alt={currentBrandInfo.name}
-              title={`${currentBrandInfo.name} Logo`}
-              width={20}
-              height={20}
-              className="rounded"
-            />
-            <h4 className="text-sm font-bold text-gray-700 uppercase">
-              More from {currentBrandInfo.name}
-            </h4>
+        <div className={sectionShell}>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+                Recommendations
+              </p>
+              <h4 className="text-lg font-bold text-slate-900">
+                Devices you may also like
+              </h4>
+            </div>
+            <div className="hidden items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-medium text-sky-700 md:inline-flex">
+              <Image
+                src={currentBrandInfo.image}
+                alt={currentBrandInfo.name}
+                title={`${currentBrandInfo.name} Logo`}
+                width={16}
+                height={16}
+                className="rounded"
+              />
+              {currentBrandInfo.name}
+            </div>
           </div>
-          <div className="space-y-3">
+
+          <div className="flex gap-4 overflow-x-auto pb-2 pr-1 snap-x snap-mandatory">
             {sameBrand.map((device: IDevice) => (
               <Link
                 key={device.slug}
                 href={`/repair/mobile-phone/${device.company}/${device.slug}`}
-                className="flex items-center p-4 rounded-xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all duration-200 group"
+                className={`${cardShell} snap-start`}
                 title={`View ${device.name} repair options`}
               >
-                <div className="w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex items-center justify-center mr-4">
+                <div className="mb-4 flex h-28 items-center justify-center rounded-2xl bg-white">
                   <Image
                     src={device.images?.[0] || currentBrandInfo.image}
                     alt={device.name}
                     title={`${device.name} Image`}
-                    width={40}
-                    height={40}
-                    className="object-contain"
+                    width={120}
+                    height={120}
+                    className="h-full w-full object-contain p-2"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-gray-900 truncate group-hover:text-blue-600 transition-colors">
-                    {device.name}
-                  </p>
-                  <p className="text-xs text-gray-500 capitalize">
-                    {currentBrandInfo.name}
-                  </p>
-                </div>
-                <svg
-                  className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <p className="line-clamp-2 text-sm font-semibold text-slate-900 group-hover:text-sky-700">
+                  {device.name}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">Same brand device</p>
               </Link>
             ))}
           </div>
         </div>
       )}
 
-      {/* Other Brands Section */}
       {randomBrands.length > 0 && (
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <h4 className="text-sm font-bold text-gray-700 uppercase">
-              Other Brands
-            </h4>
+        <div className={sectionShell}>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-700">
+                Similar brands
+              </p>
+              <h4 className="text-lg font-bold text-slate-900">
+                Explore other popular brands
+              </h4>
+            </div>
           </div>
-          <div className="space-y-3">
+
+          <div className="flex gap-4 overflow-x-auto pb-2 pr-1 snap-x snap-mandatory">
             {randomBrands.map((brand) => (
               <Link
                 key={brand.slug}
                 href={`/repair/mobile-phone/${brand.slug}`}
-                className="flex items-center p-4 rounded-xl border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all duration-200 group"
+                className={`${cardShell} snap-start`}
                 title={`Explore ${brand.name} devices`}
               >
-                <div className="w-12 h-12 bg-gray-50 rounded-lg overflow-hidden border border-gray-100 flex items-center justify-center mr-4">
+                <div className="mb-4 flex h-28 items-center justify-center rounded-2xl bg-white">
                   <Image
                     src={brand.image}
                     alt={brand.name}
                     title={`${brand.name} Image`}
-                    width={40}
-                    height={40}
-                    className="object-contain"
+                    width={120}
+                    height={120}
+                    className="h-full w-full object-contain p-2"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-gray-900 truncate group-hover:text-purple-600 transition-colors">
-                    {brand.name}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    Explore {brand.name} devices
-                  </p>
-                </div>
-                <svg
-                  className="w-5 h-5 text-gray-400 group-hover:text-purple-500 transition-colors"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
+                <p className="line-clamp-2 text-sm font-semibold text-slate-900 group-hover:text-violet-700">
+                  {brand.name}
+                </p>
+                <p className="mt-1 text-xs text-slate-500">
+                  Explore {brand.name} devices
+                </p>
               </Link>
             ))}
           </div>
         </div>
       )}
 
-      {/* Empty State */}
       {sameBrand.length === 0 && randomBrands.length === 0 && (
-        <div className="text-center py-8">
-          <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="rounded-3xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
             <svg
-              className="w-8 h-8 text-gray-400"
+              className="h-8 w-8 text-slate-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -288,10 +274,10 @@ async function OtherPhones({ currentDevice }: OtherPhonesProps) {
               />
             </svg>
           </div>
-          <p className="text-sm text-gray-500">No similar devices found</p>
+          <p className="text-sm text-slate-500">No similar devices found</p>
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

@@ -156,14 +156,20 @@ export default async function DeviceDetailsContent({
           </Link>
         </div>
         <ModelCart />
+        <OtherPhones
+          currentDevice={{
+            company: deviceData.company,
+            slug: deviceData.slug,
+            name: deviceData.name,
+          }}
+        />
+
         <WhyChooseUs />
       </div>{" "}
       {/* Desktop Layout */}
       <div className="hidden lg:block animate-in fade-in slide-in-from-bottom-4 duration-500">
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,2.4fr)_minmax(320px,1fr)] xl:gap-10">
-          {/* Left Column - Device Info and Spare Parts (3/4 width) */}
-          <div className="space-y-8">
+        <div className="space-y-8">
             {/* Device Info Section */}
             <ShowModel
               deviceData={{
@@ -279,18 +285,13 @@ export default async function DeviceDetailsContent({
 
             {/* Model Cart */}
             <ModelCart />
-          </div>
-
-          {/* Right Column - Other Phones (1/4 width) */}
-          <div className="xl:pt-2">
-            <OtherPhones
-              currentDevice={{
-                company: deviceData.company,
-                slug: deviceData.slug,
-                name: deviceData.name,
-              }}
-            />
-          </div>
+          <OtherPhones
+            currentDevice={{
+              company: deviceData.company,
+              slug: deviceData.slug,
+              name: deviceData.name,
+            }}
+          />
         </div>
 
         {/* Why Choose Us Section - Bottom */}
