@@ -218,27 +218,62 @@ export default function OrderSummaryContent() {
   }
 
   return (
-    <section className="py-6 min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-            Order Summary
-          </h1>
-          <p className="text-gray-600">
-            Track your service progress and details
-          </p>
+    <section className="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.12),_transparent_35%),linear-gradient(180deg,_#f8fafc_0%,_#eef2ff_100%)] py-6 lg:py-10">
+      <div className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-slate-950/5 to-transparent" />
+      <div className="container mx-auto max-w-7xl px-4 relative">
+        <div className="mb-6 overflow-hidden rounded-3xl border border-slate-200 bg-slate-950 px-6 py-7 text-white shadow-2xl shadow-slate-900/10 lg:px-8 lg:py-8">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-sky-200">
+                Order details
+              </p>
+              <h1 className="mt-2 text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+                Track your service progress and details
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-300 md:text-base">
+                See the current repair stage, payment information, and support
+                actions in one calm dashboard.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row lg:min-w-[420px] lg:justify-end">
+              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-slate-300">
+                  Order code
+                </p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {order.code}
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-slate-300">
+                  Status
+                </p>
+                <p className="mt-1 text-sm font-semibold text-white">
+                  {order.status}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Alert moved into OrderInvoice card below Device section */}
-
         {/* Main Content - Responsive Layout */}
-        <div className="lg:grid lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0">
-          {/* Progress Bar - Mobile: Full width, Desktop: Left 2 columns */}
-          <div className="lg:col-span-2 order-1 lg:order-1">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">
-                Service Progress
-              </h2>
+        <div className="grid gap-6 xl:grid-cols-[minmax(320px,0.95fr)_minmax(0,1.55fr)] xl:gap-8">
+          <div className="h-fit xl:sticky xl:top-6">
+            <div className="rounded-3xl border border-slate-200 bg-white/90 p-5 shadow-lg shadow-slate-200/60 backdrop-blur-sm lg:p-6">
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-sky-700">
+                    Progress
+                  </p>
+                  <h2 className="text-xl font-bold text-slate-900">
+                    Service timeline
+                  </h2>
+                </div>
+                <div className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+                  Live updates
+                </div>
+              </div>
               <OrderProgressBar
                 stepper={order.stepper}
                 estimatedDeliveryDate={
@@ -253,8 +288,7 @@ export default function OrderSummaryContent() {
             </div>
           </div>
 
-          {/* Order Details - Mobile: Full width, Desktop: Right 3 columns */}
-          <div className="lg:col-span-3 order-2 lg:order-2">
+          <div>
             <OrderContent order={order} />
           </div>
         </div>

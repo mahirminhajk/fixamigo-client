@@ -30,9 +30,11 @@ export default function OrderContent({ order }: OrderContentProps) {
       (spare) =>
         spare.price.range && spare.price.startPrice && spare.price.endPrice
     ) || false;
+  const cardShell =
+    "rounded-3xl border border-slate-200 bg-white shadow-lg shadow-slate-200/60";
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-5 lg:space-y-6">
       <ContactAgentCard agent={order.agent} status={order.status} />
       <DeviceCard order={order} />
       <AlertBanner alert={order.alert} />
@@ -56,9 +58,9 @@ function ContactAgentCard({
     status === OrderStatus.OUT_FOR_DELIVERY || status === OrderStatus.EN_ROUTE;
   if (!show) return null;
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+        <div className="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center">
           <svg
             className="w-4 h-4 text-blue-600"
             fill="none"
@@ -73,12 +75,12 @@ function ContactAgentCard({
             />
           </svg>
         </div>
-        <h2 className="font-bold text-gray-900 text-lg lg:text-xl">
+        <h2 className="font-bold text-slate-900 text-lg lg:text-xl">
           Contact Agent
         </h2>
       </div>
 
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
+      <div className="bg-gradient-to-r from-sky-50 to-indigo-50 p-4 rounded-2xl border border-sky-200">
         <div className="space-y-2">
           <p className="text-sm lg:text-base text-gray-700">
             <span className="font-medium">Name:</span>{" "}
@@ -104,9 +106,9 @@ function ContactAgentCard({
 
 function DeviceCard({ order }: { order: IOrder }) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+        <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
           <svg
             className="w-4 h-4 text-green-600"
             fill="none"
@@ -121,10 +123,10 @@ function DeviceCard({ order }: { order: IOrder }) {
             />
           </svg>
         </div>
-        <h2 className="font-bold text-gray-900 text-lg lg:text-xl">Device</h2>
+        <h2 className="font-bold text-slate-900 text-lg lg:text-xl">Device</h2>
       </div>
 
-      <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
+      <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-4 rounded-2xl border border-emerald-200">
         <div className="flex items-center gap-4">
           <div className="w-16 h-20 lg:w-20 lg:h-24 rounded-lg overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
             <Image
@@ -137,10 +139,10 @@ function DeviceCard({ order }: { order: IOrder }) {
             />
           </div>
           <div className="flex-1">
-            <h3 className="font-bold text-gray-900 text-base lg:text-lg mb-1">
+            <h3 className="font-bold text-slate-900 text-base lg:text-lg mb-1">
               {order.device.name.toUpperCase()}
             </h3>
-            <p className="text-gray-600 text-sm lg:text-base">
+            <p className="text-slate-600 text-sm lg:text-base">
               Brand -{" "}
               <span className="font-semibold text-gray-800">
                 {order.device.company!.toUpperCase()}
@@ -213,7 +215,7 @@ function AlertBanner({ alert }: { alert?: Alert }) {
 
 function SparePartsCard({ order }: { order: IOrder }) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
           <svg
@@ -235,7 +237,7 @@ function SparePartsCard({ order }: { order: IOrder }) {
         </h2>
       </div>
 
-      <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-4 rounded-xl border border-purple-200 space-y-4">
+      <div className="bg-gradient-to-r from-purple-50 to-violet-50 p-4 rounded-2xl border border-purple-200 space-y-4">
         {order.sparePartsDetails?.map((spare, i) => {
           const needsConfirmation =
             spare.type === SparePartType.UNKNOWN ||
@@ -256,7 +258,7 @@ function SparePartsCard({ order }: { order: IOrder }) {
                 i !== 0 ? "pt-4 border-t border-purple-200" : ""
               }`}
             >
-              <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-lg overflow-hidden bg-white border border-gray-200 flex items-center justify-center">
+              <div className="w-12 h-12 lg:w-14 lg:h-14 rounded-2xl overflow-hidden bg-white border border-slate-200 flex items-center justify-center shadow-sm">
                 <Image
                   src={getSparePartsIcon(spare.category)}
                   alt={spare.name}
@@ -320,7 +322,7 @@ function SparePartsCard({ order }: { order: IOrder }) {
 
 function ServiceDetailsCard({ order }: { order: IOrder }) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
           <svg
@@ -342,7 +344,7 @@ function ServiceDetailsCard({ order }: { order: IOrder }) {
         </h2>
       </div>
 
-      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-4 rounded-xl border border-indigo-200">
+      <div className="bg-gradient-to-r from-indigo-50 to-sky-50 p-4 rounded-2xl border border-indigo-200">
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-gray-600 text-sm lg:text-base">
@@ -397,7 +399,7 @@ function PaymentDetailsCard({
   });
   const showMaxEstimatedNote = hasRangeItems && anyAwaitingConfirmation;
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 lg:p-6">
+    <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-lg shadow-slate-200/60 lg:p-6">
       <div className="flex items-center gap-3 mb-4">
         <div className="w-8 h-8 bg-amber-100 rounded-full flex items-center justify-center">
           <svg
@@ -419,7 +421,7 @@ function PaymentDetailsCard({
         </h2>
       </div>
 
-      <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 rounded-xl border border-amber-200">
+      <div className="bg-gradient-to-r from-amber-50 to-yellow-50 p-4 rounded-2xl border border-amber-200">
         <div className="space-y-3">
           <div className="flex justify-between items-center">
             <span className="text-gray-600 text-sm lg:text-base">
@@ -514,7 +516,7 @@ function PaymentDetailsCard({
 
           {/* Savings Summary */}
           {((order.coupon) || (order.walletUsed && order.walletUsed.amount > 0)) && (
-            <div className="mt-3 pt-3 border-t border-amber-300 bg-green-50 rounded-lg p-3">
+            <div className="mt-3 pt-3 border-t border-amber-300 bg-green-50 rounded-2xl p-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-green-700 flex items-center gap-1">
                   <svg
@@ -566,7 +568,7 @@ function PaymentDetailsCard({
 
       {/* Loyalty Coins Earned - Show only for completed orders */}
       {order.loyaltyCoins && order.loyaltyCoins.earned > 0 && (
-        <div className="mt-4 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border-2 border-green-300">
+        <div className="mt-4 bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-2xl border-2 border-green-300">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="bg-green-500 p-2.5 rounded-full">
@@ -660,7 +662,7 @@ function OrderActionsCard({ order }: { order: IOrder }) {
   };
 
   return (
-    <section className="pt-4 border-t border-gray-200">
+    <section className="mt-2 rounded-3xl border border-slate-200 bg-slate-50 p-4 shadow-sm lg:p-5">
       {/** Hide cancel when order is already cancelled */}
       {/** Compute ability to cancel */}
       {/** Using enum ensures type-safe comparison */}
