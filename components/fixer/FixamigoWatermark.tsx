@@ -17,7 +17,7 @@ export default function FixamigoWatermark({ displayName }: FixamigoWatermarkProp
             <span className="font-semibold text-slate-700">Fixamigo</span>
             <div className="relative w-5 h-5">
               <Image
-                src="/logo.png"
+                src="/logos/logo.png"
                 alt="Fixamigo"
                 fill
                 className="object-contain"
